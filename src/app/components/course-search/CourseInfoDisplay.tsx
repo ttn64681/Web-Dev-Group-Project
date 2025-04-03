@@ -1,0 +1,1 @@
+// Displays the A.I. generated course info

@@ -1,0 +1,1 @@
+// Post information (title, description, thumbnail, likes, comments)
