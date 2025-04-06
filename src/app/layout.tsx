@@ -4,9 +4,13 @@ import { Inter, Dongle, Nunito } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 
-const nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito" });
+const nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito" }); // conventional variable names
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const dongle = Dongle({ subsets: ["latin"], variable: "--font-dongle" });
+const dongle = Dongle({
+  subsets: ["latin"],
+  variable: "--font-dongle",
+  weight: ["300", "400", "700"],
+});
 
 export default function RootLayout({
   children,
