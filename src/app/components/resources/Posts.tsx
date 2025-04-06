@@ -1,1 +1,0 @@
-// Maps thumbnail posts to a list of thumbnail post objects

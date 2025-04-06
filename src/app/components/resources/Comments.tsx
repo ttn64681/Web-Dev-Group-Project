@@ -1,1 +1,0 @@
-// Maps and displays a list of comments

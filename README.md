@@ -8,10 +8,10 @@
 
 **Team Roles:**
 
-* Team Lead: Thai Nguyen
-* Communication Lead: JR Insular
-* Miroboard Captain: Andrew Ingraham
-* GitHub Captain: Jamie Chen
+- Team Lead: Thai Nguyen
+- Communication Lead: JR Insular
+- Miroboard Captain: Andrew Ingraham
+- GitHub Captain: Jamie Chen
 
 ## Project Overview
 
@@ -19,35 +19,36 @@ This project aims to design and build a full-stack web application using React, 
 
 ## Technology Stack
 
-* **Frontend:**
-    * React with Next.js (TypeScript)
-    * Client-side routing using App Router
-    * State management with React hooks
-* **Backend:**
-    * Node.js using Next.js API routes
-* **Database:**
-    * MongoDB for data persistence
- 
+- **Frontend:**
+  - React with Next.js (TypeScript)
+  - Client-side routing using App Router
+  - State management with React hooks
+- **Backend:**
+  - Node.js using Next.js API routes
+- **Database:**
+  - MongoDB for data persistence
+
 ## APIs Used
-* YouTube Data API (Tentative)
-* OpenAI (Gemini)
-* ...
+
+- YouTube Data API (Tentative)
+- OpenAI (Gemini)
+- ...
 
 ## Project Timeline (Roughly)
 
-* **Week 2:** Project idea submission
-* **Week 3:** UI Design mockup (splash page, authenticated/unauthenticated views, database schema)
-* **Week 4:** Progress report (roles, progress) and Peer Review
-* **Week 5:** Functioning UI with client-side routes and database models
-* **Week 6:** Final submission (4/22) and presentation (4/24 & 4/28)
+- **Week 2:** Project idea submission
+- **Week 3:** UI Design mockup (splash page, authenticated/unauthenticated views, database schema)
+- **Week 4:** Progress report (roles, progress) and Peer Review
+- **Week 5:** Functioning UI with client-side routes and database models
+- **Week 6:** Final submission (4/22) and presentation (4/24 & 4/28)
 
 ## Getting Started
 
 ### Prerequisites
 
-* Node.js and npm installed
-* MongoDB installed and running
-* API keys registered
+- Node.js and npm installed
+- MongoDB installed and running
+- API keys registered
 
 ### Installation
 
@@ -74,9 +75,9 @@ This project aims to design and build a full-stack web application using React, 
 
 ## Future Improvements
 
-* ...
-* ...
-* ...
+- ...
+- ...
+- ...
 
 ## Contributing
 

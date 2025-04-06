@@ -1,1 +1,0 @@
-// Displays all posts
