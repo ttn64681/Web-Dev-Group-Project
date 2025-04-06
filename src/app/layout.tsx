@@ -1,10 +1,12 @@
 "use client";
 
-import { Inter } from "next/font/google";
+import { Inter, Dongle, Nunito } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 
-const inter = Inter({ subsets: ["latin"] });
+const nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const dongle = Dongle({ subsets: ["latin"], variable: "--font-dongle" });
 
 export default function RootLayout({
   children,
@@ -25,7 +27,9 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body
+        className={`${inter.className} ${dongle.className} ${nunito.className}`}
+      >
         <Navbar
           isAuthenticated={isAuthenticated}
           username={username}
