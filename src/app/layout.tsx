@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} ${dongle.className} ${nunito.className}`}
+        className={`${inter.className} ${dongle.className} ${nunito.className} bg-purple-dark-transition`}
       >
         <Navbar
           isAuthenticated={isAuthenticated}
