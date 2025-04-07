@@ -8,10 +8,14 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center h-screen">
       {/* Splash */}
-      <div className="flex flex-col items-center gap-4 m-12">
-        <h1 className="font-dongle text-4xl font-bold">Welcome to</h1>
-        <h1 className="font-dongle text-5xl font-extrabold">CourseHub!</h1>
-        <p className="font-nunito text-lg">
+      <div className="flex flex-col items-center gap-4 m-12 border-2 border-neon-pink rounded-lg border-dashed p-32">
+        <h1 className="font-dongle text-4xl font-bold text-neon-pink">
+          Welcome to
+        </h1>
+        <h1 className="font-dongle text-5xl font-extrabold text-neon-pink">
+          CourseHub!
+        </h1>
+        <p className="font-nunito text-lg text-neon-pink-subtitle">
           Your one-stop platform for UGA course resources
         </p>
       </div>
@@ -39,10 +43,8 @@ export default function Home() {
       </div>
 
       {/* Get Started Button */}
-      <button className="bg-neon-cyan rounded-full px-3 py-1 m-12">
-        <Link href="/course-search" className="text-black">
-          Get Started!
-        </Link>
+      <button className="bg-neon-cyan text-[1.2rem] font-bold rounded-full px-5 py-2 text-black">
+        <Link href="/course-search">Get Started!</Link>
       </button>
     </div>
   );
