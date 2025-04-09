@@ -21,6 +21,7 @@ module.exports = {
 
         'nav-purple': '#28162F',
         'footer-purple': '#A63FAC',
+        'component-purple': '#33203A',
 
         'purple-dark-transition': '#120818', // background page
         'purple-light-transition': '#29142F',
