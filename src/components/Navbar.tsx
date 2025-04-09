@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface NavbarProps {
   isAuthenticated: boolean;
@@ -16,8 +16,6 @@ const Navbar: React.FC<NavbarProps> = ({
   // onLogin will be in Login component
 }) => {
   // TODO: Add mobile menu
-  // TODO: Add responsive design
-  // TODO: Add styling
   // TODO: Add proper routing
   // TODO: Handle authentication state
 
@@ -26,17 +24,23 @@ const Navbar: React.FC<NavbarProps> = ({
   return (
     <nav className="flex flex-row justify-between items-center p-4 pl-5 pr-5 bg-nav-purple">
       {/* Left side - Logo */}
-      <Link href="/" className="font-dongle text-2xl font-bold text-neon-pink">
-        CourseHub
-      </Link>
+      <button
+        type="button"
+        title="CourseHub"
+        className="hover:scale-105 hover:[text-shadow:0_0_10px_rgba(255,105,180,0.5)] transition-all duration-300"
+      >
+        <Link href="/" className="font-dongle text-2xl font-bold text-neon-pink">
+          CourseHub
+        </Link>
+      </button>
 
       {/* Center - Navigation links */}
       <div className="flex gap-10 absolute left-1/2 transform -translate-x-1/2">
         <div
           className={`flex items-center justify-center w-20 h-16 ${
-            pathname === "/"
-              ? "text-neon-pink border-b-2 border-neon-pink"
-              : "text-white duration-200 hover:text-neon-pink"
+            pathname === '/'
+              ? 'text-neon-pink border-b-2 border-neon-pink'
+              : 'text-white duration-200 hover:text-neon-pink'
           }`}
         >
           <button>
@@ -46,9 +50,9 @@ const Navbar: React.FC<NavbarProps> = ({
 
         <div
           className={`flex items-center justify-center w-20 h-16 ${
-            pathname === "/course-search"
-              ? "text-neon-pink border-b-2 border-neon-pink"
-              : "text-white duration-200 hover:text-neon-pink"
+            pathname === '/course-search'
+              ? 'text-neon-pink border-b-2 border-neon-pink'
+              : 'text-white duration-200 hover:text-neon-pink'
           }`}
         >
           <button>
@@ -58,9 +62,9 @@ const Navbar: React.FC<NavbarProps> = ({
 
         <div
           className={`flex items-center justify-center w-20 h-16 ${
-            pathname === "/contribute"
-              ? "text-neon-pink border-b-2 border-neon-pink"
-              : "text-white duration-200 hover:text-neon-pink"
+            pathname === '/contribute'
+              ? 'text-neon-pink border-b-2 border-neon-pink'
+              : 'text-white duration-200 hover:text-neon-pink'
           }`}
         >
           <button>
@@ -72,13 +76,13 @@ const Navbar: React.FC<NavbarProps> = ({
       {/* Right side - Login/Logout */}
       {isAuthenticated ? (
         <button
-          className="bg-neon-cyan rounded-full px-3 py-1 text-black"
+          className="bg-neon-cyan rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300"
           onClick={onLogout}
         >
           Logout
         </button>
       ) : (
-        <button className="bg-neon-cyan font-semibold rounded-full px-3 py-1 text-black">
+        <button className="bg-neon-cyan font-semibold rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300">
           <Link href="/login">Login</Link>
         </button>
       )}
