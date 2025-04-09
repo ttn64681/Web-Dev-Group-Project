@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 const Contribute: React.FC = () => {
   // TODO: Add state management

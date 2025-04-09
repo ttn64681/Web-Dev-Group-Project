@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 const Login: React.FC = () => {
   // TODO: Add form state
