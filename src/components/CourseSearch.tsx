@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 import { useState, useEffect } from "react";
 import CourseSearchArea from "./courseSearchComponents/CourseSearchArea";
@@ -5,6 +6,9 @@ import OverviewBox from "./courseSearchComponents/OverviewBox";
 import ResourcesBox from "./courseSearchComponents/ResourcesBox";
 import Sidebar from "./courseSearchComponents/Sidebar";
 import { MagnifyingGlass } from "@phosphor-icons/react";
+=======
+'use client';
+>>>>>>> 7d21621639288732e2c9bd66af32447f64896754
 
 const CourseSearch: React.FC = () => {
   // TODO: Add state management for:
