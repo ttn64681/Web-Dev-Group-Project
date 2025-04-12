@@ -28,6 +28,8 @@ module.exports = {
 
         "heart-red": "#FF3284",
         "disabled-purple": "#765178",
+
+        "login-bg-purple": "#731778",
       },
     },
   },
