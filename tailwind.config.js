@@ -22,6 +22,8 @@ module.exports = {
         'nav-purple': '#28162F',
         'footer-purple': '#A63FAC',
         'component-purple': '#33203A',
+        'form-pink': '#FDD7FF', //used on contribution for title/desc inputs
+        'form-pink-border': '#C3ACCC', //used on contribution for title/desc inputs
 
         'purple-dark-transition': '#120818', // background page
         'purple-light-transition': '#29142F',
