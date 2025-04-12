@@ -5,9 +5,9 @@ import { Trash } from "@phosphor-icons/react";
 const TrashBtn: React.FC = () => {
     return (
         <div>
-            <div>
-                <Trash size={6} />
-            </div>
+            <button className="hover:scale-125 transition-transform duration-200">
+                <Trash size={24} color="#765178" weight="bold" />
+            </button>
         </div>
     );
 }

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 "use client";
 import { useState, useEffect } from "react";
 import CourseSearchArea from "./courseSearchComponents/CourseSearchArea";
@@ -6,9 +5,7 @@ import OverviewBox from "./courseSearchComponents/OverviewBox";
 import ResourcesBox from "./courseSearchComponents/ResourcesBox";
 import Sidebar from "./courseSearchComponents/Sidebar";
 import { MagnifyingGlass } from "@phosphor-icons/react";
-=======
-'use client';
->>>>>>> 7d21621639288732e2c9bd66af32447f64896754
+import connectMongoDB from "../../config/mongodb";
 
 const CourseSearch: React.FC = () => {
   // TODO: Add state management for:
@@ -41,6 +38,8 @@ const CourseSearch: React.FC = () => {
 
   const [prevCourses, setPrevCourses] = useState([]);
 
+  const[videoSelected, setVideoSelected] = useState('');
+
   const showOverview = () => {
     setActiveTab('Overview');
   }
@@ -48,12 +47,26 @@ const CourseSearch: React.FC = () => {
     setActiveTab('Resources');
   }
 
+  //CHECK CONNECTION
+  useEffect(() => {
+    const connect = async () => {
+      try {
+        await connectMongoDB();
+        console.log('MongoDB returned');
+      } catch (err) {
+        console.error('Error connecting to MongoDB:', err);
+      };
+    }
+    connect();
+  }, [])
+
   //COMPONENT MATERIALS ============================================
 
   return (
     <div className="flex">
+
       {/*SIDEBAR*/}
-      <div className="h-screen">
+      <div className="min-h-full">
         <Sidebar />
       </div>
 
@@ -66,17 +79,16 @@ const CourseSearch: React.FC = () => {
 
         {/* SEARCH AREA */}
         <h4 className="text-[#D163D7] m-[10px]">Enter the 4 letter prefix, 4 digit number, and course name.</h4>
-
         <div className="mt-[10px] mb-[10px]">
           <CourseSearchArea />
         </div>
 
         {/* TABS*/}
         <div className="">
-          <button onClick={showOverview} className="m-[10px] p-[5px] pl-[15px] pr-[15px] text-white border border-[3px] border-white rounded-[10px] inline">
+          <button onClick={showOverview} className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === "Overview" ? "bg-[#301936] text-[#F88AFF] border-[#F88AFF]" : "text-white border-white"} hover:scale-110 transition-transform duration-200 border border-[3px] rounded-[10px] inline`}>
             Overview
           </button>
-          <button onClick={showResources} className="m-[10px] p-[5px] pl-[15px] pr-[15px] text-white border border-[3px] border-white rounded-[10px] inline">
+          <button onClick={showResources} className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === "Resources" ? "bg-[#301936] text-[#F88AFF] border-[#F88AFF]" : "text-white border-white"} hover:scale-110 transition-transform duration-200 border border-[3px] rounded-[10px] inline`}>
             Resources
           </button> 
         </div>
