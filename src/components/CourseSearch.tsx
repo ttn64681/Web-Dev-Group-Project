@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 const CourseSearch: React.FC = () => {
   // TODO: Add state management for:

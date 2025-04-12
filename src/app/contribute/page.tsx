@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import Contribute from "@/components/Contribute";
+import Contribute from '@/components/Contribute';
 
 export default function ContributePage() {
   // TODO: Add page layout

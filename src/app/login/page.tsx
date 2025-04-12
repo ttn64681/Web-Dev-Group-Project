@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import Login from "@/components/Login";
+import { useRouter } from 'next/navigation';
+import Login from '@/components/Login';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function LoginPage() {
   const handleLogin = (username: string) => {
     // TODO: Implement login logic
     // This should be handled by the parent layout component
-    router.push("/");
+    router.push('/');
   };
 
   return <Login onLogin={handleLogin} />;

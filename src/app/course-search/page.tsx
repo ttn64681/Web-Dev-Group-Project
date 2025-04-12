@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import CourseSearch from "@/components/CourseSearch";
+import CourseSearch from '@/components/CourseSearch';
 
 export default function CourseSearchPage() {
   // TODO: Add page layout
