@@ -2,6 +2,8 @@
 import { UsersThree } from "@phosphor-icons/react";
 import Items from "./Items";
 import { useState, useEffect } from "react";
+import CourseSearchArea from "./courseSearchComponents/CourseSearchArea";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 
 // The contribute component
 
@@ -167,7 +169,14 @@ const Contribute: React.FC = () => {
         </div>
         <div className="bg-component-purple rounded-lg flex-1 w-5/6 mx-auto h-full text-white p-4">
           <h2 className="text-white text-[30px]"> {activeTab !== "Videos" ? "" : "Search Videos"} {activeTab !== "Links" ? "" : "Search Posts"} {activeTab !== "Music" ? "" : "Search Music"} </h2>
-          <input type="text" placeholder="Search" className=" bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-5/6 mx-auto h-full border-2 border-form-pink-border rounded-md p-2" />
+          <div className="ml-[10px] mr-[10px] grow">
+            <div className="flex max-w-[500px]">
+              <input type="text" placeholder="Search" className="p-[5px] w-[400px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40 outline-none" />
+              <button className="p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]">
+                <MagnifyingGlass size={24} className="align-middle" color="white" />
+              </button>
+            </div>
+          </div>
           <Items items={items} />
         </div>
       </div>
