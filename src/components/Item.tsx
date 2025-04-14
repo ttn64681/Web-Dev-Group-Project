@@ -15,14 +15,14 @@ interface ItemProps{
 
 export default function Item({item}: ItemProps) {
     return (
-        <Card className="p-4">
-            <div>
-                <img src={'https://mma.prnewswire.com/media/1427646/quizlet_Logo.jpg?w=200'}></img>
+        <Card className="p-4 flex flex-row">
+          <div className="p-2 w-1/6">
+                <img src={'https://www.techsmith.com/blog/wp-content/uploads/2023/08/What-are-High-Resolution-Images.png'} className="border-2 rounded-md border-form-pink-border object-contain"></img>
             </div>
-            <div>
+            <div className="p-2 w-5/6">
                 <h2>Title: {item.title}</h2>
                 <p> Desc: {item.desc} </p>
-                <p> Url: {item.url} </p>
+                <a href=""> Url: {item.url} </a>
             </div>
         </Card>
     );

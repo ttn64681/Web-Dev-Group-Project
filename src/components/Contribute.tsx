@@ -13,7 +13,8 @@ type ItemType = {
   url: string;
 }
 
-const items: ItemType[] = [
+
+const linkItems: ItemType[] = [
   {
     id: 1,
     owner: 'user_one',
@@ -35,12 +36,53 @@ const items: ItemType[] = [
     desc: 'This is a usefull study tool that I used all the time during class, I do not think you can do without it!',
     url: 'https://quizlet.com/latest#',
   },
+];
+
+const videoItems: ItemType[] = [
   {
-    id: 4,
-    owner: 'user_four',
-    title: 'Another different Study Tool',
-    desc: 'I really love studying and you will too after using this awesome tool',
-    url: 'https://quizlet.com/latest#',
+    id: 1,
+    owner: 'user_one',
+    title: 'Helpful video',
+    desc: 'This video helped me a lot',
+    url: 'https://www.youtube.com/',
+  },
+  {
+    id: 2,
+    owner: 'user_two',
+    title: 'Another helpful video',
+    desc: 'I wouldnt have passed the final without this one!',
+    url: 'https://www.youtube.com/',
+  },
+  {
+    id: 3,
+    owner: 'user_three',
+    title: 'My favorite video',
+    desc: 'I just love this video',
+    url: 'https://www.youtube.com/',
+  },
+];
+
+const musicItems: ItemType[] = [
+  {
+    id: 1,
+    owner: 'user_one',
+    title: 'Music suggestion',
+    desc: 'This song really helps me study',
+    url: 'https://music.youtube.com/',
+  },
+  {
+    id: 2,
+    owner: 'user_two',
+    title: 'Music playlist',
+    desc: 'This playlist got me through the midterm',
+    url: 'https://music.youtube.com/',
+  },
+  {
+    id: 3,
+    owner: 'user_three',
+    title: 'Lofi',
+    desc: 'Love this playlist',
+    url: 'https://music.youtube.com/',
   },
 ];
 
@@ -54,15 +96,25 @@ const Contribute: React.FC = () => {
   // TODO: Handle authentication
 
   const [activeTab, setActiveTab] = useState('Videos');
+  const [items, setItems] = useState<ItemType[]>([]);
+
+  useEffect(() => {
+    showVideos();
+    return () => {
+    };
+  }, []);
 
   const showVideos = () => {
     setActiveTab('Videos');
+    setItems(videoItems);
   }
   const showLinks = () => {
     setActiveTab('Links');
+    setItems(linkItems);
   }
   const showMusic = () => {
     setActiveTab('Music');
+    setItems(musicItems);
   }
 
 
@@ -99,17 +151,23 @@ const Contribute: React.FC = () => {
             </button>
           </div>
         </div>
-        <div className="bg-component-purple rounded-lg flex-1 w-5/6 mx-auto h-full text-white p-5">
-          <div className="pb-4">
-            <p className="pb-2"> Enter Post Details </p>
+        <div className="bg-component-purple rounded-lg flex-1 w-5/6 mx-auto h-full text-white pt-5 pb-5">
+          <div className="pb-4 pl-5">
+            <p className="pb-2"> {activeTab !== "Videos" ? "" : "Enter Video Details"} {activeTab !== "Links" ? "" : "Enter Post Details"} {activeTab !== "Music" ? "" : "Enter Music Details"}</p>
             <input type="text" placeholder="Title" className=" bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-5/6 mx-auto h-full border-2 border-form-pink-border rounded-md p-2" />
           </div>
-          <div className="flex-1 mx-auto h-40">
+          <div className="flex-1 mx-auto h-40 pl-5">
             <textarea placeholder="Description" className=" bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-5/6 mx-auto h-full border-2 border-form-pink-border rounded-md p-2 text-justify" />
           </div>
+          <div className="pl-3 pt-5">
+            <button className={`m-[10px] p-[5px] pl-[15px] pr-[15px] text-white border-white" hover:scale-110 transition-transform duration-200 border border-[3px] rounded-[10px] inline`}>
+              Submit
+            </button>
+          </div>
         </div>
-        <div className="bg-component-purple rounded-lg flex-1 w-5/6 mx-auto h-full text-white p-2">
-        <h2 className="text-white text-[30px] pl-2"> Search Video </h2>
+        <div className="bg-component-purple rounded-lg flex-1 w-5/6 mx-auto h-full text-white p-4">
+          <h2 className="text-white text-[30px]"> {activeTab !== "Videos" ? "" : "Search Videos"} {activeTab !== "Links" ? "" : "Search Posts"} {activeTab !== "Music" ? "" : "Search Music"} </h2>
+          <input type="text" placeholder="Search" className=" bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-5/6 mx-auto h-full border-2 border-form-pink-border rounded-md p-2" />
           <Items items={items} />
         </div>
       </div>
