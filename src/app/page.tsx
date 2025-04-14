@@ -8,9 +8,6 @@ import { UsersThree } from '@phosphor-icons/react';
 
 // Home Page
 export default function Home() {
-  // TODO: Add styling
-  // TODO: Add proper content
-
   return (
     <div className="flex flex-col items-center mb-20">
       {/* Splash */}
