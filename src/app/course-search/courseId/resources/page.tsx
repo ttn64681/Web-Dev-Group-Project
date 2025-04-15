@@ -9,11 +9,11 @@ export default function CourseSearchPage() {
   // TODO: Add error boundary
   // TODO: Add loading states
 
-  //Default pages 
-  
+  //Default pages
+
   return (
     <div>
-      <CourseSearch activeTab={"Resources"} courseId={""} isVideoSelected={false} />
+      <CourseSearch activeTab={'Resources'} courseId={''} isVideoSelected={false} />
     </div>
   );
 }

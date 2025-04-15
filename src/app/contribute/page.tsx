@@ -10,7 +10,7 @@ export default function ContributePage() {
   // TODO: Add authentication check
 
   return (
-    <div>
+    <div className="mb-15">
       <h1>Contribute</h1>
       <Contribute />
     </div>

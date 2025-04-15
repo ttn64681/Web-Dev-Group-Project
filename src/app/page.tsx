@@ -9,7 +9,7 @@ import { UsersThree } from '@phosphor-icons/react';
 // Home Page
 export default function Home() {
   return (
-    <div className="flex flex-col items-center mb-20">
+    <div className="flex flex-col items-center">
       {/* Splash */}
       <div className="border-4 border-dashed border-neon-pink rounded-lg p-8 m-16 min-w-[40%] max-w-[90%] [box-shadow:0_0_15px_rgba(255,105,180,0.5),inset_0_0_15px_rgba(255,105,180,0.5)]">
         <div className="flex flex-col justify-center items-center gap-3">
@@ -92,6 +92,10 @@ export default function Home() {
           <Link href="/course-search">Get Started!</Link>
         </div>
       </button>
+
+      <div className="flex justify-center items-center mt-20">
+        <p className="text-center text-footer-purple mb-6">CourseHub | Web Programming | 2025</p>
+      </div>
     </div>
   );
 }

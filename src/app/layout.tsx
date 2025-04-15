@@ -28,13 +28,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body
-        className={`${inter.className} ${dongle.className} ${nunito.className} bg-purple-dark-transition`}
+        className={`${inter.className} ${dongle.className} ${nunito.className} bg-purple-dark-transition min-h-[calc(100vh-8rem)]`}
       >
         <Navbar isAuthenticated={isAuthenticated} username={username} onLogout={handleLogout} />
         {children}
-        <>
-          <p className="text-center text-footer-purple mb-6">CourseHub | Web Programming | 2025</p>
-        </>
       </body>
     </html>
   );

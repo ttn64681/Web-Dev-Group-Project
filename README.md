@@ -61,11 +61,10 @@ This project aims to design and build a full-stack web application using React, 
     ```bash
     npm install
     ```
-3.  Set up environment variables (MongoDB connection string, API Key, Client ID). Create a `.env.local` file in the root directory and add your environment variables.
+3.  Set up environment variables (MongoDB connection string, API Keys). Create a `.env.local` file in the root directory and add your environment variables.
     ```
     MONGODB_URI=your_mongodb_connection_string
     YOUTUBE_API_KEY=your_api_key
-    YOUTUBE_CLIENT_ID=your_client_id
     GEMINI_API_KEY=your_api_key
     ```
 4.  Run the development server:

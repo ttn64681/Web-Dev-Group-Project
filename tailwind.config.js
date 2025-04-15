@@ -28,16 +28,20 @@ module.exports = {
         'purple-dark-transition': '#120818', // background page
         'purple-light-transition': '#29142F',
 
-        "grayish-purple": "#B590C4",
+        'grayish-purple': '#B590C4',
 
-        "heart-red": "#FF3284",
-        "disabled-purple": "#765178",
+        'heart-red': '#FF3284',
+        'disabled-purple': '#765178',
 
-        "login-bg-purple": "#731778",
+        'login-bg-purple': '#731778',
         'sidebar-white-purple': '#B590C4', // sidebar unhovered text and border
         'form-bg-purple': '#33203A', // form background
         'heart-red': '#FF3284',
         'disabled-purple': '#765178', // disabled icons
+
+        'comment-bg-purple': '#60436B',
+        'comment-text-white-pink': '#EFD1F0',
+        'form-gray-purple': '#B590C4',
       },
     },
   },

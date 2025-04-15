@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -21,22 +21,42 @@ const Login: React.FC = () => {
           {/* gap between logo and Register title */}
           <div className="grid content-center justify-items-center gap-1">
             <Image
-            src="/logo/logo-horizontal_730x209.png"
-            alt="CourseHub Horizontal Logo"
-            width={365}
-            height={104.5}
-            className="w-[85px] min-w-[75px] "
+              src="/logo/logo-horizontal_730x209.png"
+              alt="CourseHub Horizontal Logo"
+              width={365}
+              height={104.5}
+              className="w-[85px] min-w-[75px] "
             />
-            <h1 className="text-white text-center font-nunito text-4xl [text-shadow:0_0_4px_rgba(127,34,163,1.0)]">Register</h1>
+            <h1 className="text-white text-center font-nunito text-4xl [text-shadow:0_0_4px_rgba(127,34,163,1.0)]">
+              Register
+            </h1>
           </div>
           {/* input fields and register button */}
           <form className="grid grid-cols-1 grid-rows-3 content-center justify-center gap-5 w-[80%]">
-            <input className="h-10 rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white" type="text" placeholder="Username" />
-            <input className="h-10 rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white" type="password" placeholder="Password" />
-            <button className="h-10 bg-gray-200 rounded-full m-1 text-lg font-bold text-[rgb(40,22,47)]" type="submit">Register</button>
+            <input
+              className="h-10 rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white"
+              type="text"
+              placeholder="Username"
+            />
+            <input
+              className="h-10 rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white"
+              type="password"
+              placeholder="Password"
+            />
+            <button
+              className="h-10 bg-gray-200 rounded-full m-1 text-lg font-bold text-[rgb(40,22,47)]"
+              type="submit"
+            >
+              Register
+            </button>
           </form>
           {/* linking to register page */}
-          <p className="text-white text-center text-sm">Already have an account? <Link className="underline font-bold" href="/login">Login</Link></p> 
+          <p className="text-white text-center text-sm">
+            Already have an account?{' '}
+            <Link className="underline font-bold" href="/login">
+              Login
+            </Link>
+          </p>
         </div>
       </div>
     </div>

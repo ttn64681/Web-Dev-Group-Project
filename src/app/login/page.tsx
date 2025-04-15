@@ -17,5 +17,9 @@ export default function LoginPage() {
     router.push('/');
   };
 
-  return <Login onLogin={handleLogin} />;
+  return (
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gradient-to-b from-[#0E0613] to-[#411F4B]">
+      <Login onLogin={handleLogin} />
+    </div>
+  );
 }

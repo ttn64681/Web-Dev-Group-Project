@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
+import { FaBars, FaTimes } from 'react-icons/fa'; // Icons for mobile menu
 
 interface NavbarProps {
   isAuthenticated: boolean;
@@ -20,10 +22,49 @@ const Navbar: React.FC<NavbarProps> = ({
   // TODO: Handle authentication state
 
   const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  /**
+   * NavLink Component
+   * A reusable component for navigation links with animated underline
+   *
+   * Props:
+   * - href: The URL the link points to
+   * - children: The text/content of the link
+   *
+   * Features:
+   * - Animated underline that appears on hover
+   * - Active state styling when on current page
+   * - Smooth transitions for all animations
+   */
+  const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
+    // The 'group' class allows us to style child elements when parent is hovered
+    <div className="relative group">
+      {/* Button wrapper for the link */}
+      <button className="flex items-center justify-center w-20 h-16">
+        <Link
+          href={href}
+          className={`${
+            // If current path matches link's href, use pink color
+            pathname === href ? 'text-neon-pink' : 'text-white duration-200 hover:text-neon-pink'
+          }`}
+        >
+          {children}
+        </Link>
+      </button>
+
+      {/* Animated underline that appears on hover */}
+      {/* Initially width is 0, expands to full width on hover */}
+      <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-neon-pink group-hover:w-full transition-all duration-300" />
+
+      {/* Permanent underline for active page */}
+      {pathname === href && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-neon-pink" />}
+    </div>
+  );
 
   return (
-    <nav className="flex flex-row justify-between items-center p-4 pl-5 pr-5 bg-nav-purple">
-      {/* Left side - Logo */}
+    <nav className="flex flex-row justify-between items-center p-4 pl-5 pr-5 bg-nav-purple relative">
+      {/* Logo section - always visible */}
       <button
         type="button"
         title="CourseHub"
@@ -34,58 +75,58 @@ const Navbar: React.FC<NavbarProps> = ({
         </Link>
       </button>
 
-      {/* Center - Navigation links */}
-      <div className="flex gap-10 absolute left-1/2 transform -translate-x-1/2">
-        <div
-          className={`flex items-center justify-center w-20 h-16 ${
-            pathname === '/'
-              ? 'text-neon-pink border-b-2 border-neon-pink'
-              : 'text-white duration-200 hover:text-neon-pink'
-          }`}
-        >
-          <button>
-            <Link href="/">Home</Link>
-          </button>
-        </div>
-
-        <div
-          className={`flex items-center justify-center w-20 h-16 ${
-            pathname === '/course-search'
-              ? 'text-neon-pink border-b-2 border-neon-pink'
-              : 'text-white duration-200 hover:text-neon-pink'
-          }`}
-        >
-          <button>
-            <Link href="/course-search">Search</Link>
-          </button>
-        </div>
-
-        <div
-          className={`flex items-center justify-center w-20 h-16 ${
-            pathname === '/contribute'
-              ? 'text-neon-pink border-b-2 border-neon-pink'
-              : 'text-white duration-200 hover:text-neon-pink'
-          }`}
-        >
-          <button>
-            <Link href="/contribute">Contribute</Link>
-          </button>
-        </div>
+      {/* Desktop Navigation - hidden on mobile (md: shown) */}
+      <div className="hidden md:flex gap-10 absolute left-1/2 transform -translate-x-1/2">
+        <NavLink href="/">Home</NavLink>
+        <NavLink href="/course-search">Search</NavLink>
+        <NavLink href="/contribute">Contribute</NavLink>
       </div>
 
-      {/* Right side - Login/Logout */}
-      {isAuthenticated ? (
-        <button
-          className="bg-neon-cyan rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300"
-          onClick={onLogout}
-        >
-          Logout
-        </button>
-      ) : (
-        <button className="bg-neon-cyan font-semibold rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300">
-          <Link href="/login">Login</Link>
-        </button>
+      {/* Mobile Menu Button - shown on mobile, hidden on desktop (md:hidden) */}
+      <button
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        className="md:hidden text-white hover:text-neon-pink transition-colors duration-200"
+      >
+        {/* Toggle between hamburger and close icon */}
+        {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+      </button>
+
+      {/* Mobile Menu Overlay - appears when menu is open */}
+      {isMenuOpen && (
+        <div className="md:hidden fixed inset-0 bg-nav-purple z-50 flex flex-col items-center justify-center">
+          {/* Close button in top-right corner */}
+          <div className="absolute top-4 right-4">
+            <button
+              onClick={() => setIsMenuOpen(false)}
+              className="text-white hover:text-neon-pink transition-colors duration-200"
+            >
+              <FaTimes size={24} />
+            </button>
+          </div>
+          {/* Vertical stack of navigation links */}
+          <div className="flex flex-col gap-8 items-center">
+            <NavLink href="/">Home</NavLink>
+            <NavLink href="/course-search">Search</NavLink>
+            <NavLink href="/contribute">Contribute</NavLink>
+          </div>
+        </div>
       )}
+
+      {/* Login/Logout Button - hidden on mobile (md: shown) */}
+      <div className="hidden md:block">
+        {isAuthenticated ? (
+          <button
+            className="bg-neon-cyan rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300"
+            onClick={onLogout}
+          >
+            Logout
+          </button>
+        ) : (
+          <button className="bg-neon-cyan font-semibold rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300">
+            <Link href="/login">Login</Link>
+          </button>
+        )}
+      </div>
     </nav>
   );
 };
