@@ -27,11 +27,11 @@ const Navbar: React.FC<NavbarProps> = ({
   /**
    * NavLink Component
    * A reusable component for navigation links with animated underline
-   * 
+   *
    * Props:
    * - href: The URL the link points to
    * - children: The text/content of the link
-   * 
+   *
    * Features:
    * - Animated underline that appears on hover
    * - Active state styling when on current page
@@ -42,27 +42,23 @@ const Navbar: React.FC<NavbarProps> = ({
     <div className="relative group">
       {/* Button wrapper for the link */}
       <button className="flex items-center justify-center w-20 h-16">
-        <Link 
+        <Link
           href={href}
           className={`${
             // If current path matches link's href, use pink color
-            pathname === href
-              ? 'text-neon-pink'
-              : 'text-white duration-200 hover:text-neon-pink'
+            pathname === href ? 'text-neon-pink' : 'text-white duration-200 hover:text-neon-pink'
           }`}
         >
           {children}
         </Link>
       </button>
-      
+
       {/* Animated underline that appears on hover */}
       {/* Initially width is 0, expands to full width on hover */}
       <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-neon-pink group-hover:w-full transition-all duration-300" />
-      
+
       {/* Permanent underline for active page */}
-      {pathname === href && (
-        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-neon-pink" />
-      )}
+      {pathname === href && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-neon-pink" />}
     </div>
   );
 

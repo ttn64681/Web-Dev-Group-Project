@@ -1,9 +1,9 @@
-"use client";
-import { UsersThree } from "@phosphor-icons/react";
-import Items from "./contribute/Items";
-import { useState, useEffect } from "react";
-import CourseSearchArea from "./course-search/CourseSearchArea";
-import { MagnifyingGlass } from "@phosphor-icons/react";
+'use client';
+import { UsersThree } from '@phosphor-icons/react';
+import Items from './contribute/Items';
+import { useState, useEffect } from 'react';
+import CourseSearchArea from './course-search/CourseSearchArea';
+import { MagnifyingGlass } from '@phosphor-icons/react';
 
 // The contribute component
 
@@ -13,8 +13,7 @@ type ItemType = {
   title: string;
   desc: string;
   url: string;
-}
-
+};
 
 // const linkItems: ItemType[] = [
 //   {
@@ -102,23 +101,21 @@ const Contribute: React.FC = () => {
 
   useEffect(() => {
     showVideos();
-    return () => {
-    };
+    return () => {};
   }, []);
 
   const showVideos = () => {
     setActiveTab('Videos');
     setItems(videoItems);
-  }
+  };
   const showLinks = () => {
     setActiveTab('Links');
     setItems([]); // Clear items when switching to Links
-  }
+  };
   const showMusic = () => {
     setActiveTab('Music');
     setItems(musicItems);
-  }
-
+  };
 
   return (
     <div>
@@ -130,9 +127,7 @@ const Contribute: React.FC = () => {
           </div>
         </div>
 
-        <h1 className="font-dongle text-5xl font-extrabold text-neon-violet">
-          Contribution
-        </h1>
+        <h1 className="font-dongle text-5xl font-extrabold text-neon-violet">Contribution</h1>
       </div>
 
       {/* Container For All Form Elements */}
@@ -150,13 +145,22 @@ const Contribute: React.FC = () => {
 
           {/* Contribution Type Selection */}
           <div className="pt-2 pb-2">
-            <button onClick={showVideos} className={`m-[10px] ml-0 p-[5px] pl-[15px] pr-[15px] ${activeTab === "Videos" ? "bg-[#301936] text-[#F88AFF] border-[#F88AFF]" : "text-white border-white"} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}>
+            <button
+              onClick={showVideos}
+              className={`m-[10px] ml-0 p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Videos' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}
+            >
               Videos
             </button>
-            <button onClick={showLinks} className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === "Links" ? "bg-[#301936] text-[#F88AFF] border-[#F88AFF]" : "text-white border-white"} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}>
+            <button
+              onClick={showLinks}
+              className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Links' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}
+            >
               Links
             </button>
-            <button onClick={showMusic} className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === "Music" ? "bg-[#301936] text-[#F88AFF] border-[#F88AFF]" : "text-white border-white"} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}>
+            <button
+              onClick={showMusic}
+              className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Music' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}
+            >
               Music
             </button>
           </div>
@@ -165,37 +169,59 @@ const Contribute: React.FC = () => {
         {/* Post Form */}
         <div className="bg-component-purple rounded-lg flex-1 w-5/6 mx-auto h-full text-white pt-5 pb-5 -mt-5">
           <div className="pb-4 pl-5">
-            <p className="pb-2"> {activeTab !== "Videos" ? "" : "Enter Video Details"} {activeTab !== "Links" ? "" : "Enter Post Details"} {activeTab !== "Music" ? "" : "Enter Music Details"}</p>
-            
+            <p className="pb-2">
+              {' '}
+              {activeTab !== 'Videos' ? '' : 'Enter Video Details'}{' '}
+              {activeTab !== 'Links' ? '' : 'Enter Post Details'}{' '}
+              {activeTab !== 'Music' ? '' : 'Enter Music Details'}
+            </p>
+
             {/* URL Input Field - Only shown for Links tab */}
-            {activeTab === "Links" && (
+            {activeTab === 'Links' && (
               <div className="mb-4">
-                <input 
-                  type="url" 
-                  placeholder="Enter URL" 
+                <input
+                  type="url"
+                  placeholder="Enter URL"
                   className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-5/6 mx-auto h-full border-2 border-form-pink-border rounded-md p-2 mb-2"
                 />
               </div>
             )}
-            <input type="text" placeholder="Title" className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-5/6 mx-auto h-full border-2 border-form-pink-border rounded-md p-2" />
+            <input
+              type="text"
+              placeholder="Title"
+              className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-5/6 mx-auto h-full border-2 border-form-pink-border rounded-md p-2"
+            />
           </div>
           <div className="flex-1 mx-auto h-40 pl-5">
-            <textarea placeholder="Description" className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-5/6 mx-auto h-full border-2 border-form-pink-border rounded-md p-2 text-justify" />
+            <textarea
+              placeholder="Description"
+              className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-5/6 mx-auto h-full border-2 border-form-pink-border rounded-md p-2 text-justify"
+            />
           </div>
           <div className="pl-3 pt-5">
-            <button className={`m-[10px] p-[5px] pl-[15px] pr-[15px] text-white border-white" hover:scale-110 transition-transform duration-200 border border-[3px] rounded-[10px] inline`}>
+            <button
+              className={`m-[10px] p-[5px] pl-[15px] pr-[15px] text-white border-white" hover:scale-110 transition-transform duration-200 border border-[3px] rounded-[10px] inline`}
+            >
               Submit
             </button>
           </div>
         </div>
 
         {/* Search Container - Hidden for Links tab */}
-        {activeTab !== "Links" && (
+        {activeTab !== 'Links' && (
           <div className="bg-component-purple rounded-lg flex-1 w-5/6 mx-auto h-full text-white p-4">
-            <h2 className="text-white text-[30px]"> {activeTab !== "Videos" ? "" : "Search Videos"} {activeTab !== "Music" ? "" : "Search Music"} </h2>
+            <h2 className="text-white text-[30px]">
+              {' '}
+              {activeTab !== 'Videos' ? '' : 'Search Videos'}{' '}
+              {activeTab !== 'Music' ? '' : 'Search Music'}{' '}
+            </h2>
             <div className="ml-[10px] mr-[10px] grow">
               <div className="flex max-w-[500px]">
-                <input type="text" placeholder="Search" className="p-[5px] w-[400px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40 outline-none" />
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="p-[5px] w-[400px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40 outline-none"
+                />
                 <button className="p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]">
                   <MagnifyingGlass size={24} className="align-middle" color="white" />
                 </button>

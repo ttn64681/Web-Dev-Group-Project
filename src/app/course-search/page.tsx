@@ -8,8 +8,8 @@ export default function CourseSearchPage() {
   // TODO: Add error boundary
   // TODO: Add loading states
 
-  //Default pages 
-  
+  //Default pages
+
   return (
     <div className="min-h-[calc(100vh-8rem)]">
       <CourseSearch activeTab="Overview" courseId="" isVideoSelected={false} />

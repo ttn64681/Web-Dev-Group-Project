@@ -19,8 +19,11 @@ export async function GET() {
   } catch (error) {
     console.error('MongoDB connection error:', error);
     return NextResponse.json(
-      { message: 'Failed to connect to MongoDB', error: error instanceof Error ? error.message : 'Unknown error' },
+      {
+        message: 'Failed to connect to MongoDB',
+        error: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
-} 
+}

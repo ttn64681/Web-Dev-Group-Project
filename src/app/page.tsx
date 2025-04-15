@@ -96,7 +96,6 @@ export default function Home() {
       <div className="flex justify-center items-center mt-20">
         <p className="text-center text-footer-purple mb-6">CourseHub | Web Programming | 2025</p>
       </div>
-
     </div>
   );
 }

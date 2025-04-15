@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -25,22 +25,42 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           {/* gap between logo and Login title */}
           <div className="grid content-center justify-items-center gap-2">
             <Image
-            src="/logo/logo-horizontal_730x209.png"
-            alt="CourseHub Horizontal Logo"
-            width={365}
-            height={104.5}
-            className="w-[120px] min-w-[100px]"
+              src="/logo/logo-horizontal_730x209.png"
+              alt="CourseHub Horizontal Logo"
+              width={365}
+              height={104.5}
+              className="w-[120px] min-w-[100px]"
             />
-            <h1 className="text-white text-center font-nunito text-5xl [text-shadow:0_0_4px_rgba(127,34,163,1.0)]">Login</h1>
+            <h1 className="text-white text-center font-nunito text-5xl [text-shadow:0_0_4px_rgba(127,34,163,1.0)]">
+              Login
+            </h1>
           </div>
           {/* input fields and login button */}
           <form className="grid grid-cols-1 grid-rows-3 content-center justify-center gap-6 w-[85%]">
-            <input className="h-12 rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white text-lg" type="text" placeholder="Username" />
-            <input className="h-12 rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white text-lg" type="password" placeholder="Password" />
-            <button className="h-12 bg-gray-200 rounded-full m-1 text-xl font-bold text-[rgb(40,22,47)]" type="submit">Login</button>
+            <input
+              className="h-12 rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white text-lg"
+              type="text"
+              placeholder="Username"
+            />
+            <input
+              className="h-12 rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white text-lg"
+              type="password"
+              placeholder="Password"
+            />
+            <button
+              className="h-12 bg-gray-200 rounded-full m-1 text-xl font-bold text-[rgb(40,22,47)]"
+              type="submit"
+            >
+              Login
+            </button>
           </form>
           {/* linking to register page */}
-          <p className="text-white text-center text-base">Don't have an account? <Link className="underline font-bold" href="/register">Register</Link></p> 
+          <p className="text-white text-center text-base">
+            Don't have an account?{' '}
+            <Link className="underline font-bold" href="/register">
+              Register
+            </Link>
+          </p>
         </div>
       </div>
     </div>
