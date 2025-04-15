@@ -97,24 +97,91 @@ const Contribute: React.FC = () => {
   // TODO: Handle authentication
 
   const [activeTab, setActiveTab] = useState('Videos');
-  const [items, setItems] = useState<ItemType[]>([]);
+  const [items, setItems] = useState<ItemType[]>([]); // set displayed items
+  
+  // State for tracking selected item and form input values
+  const [selectedItem, setSelectedItem] = useState<ItemType | null>(null);
+  const [formData, setFormData] = useState({
+    title: '',
+    desc: '',
+    url: '',
+  });
 
+  // Initialize with videos when component mounts
   useEffect(() => {
     showVideos();
     return () => {};
   }, []);
 
+  // Functions to switch between tabs and update items list
   const showVideos = () => {
     setActiveTab('Videos');
     setItems(videoItems);
+    setSelectedItem(null);
   };
+
   const showLinks = () => {
     setActiveTab('Links');
     setItems([]); // Clear items when switching to Links
+    setSelectedItem(null);
   };
+
   const showMusic = () => {
     setActiveTab('Music');
     setItems(musicItems);
+    setSelectedItem(null);
+  };
+
+  // Handle changes to form inputs
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Handle form submission with validation
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Validate form based on active tab
+    if (activeTab !== 'Links' && !selectedItem) {
+      alert('Please select a video');
+      return;
+    }
+
+    if (!formData.title || !formData.desc) {
+      alert('Please fill out all required fields');
+      return;
+    }
+
+    if (activeTab === 'Links' && !formData.url) {
+      alert('Please enter a URL');
+      return;
+    }
+
+    // Create post data object
+    const postData = {
+      postTitle: formData.title,
+      postDescription: formData.desc,
+      postUrl: formData.url,
+      selectedItem: selectedItem ? {
+        title: selectedItem.title,
+        description: selectedItem.desc,
+        url: selectedItem.url
+      } : null
+    };
+
+    console.log('Post Data:', postData);
+
+    // Reset form and selection
+    setFormData({
+      title: '',
+      desc: '',
+      url: '',
+    });
+    setSelectedItem(null); // uncheck the selected item
   };
 
   return (
@@ -168,12 +235,11 @@ const Contribute: React.FC = () => {
 
         {/* Post Form */}
         <div className="bg-component-purple rounded-lg flex-1 w-5/6 mx-auto h-full text-white pt-5 pb-5 -mt-5">
-          <div className="pb-4 pl-5">
+          <form onSubmit={handleSubmit} className="pb-4 pl-5">
             <p className="pb-2">
-              {' '}
-              {activeTab !== 'Videos' ? '' : 'Enter Video Details'}{' '}
-              {activeTab !== 'Links' ? '' : 'Enter Post Details'}{' '}
-              {activeTab !== 'Music' ? '' : 'Enter Music Details'}
+              {activeTab === 'Videos' && 'Enter Video Details'}
+              {activeTab === 'Links' && 'Enter Post Details'}
+              {activeTab === 'Music' && 'Enter Music Details'}
             </p>
 
             {/* URL Input Field - Only shown for Links tab */}
@@ -181,30 +247,41 @@ const Contribute: React.FC = () => {
               <div className="mb-4">
                 <input
                   type="url"
+                  name="url"
+                  value={formData.url}
+                  onChange={handleFormChange}
                   placeholder="Enter URL"
                   className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-5/6 mx-auto h-full border-2 border-form-pink-border rounded-md p-2 mb-2"
                 />
               </div>
             )}
+
             <input
               type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleFormChange}
               placeholder="Title"
-              className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-5/6 mx-auto h-full border-2 border-form-pink-border rounded-md p-2"
+              className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-5/6 mx-auto h-full border-2 border-form-pink-border rounded-md p-2 mb-4"
             />
-          </div>
-          <div className="flex-1 mx-auto h-40 pl-5">
+
             <textarea
+              name="desc"
+              value={formData.desc}
+              onChange={handleFormChange}
               placeholder="Description"
-              className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-5/6 mx-auto h-full border-2 border-form-pink-border rounded-md p-2 text-justify"
+              className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-5/6 mx-auto h-full border-2 border-form-pink-border rounded-md p-2 text-justify mb-4"
             />
-          </div>
-          <div className="pl-3 pt-5">
-            <button
-              className={`m-[10px] p-[5px] pl-[15px] pr-[15px] text-white border-white" hover:scale-110 transition-transform duration-200 border border-[3px] rounded-[10px] inline`}
-            >
-              Submit
-            </button>
-          </div>
+
+            <div className="flex justify-start">
+              <button
+                type="submit"
+                className="p-[5px] pl-[15px] pr-[15px] text-white border-white hover:scale-110 transition-transform duration-200 border border-[3px] rounded-[10px] inline"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
         </div>
 
         {/* Search Container - Hidden for Links tab */}
@@ -212,8 +289,7 @@ const Contribute: React.FC = () => {
           <div className="bg-component-purple rounded-lg flex-1 w-5/6 mx-auto h-full text-white p-4">
             <h2 className="text-white text-[30px]">
               {' '}
-              {activeTab !== 'Videos' ? '' : 'Search Videos'}{' '}
-              {activeTab !== 'Music' ? '' : 'Search Music'}{' '}
+              {activeTab === 'Videos' ? 'Search Videos' : 'Search Music'}
             </h2>
             <div className="ml-[10px] mr-[10px] grow">
               <div className="flex max-w-[500px]">
@@ -227,7 +303,7 @@ const Contribute: React.FC = () => {
                 </button>
               </div>
             </div>
-            <Items items={items} />
+            <Items items={items} onSelectItem={setSelectedItem} />
           </div>
         )}
       </div>
