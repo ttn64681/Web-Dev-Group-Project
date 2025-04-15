@@ -4,7 +4,7 @@ import CourseSearchArea from './course-search/CourseSearchArea';
 import OverviewBox from './course-search/OverviewBox';
 import ResourcesBox from './course-search/ResourcesBox';
 import Sidebar from './course-search/Sidebar';
-import { MagnifyingGlass } from '@phosphor-icons/react';
+import { MagnifyingGlass, FileText } from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
 import ResourceForum from './course-search/ResourceForum';
 
@@ -31,7 +31,7 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
   // TODO: Implement OpenAI API integration
   // TODO: Implement MongoDB integration
 
-  //ROUTER
+  //ROUTER==========================================================
 
   const router = useRouter();
 
@@ -68,16 +68,31 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
 
       <div className="w-3/5 ml-auto mr-auto h-full pb-10">
         {/*TITLE*/}
-        <div className="flex justify-center items-center mt-[50px] mb-[30px]">
-          <MagnifyingGlass
-            size={64}
-            color="#6CFEFE"
-            className="ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]"
-          />
-          <h2 className="text-[3em] text-[#6CFEFE] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]">
-            Course Search
-          </h2>
-        </div>
+        {activeTab == "Overview" ? 
+          (
+            <div className="flex justify-center items-center mt-[50px] mb-[30px]">
+              <MagnifyingGlass
+                size={64}
+                color="#6CFEFE"
+                className="ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]"
+              />
+              <h2 className="text-[3em] text-[#6CFEFE] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]">
+                Course Search
+              </h2>
+            </div>
+          ):(
+            <div className="flex justify-center items-center mt-[50px] mb-[30px]">
+              <FileText
+                size={64}
+                color="#F09A35"
+                className="ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]"
+              />
+              <h2 className="text-[3em] text-[#F09A35] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]">
+                Resources
+              </h2>
+            </div>
+          )
+        }
 
         {isVideoSelected ? (
           /* RESOURCE FORUM - Shows if video is selected*/
