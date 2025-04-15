@@ -1,4 +1,4 @@
-import Card from './Card';
+import Card from '../Card';
 
 //Item component (from the User Individual Assignemnt)
 // This is what decideds how each individual item will appear

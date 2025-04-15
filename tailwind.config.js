@@ -38,6 +38,10 @@ module.exports = {
         'form-bg-purple': '#33203A', // form background
         'heart-red': '#FF3284',
         'disabled-purple': '#765178', // disabled icons
+
+        'comment-bg-purple': '#60436B',
+        'comment-text-white-pink': '#EFD1F0',
+        'form-gray-purple': '#B590C4',
       },
     },
   },
