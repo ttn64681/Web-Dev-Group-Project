@@ -19,12 +19,12 @@ type ItemsProps = {
 };
 
 const Items: React.FC<ItemsProps> = ({ items, onSelectItem }) => {
-  // NEW: Added state for tracking selected item
+  // State for tracking selected item
   const [selectedItem, setSelectedItem] = useState<number | null>(null);
 
-  // NEW: Added handler for checkbox changes
+  // Handler for checkbox changes
   const handleCheckboxChange = (item: ItemType) => {
-    if (selectedItem === item.id) {
+    if (selectedItem === item.id) { // if already checked, uncheck
       setSelectedItem(null);
       onSelectItem(null);
     } else {

@@ -97,7 +97,7 @@ const Contribute: React.FC = () => {
   // TODO: Handle authentication
 
   const [activeTab, setActiveTab] = useState('Videos');
-  const [items, setItems] = useState<ItemType[]>([]); // set displayed items
+  const [items, setItems] = useState<ItemType[]>([]); // set searched items
   
   // State for tracking selected item and form input values
   const [selectedItem, setSelectedItem] = useState<ItemType | null>(null);
@@ -110,7 +110,6 @@ const Contribute: React.FC = () => {
   // Initialize with videos when component mounts
   useEffect(() => {
     showVideos();
-    return () => {};
   }, []);
 
   // Functions to switch between tabs and update items list
@@ -119,18 +118,17 @@ const Contribute: React.FC = () => {
     setItems(videoItems);
     setSelectedItem(null);
   };
-
   const showLinks = () => {
     setActiveTab('Links');
     setItems([]); // Clear items when switching to Links
     setSelectedItem(null);
   };
-
   const showMusic = () => {
     setActiveTab('Music');
     setItems(musicItems);
     setSelectedItem(null);
   };
+
 
   // Handle changes to form inputs
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -187,7 +185,7 @@ const Contribute: React.FC = () => {
   return (
     <div>
       {/* Contribution Title */}
-      <div className="flex flex-row justify-center items-center flex-wrap items-center gap-5">
+      <div className="flex flex-row justify-center items-center flex-wrap gap-5">
         <div className="flex flex-col-row items-center">
           <div>
             <UsersThree className="text-neon-violet" size={85} />
