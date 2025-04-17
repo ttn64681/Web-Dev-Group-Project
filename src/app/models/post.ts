@@ -11,6 +11,7 @@ interface PostTemplate extends Document {
 type Comment = {
     posterUsername: string;
     comment: string
+    parentPostId: string
 }
 
 const commentSchema = new Schema<Comment>({
@@ -19,6 +20,10 @@ const commentSchema = new Schema<Comment>({
         required: true
     },
     comment: {
+        type: String,
+        required: true
+    },
+    parentPostId: {
         type: String,
         required: true
     }
