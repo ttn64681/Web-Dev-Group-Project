@@ -1,28 +1,45 @@
 'use client';
 
+import { doLogout } from '@/app/actions';
+import { authConfig } from '@/app/auth.config';
+import NextAuth, { Session } from 'next-auth';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa'; // Icons for mobile menu
 
 interface NavbarProps {
   isAuthenticated: boolean;
   username?: string;
-  onLogout: () => void;
+  session: Session | null;
 }
 
 const Navbar: React.FC<NavbarProps> = ({
   isAuthenticated,
   username,
-  onLogout,
   // onLogin will be in Login component
 }) => {
   // TODO: Add mobile menu
   // TODO: Add proper routing
   // TODO: Handle authentication state
 
+  const { data: session, status } = useSession();
+
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!session?.user);
+
+  useEffect(() => {
+    setIsLoggedIn(!!session?.user);
+    isAuthenticated = true;
+  }, [session]);
+
+  const handleLogout = () => {
+    doLogout();
+    isAuthenticated = false;
+    setIsLoggedIn(false);
+  };
 
   /**
    * NavLink Component
@@ -117,7 +134,7 @@ const Navbar: React.FC<NavbarProps> = ({
         {isAuthenticated ? (
           <button
             className="bg-neon-cyan rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300"
-            onClick={onLogout}
+            onClick={handleLogout}
           >
             Logout
           </button>

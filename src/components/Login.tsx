@@ -1,7 +1,8 @@
 'use client';
-import React from 'react';
+import React, { FormEvent } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { doCredentialLogin } from '@/app/actions';
 
 interface LoginProps {
   onLogin: (username: string, password: string) => void;
@@ -14,6 +15,27 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   // TODO: Add authentication logic
   // TODO: Add styling
   // TODO: Add form validation
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
+    event.preventDefault();
+
+    try {
+      const formData = new FormData(event.currentTarget);
+
+      const response = await doCredentialLogin(formData);
+
+      if (response?.error) {
+        console.error(response.error);
+        //setError(response.error.message || "An error occured");
+      } else {
+        
+      }
+    } catch (e: any) {
+      console.error(e);
+      console.log("There was an error logging in");
+      //setError("Check your Credentials");
+    }
+  }
 
   return (
     // entire page
@@ -36,16 +58,19 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             </h1>
           </div>
           {/* input fields and login button */}
-          <form className="grid grid-cols-1 grid-rows-3 content-center justify-center gap-6 w-[85%]">
+          <form className="grid grid-cols-1 grid-rows-3 content-center justify-center gap-6 w-[85%]"
+          onSubmit={handleSubmit}>
             <input
               className="h-12 rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white text-lg"
               type="text"
               placeholder="Username"
+              name="username"
             />
             <input
               className="h-12 rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white text-lg"
               type="password"
               placeholder="Password"
+              name="password"
             />
             <button
               className="h-12 bg-gray-200 rounded-full m-1 text-xl font-bold text-[rgb(40,22,47)]"

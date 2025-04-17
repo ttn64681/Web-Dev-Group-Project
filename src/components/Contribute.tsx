@@ -4,6 +4,7 @@ import Items from './contribute/Items';
 import { useState, useEffect } from 'react';
 import CourseSearchArea from './course-search/CourseSearchArea';
 import { MagnifyingGlass } from '@phosphor-icons/react';
+import connectMongoDB from '../../config/mongodb';
 
 // The contribute component
 
@@ -109,6 +110,7 @@ const Contribute: React.FC = () => {
 
   // Initialize with videos when component mounts
   useEffect(() => {
+    connectMongoDB();
     showVideos();
     return () => {};
   }, []);
