@@ -1,9 +1,9 @@
 'use client';
-import React, { FormEvent, useEffect } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { doCredentialLogin } from '@/app/actions';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface LoginProps {
   onLogin: (username: string, password: string) => void;
@@ -18,10 +18,22 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   // TODO: Add styling
   // TODO: Add form validation
 
+  const searchParams = useSearchParams();
+  const reason = searchParams.get('reason');
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    if (reason === 'not_logged_in') {
+      setMessage('Please log in to begin contributing.');
+    }
+  }, [reason]);
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
 
     try {
+      // Pull user inputs from the login page, send them to the login function
+      // inside of the actions folder
       const formData = new FormData(event.currentTarget);
       const response = await doCredentialLogin(formData);
       router.push('/');
@@ -89,6 +101,10 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             </Link>
           </p>
         </div>
+      </div>
+      <div className="text-white pb-10">
+        {/* Message provided incase of error or other problem while on Login page */}
+        {message}
       </div>
     </div>
   );
