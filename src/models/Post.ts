@@ -21,8 +21,8 @@ export interface PostTemplate extends Document {
     comment: string;
     createdAt: Date;
   }>;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date; // for sorting/filtering purposes only
+  updatedAt: Date; // for sorting/filtering purposes only
 }
 
 // Schema for the Post model

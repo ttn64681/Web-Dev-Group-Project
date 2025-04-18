@@ -19,8 +19,8 @@ export interface CourseTemplate extends Document {
     description: string;
   }>;
   posts: mongoose.Types.ObjectId[]; // Reference to array of post object ids
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date; // for sorting/filtering purposes only
+  updatedAt: Date; // for sorting/filtering purposes only
 }
 
 const CourseSchema: Schema = new Schema(

@@ -342,6 +342,10 @@ export async function unlikePost(postId: string, userId: string) {
   }
 }
 
+/**
+ * Fetches all courses from the database
+ * @returns Object containing success status and either the courses or an error message
+ */
 export async function fetchAllCourses() {
   await connectMongoDB();
   try {
