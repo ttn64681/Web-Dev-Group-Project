@@ -1,14 +1,16 @@
 'use client';
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { doCredentialLogin } from '@/app/actions';
+import { useRouter } from 'next/navigation';
 
 interface LoginProps {
   onLogin: (username: string, password: string) => void;
 }
 
 const Login: React.FC<LoginProps> = ({ onLogin }) => {
+  const router = useRouter();
   // TODO: Add form state
   // TODO: Add error handling
   // TODO: Add loading state
@@ -21,8 +23,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
     try {
       const formData = new FormData(event.currentTarget);
-
       const response = await doCredentialLogin(formData);
+      router.push('/');
 
       if (response?.error) {
         console.error(response.error);

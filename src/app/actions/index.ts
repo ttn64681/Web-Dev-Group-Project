@@ -5,6 +5,7 @@ import connectMongoDB from "../../../config/mongodb";
 
 export async function doLogout() {
     await signOut({ redirectTo: "/ "});
+    console.log("User is logged out!");
 }
 
 export async function doCredentialLogin(formData: FormData): Promise<any> {
@@ -16,7 +17,7 @@ export async function doCredentialLogin(formData: FormData): Promise<any> {
         const response = await signIn("credentials", {
             username,
             password,
-            redirect: false,
+            redirect: false
         });
         return response;
     }  catch (err: any) {

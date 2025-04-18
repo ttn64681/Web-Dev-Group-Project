@@ -7,17 +7,18 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { FaBars, FaTimes } from 'react-icons/fa'; // Icons for mobile menu
+import { FaBars, FaLess, FaTimes } from 'react-icons/fa'; // Icons for mobile menu
 
 interface NavbarProps {
   isAuthenticated: boolean;
   username?: string;
-  session: Session | null;
+  onLogout: () => void;
 }
 
 const Navbar: React.FC<NavbarProps> = ({
   isAuthenticated,
   username,
+  onLogout
   // onLogin will be in Login component
 }) => {
   // TODO: Add mobile menu
@@ -28,16 +29,20 @@ const Navbar: React.FC<NavbarProps> = ({
 
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(!!session?.user);
+  const [isLoggedin, setIsLoggedIn] = useState(!!session?.user);
 
   useEffect(() => {
-    setIsLoggedIn(!!session?.user);
-    isAuthenticated = true;
+    setIsLoggedIn(session?.user != null);
+    if (session?.user != null) {
+      isAuthenticated = true;
+      username = session.user.username;
+    } else {
+      isAuthenticated = false;
+    }
   }, [session]);
 
   const handleLogout = () => {
     doLogout();
-    isAuthenticated = false;
     setIsLoggedIn(false);
   };
 
@@ -131,10 +136,10 @@ const Navbar: React.FC<NavbarProps> = ({
 
       {/* Login/Logout Button - hidden on mobile (md: shown) */}
       <div className="hidden md:block">
-        {isAuthenticated ? (
+        {isLoggedin ? (
           <button
             className="bg-neon-cyan rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300"
-            onClick={handleLogout}
+            onClick={onLogout}
           >
             Logout
           </button>

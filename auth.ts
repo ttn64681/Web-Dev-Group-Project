@@ -40,10 +40,9 @@ export const {
                         );
 
                         if (isMatch) {
-                            console.log("User signed in succesfully");
                             return {
-                                id: user._id.toString(),
-                                username: user.username,
+                                id: user._id as string,
+                                username: user.username as string,
                             };
                         } else {
                             console.log("Username or Password is not correct");
@@ -60,4 +59,26 @@ export const {
             },
         }),
     ],
+    callbacks: {
+        async jwt({ token, user }) {
+            // Called when a JWT is created/updated
+            if (user) {
+                token.id = user.id as string;
+                token.username = user.username as string;
+            }
+            return token;
+        },
+        async session({ session, token }) {
+            // Attach custom properties to the session
+            if (token) {
+                session.user = {
+                    id: token._id as string,
+                    username: token.username as string,
+                    email: "NA",
+                    emailVerified: null,
+                };
+            }
+            return session;
+        },
+    },
 });

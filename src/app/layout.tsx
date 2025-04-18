@@ -4,6 +4,7 @@ import { Inter, Dongle, Nunito } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import { SessionProvider } from 'next-auth/react';
+import { doLogout } from './actions';
 
 const nunito = Nunito({ subsets: ['latin'], variable: '--font-nunito' }); // conventional variable names
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -15,15 +16,16 @@ const dongle = Dongle({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   // TODO: Add authentication state management
-  const isAuthenticated = false;
+  const isAuthenticated = false;;
   const username = undefined;
 
   const handleLogin = (username: string) => {
     // TODO: Implement login logic
+    // THIS HAPPENS INSIDE THE LOGIN COMPONENT
   };
 
   const handleLogout = () => {
-    // TODO: Implement logout logic
+    doLogout();
   };
 
   return (
