@@ -16,7 +16,7 @@ const dongle = Dongle({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   // TODO: Add authentication state management
-  const isAuthenticated = false;;
+  const isAuthenticated = false;
   const username = undefined;
 
   const handleLogin = (username: string) => {
