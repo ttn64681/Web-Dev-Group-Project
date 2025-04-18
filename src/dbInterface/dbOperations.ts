@@ -25,31 +25,34 @@ export type User = {
  * Represents a course in the database
  */
 export type Course = {
-  courseId: string; // "CSCI-1301"
-  prefix: string; // "CSCI"
-  number: string; // "1301"
+  courseId: string;           // "CSCI-1301"
+  prefix: string;             // "CSCI"
+  number: string;             // "1301"
   title: string;
   description?: string;
   topics?: string;
   prerequisites?: string[];
   plan?: string;
-  resourceUrls?: string[];
-  posts?: string[]; // array of post IDs associated with this course
+  resourceUrls?: Array<{
+    url: string;
+    description: string;
+  }>;
+  posts?: string[];           // array of post IDs associated with this course
 };
 
 /**
  * Represents a post in the database
  */
 export type Post = {
-  title: string; // "Sick Coding Tips"
+  title: string;                          // "Sick Coding Tips"
   description: string;
-  url: string; // youtube, link, or music link (youtube)
+  url: string;                            // youtube, link, or music link (youtube)
   thumbnail?: string;
   postType: 'youtube' | 'link' | 'music';
-  course: string; // ID of the course this post belongs to "CSCI-1301"
-  user: string; // ObjectID (mongodb) of the user who created the post
-  likes?: string[]; // array of user IDs who liked the post
-  comments?: Comment[]; // array of comments on the post
+  course: string;                         // ID of the course this post belongs to "CSCI-1301"
+  user: string;                           // ObjectID (mongodb) of the user who created the post
+  likes?: string[];                       // array of user IDs who liked the post
+  comments?: Comment[];                   // array of comments on the post
 };
 
 /**

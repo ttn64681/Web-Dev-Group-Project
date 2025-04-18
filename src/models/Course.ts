@@ -14,7 +14,10 @@ export interface CourseTemplate extends Document {
   description?: string;
   prerequisites?: string[];
   plan?: string;
-  resourceUrls?: string[];
+  resourceUrls?: Array<{
+    url: string;
+    description: string;
+  }>;
   posts: mongoose.Types.ObjectId[]; // Reference to array of post object ids
   createdAt: Date;
   updatedAt: Date;
@@ -30,7 +33,10 @@ const CourseSchema: Schema = new Schema(
     description: { type: String },
     prerequisites: [{ type: String }],
     plan: { type: String },
-    resourceUrls: [{ type: String }],
+    resourceUrls: [{
+      url: { type: String, required: true },
+      description: { type: String, required: true }
+    }],
     posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }], // Reference to array of post object ids
   },
   { timestamps: true }
