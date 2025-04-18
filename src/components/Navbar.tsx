@@ -1,9 +1,13 @@
 'use client';
 
+import { doLogout } from '@/app/actions';
+import { authConfig } from '@/app/auth.config';
+import NextAuth, { Session } from 'next-auth';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
-import { FaBars, FaTimes } from 'react-icons/fa'; // Icons for mobile menu
+import { useEffect, useState } from 'react';
+import { FaBars, FaLess, FaTimes } from 'react-icons/fa'; // Icons for mobile menu
 
 interface NavbarProps {
   isAuthenticated: boolean;
@@ -14,15 +18,38 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({
   isAuthenticated,
   username,
-  onLogout,
+  onLogout
   // onLogin will be in Login component
 }) => {
   // TODO: Add mobile menu
   // TODO: Add proper routing
   // TODO: Handle authentication state
 
+  const { data: session, status } = useSession();
+
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedin, setIsLoggedIn] = useState(!!session?.user);
+
+  useEffect(() => {
+    setIsLoggedIn(session?.user != null);
+    if (status == "authenticated") {
+      isAuthenticated = true;
+      setIsLoggedIn(true);
+      username = session.user.username;
+    } else {
+      setIsLoggedIn(false);
+      isAuthenticated = false;
+    }
+  }, [status]);
+
+  const handleLogout = () => {
+    onLogout();
+    setIsLoggedIn(false);
+  };
+
+  async function update() {
+  }
 
   /**
    * NavLink Component
@@ -114,10 +141,10 @@ const Navbar: React.FC<NavbarProps> = ({
 
       {/* Login/Logout Button - hidden on mobile (md: shown) */}
       <div className="hidden md:block">
-        {isAuthenticated ? (
+        {isLoggedin ? (
           <button
             className="bg-neon-cyan rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300"
-            onClick={onLogout}
+            onClick={handleLogout}
           >
             Logout
           </button>
