@@ -98,7 +98,7 @@ const Contribute: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState('Videos');
   const [items, setItems] = useState<ItemType[]>([]); // set searched items
-  
+
   // State for tracking selected item and form input values
   const [selectedItem, setSelectedItem] = useState<ItemType | null>(null);
   const [formData, setFormData] = useState({
@@ -129,13 +129,12 @@ const Contribute: React.FC = () => {
     setSelectedItem(null);
   };
 
-
   // Handle changes to form inputs
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -164,11 +163,13 @@ const Contribute: React.FC = () => {
       postTitle: formData.title,
       postDescription: formData.desc,
       postUrl: formData.url,
-      selectedItem: selectedItem ? {
-        title: selectedItem.title,
-        description: selectedItem.desc,
-        url: selectedItem.url
-      } : null
+      selectedItem: selectedItem
+        ? {
+            title: selectedItem.title,
+            description: selectedItem.desc,
+            url: selectedItem.url,
+          }
+        : null,
     };
 
     console.log('Post Data:', postData);
