@@ -33,18 +33,23 @@ const Navbar: React.FC<NavbarProps> = ({
 
   useEffect(() => {
     setIsLoggedIn(session?.user != null);
-    if (session?.user != null) {
+    if (status == "authenticated") {
       isAuthenticated = true;
+      setIsLoggedIn(true);
       username = session.user.username;
     } else {
+      setIsLoggedIn(false);
       isAuthenticated = false;
     }
-  }, [session]);
+  }, [status]);
 
   const handleLogout = () => {
-    doLogout();
+    onLogout();
     setIsLoggedIn(false);
   };
+
+  async function update() {
+  }
 
   /**
    * NavLink Component
@@ -139,7 +144,7 @@ const Navbar: React.FC<NavbarProps> = ({
         {isLoggedin ? (
           <button
             className="bg-neon-cyan rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300"
-            onClick={onLogout}
+            onClick={handleLogout}
           >
             Logout
           </button>
