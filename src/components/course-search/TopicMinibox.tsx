@@ -1,7 +1,11 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 
-const TopicMinibox: React.FC = () => {
+type TopicMiniboxProps = {
+  topicText: string
+}
+
+const TopicMinibox: React.FC<TopicMiniboxProps> = ({topicText}: TopicMiniboxProps) => {
   return (
     <div>
       <div>

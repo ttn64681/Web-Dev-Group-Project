@@ -1,4 +1,5 @@
 'use client';
+import mongoose from 'mongoose';
 import { useState, useEffect } from 'react';
 import CourseSearchArea from './course-search/CourseSearchArea';
 import OverviewBox from './course-search/OverviewBox';
@@ -10,14 +11,32 @@ import ResourceForum from './course-search/ResourceForum';
 
 type CourseSearchProps = {
   activeTab: string;
-  courseId: string;
+  isCourseSelected: boolean;
   isVideoSelected: boolean;
+  courseInfo?: {
+    courseId: string;
+    prefix: string;
+    number: string;
+    title: string;
+    topics: string[];
+    description: string;
+    prerequisites: string[];
+    plan: string;
+    resourceUrls: Array<{
+      url: string;
+      description: string;
+    }>;
+    posts: mongoose.Types.ObjectId[]; // Reference to array of post object ids
+    createdAt: Date; // for sorting/filtering purposes only
+    updatedAt: Date; // for sorting/filtering purposes only
+  }
 };
 
 const CourseSearch: React.FC<CourseSearchProps> = ({
   activeTab,
-  courseId,
   isVideoSelected,
+  isCourseSelected,
+  courseInfo,
 }: CourseSearchProps) => {
   // TODO: Add state management for:
   // - Course search inputs
@@ -123,7 +142,7 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
 
             {/* TODO: Add course overview content and resources*/}
             <div className="mt-[10px]">
-              {activeTab == 'Overview' ? <OverviewBox /> : <ResourcesBox />}
+              {activeTab == 'Overview' ? <OverviewBox isCourseSelected={} courseInfo={courseInfo}/> : <ResourcesBox />}
             </div>
           </div>
         )}
