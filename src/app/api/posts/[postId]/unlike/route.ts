@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { unlikePost } from '@/dbInterface/dbOperations';
 
+/** POST /api/posts/[postId]/unlike - Used to unlike a post
+ * Frontend call example:
+ * fetch('/api/posts/PostObjectId/unlike', {
+ *   method: 'POST',
+ *   body: JSON.stringify({ userId: '123' }),
+ * })
+ */
 export async function POST(request: NextRequest, { params }: { params: { postId: string } }) {
   try {
     const { userId } = await request.json();

@@ -120,7 +120,7 @@ export async function fetchCourse(prefix: string, number: string) {
  * @param title - Course title
  * @returns Object containing success status and either the course or an error message
  */
-export async function searchCourse(prefix: string, number: string, title: string) {
+export async function searchAndAddCourse(prefix: string, number: string, title: string) {
   await connectMongoDB();
 
   try {
@@ -148,23 +148,30 @@ information in JSON format, with only the keys: "title", "description", "topics"
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
-    const courseJSON = JSON.parse(text);
+    const courseJSON = JSON.parse(text); // response JSON we work with
 
-    // Create new course with Gemini data
+    // Create new course with properly mapped data
     const newCourse = await Course.create({
       courseId: `${prefix}-${number}`,
-      prefix: prefix.toUpperCase(),
+      prefix: prefix.toUpperCase().trim(),
       number,
-      title,
-      ...courseJSON,
+      title: courseJSON.title || title.trim(), // Use Gemini's title if available, otherwise use user's
+      description: courseJSON.description,
+      topics: courseJSON.topics,
+      prerequisites: courseJSON.prerequisites,
+      plan: courseJSON.plan,
+      resourceUrls: courseJSON.urls.map((url: { url: string, description: string }) => ({
+        url: url.url,
+        description: url.description
+      })), // Map each object in gemini's urls array to new course object's resourceUrls array
+      posts: [] // Initialize empty posts array
     });
 
     return { success: true, course: newCourse };
   } catch (error) {
     console.error('Error searching course:', error);
     return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Failed to search course',
+      success: false, error: 'Failed to search course',
     };
   }
 }
@@ -174,7 +181,7 @@ information in JSON format, with only the keys: "title", "description", "topics"
  * @param postData - Post data without comments and likes (which are initialized empty)
  * @returns Object containing success status and either the post or an error message
  */
-export async function addPost(postData: Omit<Post, 'comments' | 'likes'>) {
+export async function addPost(postData: Post) {
   await connectMongoDB();
 
   try {
@@ -185,7 +192,7 @@ export async function addPost(postData: Omit<Post, 'comments' | 'likes'>) {
     }
 
     // Create the post
-    const post = await Post.create({
+    const post = await Post.create({ // mongoose method that creates new post in the database
       ...postData,
       course: course._id, // Use the course's MongoDB _id
     });
@@ -237,7 +244,7 @@ export async function fetchCoursePosts(courseId: string) {
  * @param commentData - Comment data without createdAt (which is set automatically)
  * @returns Object containing success status and either the updated post or an error message
  */
-export async function addComment(postId: string, commentData: Omit<Comment, 'createdAt'>) {
+export async function addComment(postId: string, commentData: Comment) {
   await connectMongoDB();
 
   try {
