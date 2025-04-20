@@ -27,7 +27,6 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       setMessage('Please log in to begin contributing.');
     }
   }, [reason]);
-
   async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
 

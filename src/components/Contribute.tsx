@@ -98,8 +98,8 @@ const Contribute: React.FC = () => {
   // TODO: Handle authentication
 
   const [activeTab, setActiveTab] = useState('Videos');
-  const [items, setItems] = useState<ItemType[]>([]); // set displayed items
-  
+  const [items, setItems] = useState<ItemType[]>([]); // set searched items
+
   // State for tracking selected item and form input values
   const [selectedItem, setSelectedItem] = useState<ItemType | null>(null);
   const [formData, setFormData] = useState({
@@ -112,7 +112,6 @@ const Contribute: React.FC = () => {
   useEffect(() => {
     connectMongoDB();
     showVideos();
-    return () => {};
   }, []);
 
   // Functions to switch between tabs and update items list
@@ -121,13 +120,11 @@ const Contribute: React.FC = () => {
     setItems(videoItems);
     setSelectedItem(null);
   };
-
   const showLinks = () => {
     setActiveTab('Links');
     setItems([]); // Clear items when switching to Links
     setSelectedItem(null);
   };
-
   const showMusic = () => {
     setActiveTab('Music');
     setItems(musicItems);
@@ -137,9 +134,9 @@ const Contribute: React.FC = () => {
   // Handle changes to form inputs
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -168,11 +165,13 @@ const Contribute: React.FC = () => {
       postTitle: formData.title,
       postDescription: formData.desc,
       postUrl: formData.url,
-      selectedItem: selectedItem ? {
-        title: selectedItem.title,
-        description: selectedItem.desc,
-        url: selectedItem.url
-      } : null
+      selectedItem: selectedItem
+        ? {
+            title: selectedItem.title,
+            description: selectedItem.desc,
+            url: selectedItem.url,
+          }
+        : null,
     };
 
     console.log('Post Data:', postData);
@@ -189,7 +188,7 @@ const Contribute: React.FC = () => {
   return (
     <div>
       {/* Contribution Title */}
-      <div className="flex flex-row justify-center items-center flex-wrap items-center gap-5">
+      <div className="flex flex-row justify-center items-center flex-wrap gap-5">
         <div className="flex flex-col-row items-center">
           <div>
             <UsersThree className="text-neon-violet" size={85} />

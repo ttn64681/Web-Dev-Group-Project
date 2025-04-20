@@ -4,7 +4,6 @@ import CredentialsProvider  from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import User from "./src/app/models/userSchema";
 
-
 // For an explanation on this, check the NextAuth credentials documentation
 // Basically this creates a session and determines what goes inside the JWT token
 export const {
@@ -64,6 +63,7 @@ export const {
     ],
     callbacks: {
         // Determines what is inside of the session
+
         async jwt({ token, user }) {
             // Called when a JWT is created/updated
             if (user) {
