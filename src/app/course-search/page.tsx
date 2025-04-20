@@ -9,6 +9,7 @@ export default function CourseSearchPage() {
   // TODO: Add loading states
 
   //Default pages
+  
 
   return (
     <div className="min-h-[calc(100vh-8rem)]">

@@ -46,7 +46,7 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
 
   const [courseSearchData, setCourseSearchData] = useState({
     prefix: '-',
-    courseNum: 0,
+    courseNum: '',
     courseName: '',
   });
 
@@ -61,14 +61,41 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
     router.push('/course-search/courseId/');
   };
   const showResources = () => {
-    router.push('/course-search/courseId/resources/'); 
+    if (isCourseSelected) {
+      router.push('/course-search/courseId/resources/'); 
+    }
   };
 
-  //Course search json add or fetch
-  /*
+  //Course searching 
+  async function getSearchInfo (e: React.SyntheticEvent<HTMLFormElement>) {
+
+    //Prevents default behavior
+    e.preventDefault();
+
+    //Checks if valid information is filled out
+    if (courseSearchData.prefix.length == 4 && courseSearchData.courseNum.length == 4 && courseSearchData.courseName.length != 0) {
+
+      //Fetches information
+      const response = 
+      await fetch(`/api/courses?prefix=${courseSearchData.prefix}&number=${courseSearchData.courseNum}`, {
+        method: 'GET'
+      });
+
+      return await response.json();
+    }
+  }
 
 
-  */
+
+  //Updates search info when input is placed into the form
+  const updateSearchInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCourseSearchData(
+      {
+        ...courseSearchData,
+        [e.target.name]: e.target.value 
+      }        
+    );
+  }
 
   //COMPONENT MATERIALS ============================================
 
@@ -115,7 +142,7 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
               Enter the 4 letter prefix, 4 digit number, and course name.
             </h4>
             <div className="mt-[10px] mb-[10px]">
-              <CourseSearchArea />
+              <CourseSearchArea submitFunc={getSearchInfo} editFunc={updateSearchInfo}/>
             </div>
 
             {/* TABS*/}
@@ -128,13 +155,13 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
               </button>
               <button
                 onClick={showResources}
-                className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Resources' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}
+                className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Resources' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} ${isCourseSelected ? "opacity-100" : "opacity-25"} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}
               >
                 Resources
               </button>
             </div>
 
-            {/* TODO: Add course overview content and resources*/}
+            {/* OVERVIEW OR RESOURCES BOX*/}
             <div className="mt-[10px]">
               {activeTab == 'Overview' ? <OverviewBox isCourseSelected={isCourseSelected} courseInfo={courseInfo} /> : <ResourcesBox isCourseSelected={isCourseSelected} courseInfo={courseInfo}/>}
             </div>
