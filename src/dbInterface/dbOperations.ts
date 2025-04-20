@@ -17,6 +17,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
  * Represents a user in the database
  */
 export type User = {
+  _id: string;      // MongoDB ObjectID
   username: string; // The user's unique username
   password: string; // The user's hashed password
 };
@@ -25,6 +26,7 @@ export type User = {
  * Represents a course in the database
  */
 export type Course = {
+  _id: string;                // MongoDB ObjectID
   courseId: string;           // "CSCI-1301"
   prefix: string;             // "CSCI"
   number: string;             // "1301"
@@ -44,6 +46,7 @@ export type Course = {
  * Represents a post in the database
  */
 export type Post = {
+  _id: string;                            // MongoDB ObjectID
   title: string;                          // "Sick Coding Tips"
   description: string;
   url: string;                            // youtube, link, or music link (youtube)
@@ -132,7 +135,16 @@ export async function searchAndAddCourse(prefix: string, number: string, title: 
     }
 
     // If not found, use Gemini API to get course information
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+    if (!GEMINI_API_KEY) {
+      console.error("GEMINI_API_KEY is not defined in environment variables.");
+      return { 
+        success: false, 
+        error: "GEMINI_API_KEY is not defined. Please set it in your environment variables." 
+      };
+    }
+    
+    const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
     const prompt = `Using the current course information from the University of Georgia's Bulletin courses website, provide a detailed overview of 

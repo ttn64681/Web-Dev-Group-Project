@@ -24,29 +24,41 @@ export async function GET(request: NextRequest) {
     const number = searchParams.get('number');
     const title = searchParams.get('title') || '';
 
+    console.log(`API Request: prefix=${prefix}, number=${number}, title=${title}`);
+
     // If prefix and number are provided, fetch specific course
     if (prefix && number) {
+      console.log(`Attempting to fetch course: ${prefix}-${number}`);
+      
       // First try to fetch the course
       const result = await fetchCourse(prefix, number);
+      console.log(`Fetch result: ${JSON.stringify(result)}`);
       
       // If course doesn't exist, create it
       if (!result.success) {
+        console.log(`Course not found, attempting to create: ${prefix}-${number}`);
         
-        // Create the course with the provided title
+        // Create the course with the provided title and add to mongoDB
         const createResult = await searchAndAddCourse(prefix, number, title);
+        console.log(`Create result: ${JSON.stringify(createResult)}`);
+        
         if (!createResult.success) {
+          console.error(`Failed to create course: ${createResult.error}`);
           return NextResponse.json({ error: createResult.error }, { status: 500 });
         }
         return NextResponse.json(createResult.course);
       }
       
       // if course exists, return it
+      console.log(`Returning existing course: ${prefix}-${number}`);
       return NextResponse.json(result.course);
     } // if
 
     // Otherwise, fetch all courses
+    console.log('No specific course requested, fetching all courses');
     const result = await fetchAllCourses();
     if (!result.success) {
+      console.error(`Failed to fetch all courses: ${result.error}`);
       return NextResponse.json({ error: result.error }, { status: 500 });
     }
     return NextResponse.json({ courses: result.courses });
@@ -64,27 +76,28 @@ export async function GET(request: NextRequest) {
  *   body: JSON.stringify({ prefix: 'CSCI', number: '1301', title: 'Introduction to Computer Science' }),
  * })
  */
-export async function POST(request: NextRequest) {
-  try {
-    const { prefix, number, title } = await request.json(); 
+// export async function POST(request: NextRequest) {
+//   try {
+//     const { prefix, number, title } = await request.json(); 
 
-    // Validate required fields
-    if (!prefix || !number || !title) {
-      return NextResponse.json(
-        { error: 'Prefix, number, and title are required' },
-        { status: 400 }
-      );
-    }
+//     // Validate required fields
+//     if (!prefix || !number || !title) {
+//       return NextResponse.json(
+//         { error: 'Prefix, number, and title are required' },
+//         { status: 400 }
+//       );
+//     }
 
-    const result = await searchAndAddCourse(prefix, number, title);
+//     const result = await searchAndAddCourse(prefix, number, title);
 
-    if (!result.success) {
-      return NextResponse.json({ error: result.error }, { status: 500 });
-    }
+//     if (!result.success) {
+//       return NextResponse.json({ error: result.error }, { status: 500 });
+//     }
 
-    return NextResponse.json(result.course);
-  } catch (error) {
-    console.error('Error creating course:', error);
-    return NextResponse.json({ error: 'Failed to create course' }, { status: 500 });
-  }
-}
+//     return NextResponse.json(result.course);
+//   } catch (error) {
+//     console.error('Error creating course:', error);
+//     return NextResponse.json({ error: 'Failed to create course' }, { status: 500 });
+//   }
+// }
+
