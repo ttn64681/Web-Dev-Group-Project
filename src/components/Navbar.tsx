@@ -30,13 +30,14 @@ const Navbar: React.FC<NavbarProps> = ({
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggedin, setIsLoggedIn] = useState(!!session?.user);
+  const [User, setUser] = useState('');
 
   useEffect(() => {
     setIsLoggedIn(session?.user != null);
     if (status == "authenticated") {
       isAuthenticated = true;
       setIsLoggedIn(true);
-      username = session.user.username;
+      setUser(session?.user.username);
     } else {
       setIsLoggedIn(false);
       isAuthenticated = false;
