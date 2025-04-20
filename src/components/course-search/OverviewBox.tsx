@@ -2,32 +2,26 @@
 import mongoose from 'mongoose';
 import React, { useState, useEffect } from 'react';
 import TopicMinibox from './TopicMinibox';
+import { Course } from '@/dbInterface/dbOperations';
 
 type OverviewBoxProps = {
-  isCourseSelected: boolean;
-  courseInfo?: {
-    courseId: string;
-    prefix: string;
-    number: string;
-    title: string;
-    topics: string[];
-    description: string;
-    prerequisites: string[];
-    plan: string;
-    resourceUrls: Array<{
-      url: string;
-      description: string;
-    }>;
-    posts: mongoose.Types.ObjectId[]; // Reference to array of post object ids
-    createdAt: Date; // for sorting/filtering purposes only
-    updatedAt: Date; // for sorting/filtering purposes only
-  }
+  isCourseSelected: boolean,
+  courseInfo: Course
 }
 
-const OverviewBox: React.FC = (
+const OverviewBox: React.FC<OverviewBoxProps> = ({
   isCourseSelected,
   courseInfo
-) => {
+} : OverviewBoxProps) => {
+
+  //topicArray declaration
+  let topicArray = ['Topic 1', 'Topic 2', 'Topic 3'];
+  if (courseInfo) {
+    topicArray = [];
+    topicArray = courseInfo.topics.split(',');
+  }
+
+
   return (
     <div className="bg-[#33203A] p-[20px] rounded-[20px]">
       {/*TITLE */}
@@ -39,22 +33,13 @@ const OverviewBox: React.FC = (
       {/* TOPICS */}
       <div className="flex m-[20px]">
         <h3 className="text-[1.2em] text-[#F88AFF] mr-[20px]">Topic:</h3>
-        {
-          isCourseSelected ?
-            <div className="flex">
-              {
-                courseInfo.topics.map((topic: string) => {
-                  <TopicMinibox key={topic} topicText={topic} />
-                })
-              }
-            </div>
-          :
-            <div className="flex">
-              <TopicMinibox topicText='Topic 1'/>
-              <TopicMinibox topicText='Topic 2'/>
-              <TopicMinibox topicText='Topic 3'/>
-            </div>
-        }
+          <div className="flex">
+            {
+              topicArray.map((topic: string) => {
+                return <TopicMinibox key={topic} topicText={topic} />
+              }) 
+            }
+          </div>
       </div>
 
       {/* DESCRIPTION */}
@@ -70,15 +55,12 @@ const OverviewBox: React.FC = (
           isCourseSelected ?
             <div className="flex flex-col">
               {
-                courseInfo.plan.map((planPoint : string) => {
-                  <h4 className="text-[#E2D0E6]">{planPoint}</h4>
-                })
+                courseInfo.plan
               }
             </div>
             :
             <div className="flex flex-col">
               <h4 className="text-[#E2D0E6]">Success plan point 1</h4>
-              <h4 className="text-[#E2D0E6]">Success plan point 2</h4>
             </div>
         }
       </div>

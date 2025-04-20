@@ -8,35 +8,23 @@ import Sidebar from './course-search/Sidebar';
 import { MagnifyingGlass, FileText } from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
 import ResourceForum from './course-search/ResourceForum';
+import { Course } from '@/dbInterface/dbOperations';
+import { Post } from '@/dbInterface/dbOperations';
 
 type CourseSearchProps = {
   activeTab: string;
   isCourseSelected: boolean;
   isVideoSelected: boolean;
-  courseInfo?: {
-    courseId: string;
-    prefix: string;
-    number: string;
-    title: string;
-    topics: string[];
-    description: string;
-    prerequisites: string[];
-    plan: string;
-    resourceUrls: Array<{
-      url: string;
-      description: string;
-    }>;
-    posts: mongoose.Types.ObjectId[]; // Reference to array of post object ids
-    createdAt: Date; // for sorting/filtering purposes only
-    updatedAt: Date; // for sorting/filtering purposes only
-  }
+  courseInfo?: Course;
+  postInfo?: Post;
 };
 
 const CourseSearch: React.FC<CourseSearchProps> = ({
-  activeTab,
-  isVideoSelected,
+  activeTab,  
   isCourseSelected,
+  isVideoSelected,
   courseInfo,
+  postInfo
 }: CourseSearchProps) => {
   // TODO: Add state management for:
   // - Course search inputs
@@ -73,8 +61,14 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
     router.push('/course-search/courseId/');
   };
   const showResources = () => {
-    router.push('/course-search/courseId/resources/');
+    router.push('/course-search/courseId/resources/'); 
   };
+
+  //Course search json add or fetch
+  /*
+
+
+  */
 
   //COMPONENT MATERIALS ============================================
 
@@ -113,7 +107,7 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
 
         {isVideoSelected ? (
           /* RESOURCE FORUM - Shows if video is selected*/
-          <ResourceForum />
+          <ResourceForum postInfo={postInfo}/>
         ) : (
           /* SEARCH AREA - Shows if video is not selected and on search mode*/
           <div>
@@ -142,7 +136,7 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
 
             {/* TODO: Add course overview content and resources*/}
             <div className="mt-[10px]">
-              {activeTab == 'Overview' ? <OverviewBox isCourseSelected={} courseInfo={courseInfo}/> : <ResourcesBox />}
+              {activeTab == 'Overview' ? <OverviewBox isCourseSelected={isCourseSelected} courseInfo={courseInfo} /> : <ResourcesBox isCourseSelected={isCourseSelected} courseInfo={courseInfo}/>}
             </div>
           </div>
         )}

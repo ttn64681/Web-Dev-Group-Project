@@ -12,7 +12,7 @@ export default function CourseSearchPage() {
 
   return (
     <div className="min-h-[calc(100vh-8rem)]">
-      <CourseSearch activeTab="Overview" courseId="" isVideoSelected={false} />
+      <CourseSearch activeTab="Overview" isCourseSelected={false} isVideoSelected={false} />
     </div>
   );
 }

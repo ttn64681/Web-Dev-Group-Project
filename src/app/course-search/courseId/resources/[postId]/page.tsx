@@ -13,7 +13,7 @@ export default function CourseSearchPage() {
 
   return (
     <div>
-      <CourseSearch activeTab={'Resources'} courseId={''} isVideoSelected={true} />
+      <CourseSearch activeTab="Overview" isCourseSelected={false} isVideoSelected={true} />
     </div>
   );
 }

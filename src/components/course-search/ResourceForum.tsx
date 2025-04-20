@@ -4,8 +4,17 @@ import VideoPostUnit from './VideoPostUnit';
 import Comment from './Comment';
 import { ArrowLeft } from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
+import { Post } from '@/dbInterface/dbOperations';
 
-const ResourceForum: React.FC = () => {
+type ResourceBoxProps = {
+  postInfo: Post
+}
+
+const ResourceForum: React.FC<ResourceBoxProps> = ({
+  postInfo
+}: ResourceBoxProps) => {
+
+  //Sets up the router
   const router = useRouter();
 
   return (
@@ -21,7 +30,7 @@ const ResourceForum: React.FC = () => {
       {/* Video Section */}
       <div className="flex gap-6 mb-2">
         <div className="flex flex-col">
-          <VideoPostUnit />
+          <VideoPostUnit forumMode={true} thumbnail="https://picsum.photos/id/5/264/154" likes={1} username="person1" isLiked={true} />
         </div>
         <div className="flex-1">
           <h3 className="text-neon-pink text-xl mb-2">Video Title</h3>
@@ -48,9 +57,11 @@ const ResourceForum: React.FC = () => {
       <div>
         <h1 className="text-neon-pink text-xl mb-4">Comments</h1>
         <div className="space-y-4">
-          <Comment />
-          <Comment />
-          <Comment />
+          {
+            postInfo.comments.map((comment) => {
+              return <Comment username={comment.user} commentText={comment.comment} />
+            })
+          }
         </div>
       </div>
     </div>
