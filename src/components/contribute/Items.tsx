@@ -34,15 +34,15 @@ const Items: React.FC<ItemsProps> = ({ items, onSelectItem }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 mt-4">
+    <div className="flex flex-col gap-4">
       {items.map((item) => (
-        <div key={item.id} className="flex items-start gap-4 p-4 bg-[#33203A] rounded-lg">
+        <div key={item.id} className="flex items-start gap-4 pr-4 py-4 bg-[#33203A] rounded-lg">
           {/* NEW: Added checkbox input */}
           <input
             type="checkbox"
             checked={selectedItem === item.id}
             onChange={() => handleCheckboxChange(item)}
-            className="mt-1"
+            className="mt-1 self-center"
             style={{ transform: 'scale(1.5)' }}
           />
           {/* ORIGINAL: Simple item display without checkbox
@@ -67,7 +67,7 @@ const Items: React.FC<ItemsProps> = ({ items, onSelectItem }) => {
                   className="w-[350px] h-[200px] object-cover rounded-lg" 
                 />
                 <div>
-                  <h3 className="text-white font-bold">{item.title}</h3>
+                  <h3 className="text-white text-xl font-bold">{item.title}</h3>
                   <p className="text-grayish-purple">{item.desc}</p>
                   <p className="text-grayish-purple text-sm mt-2">Posted by: {item.owner}</p>
                 </div>

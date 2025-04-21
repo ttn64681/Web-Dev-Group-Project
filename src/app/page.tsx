@@ -9,31 +9,31 @@ import { UsersThree } from '@phosphor-icons/react';
 // Home Page
 export default function Home() {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center bg-gradient-to-b from-[#120818] to-[#301739]">
       {/* Splash */}
-      <div className="border-4 border-dashed border-neon-pink rounded-lg p-8 m-16 min-w-[40%] max-w-[90%] [box-shadow:0_0_15px_rgba(255,105,180,0.5),inset_0_0_15px_rgba(255,105,180,0.5)]">
+      <div className="flex flex-col justify-center items-center border-2 border-dashed border-neon-pink rounded-[1rem] p-8 m-14 min-w-[50%] max-w-[90%] min-h-[23rem] [box-shadow:0_0_15px_rgba(255,105,180,0.3),inset_0_0_15px_rgba(255,105,180,0.3)]">
         <div className="flex flex-col justify-center items-center gap-3">
           <Image
             src="/logo/logo-horizontal_730x209.png"
             alt="CourseHub Logo"
             width={365}
             height={104.5}
-            className="w-1/2 min-w-[200px]"
+            className="w-[55%] min-w-[200px] drop-shadow-[0_0_10px_rgba(204,120,237,0.4)]"
           />
           <div className="flex flex-col justify-center items-center">
-            <h1 className="font-dongle text-4xl font-bold text-neon-pink">Welcome to</h1>
-            <h1 className="font-dongle text-5xl font-extrabold text-neon-pink [text-shadow:0_0_10px_rgba(255,105,180,0.5)] hover:[text-shadow:0_0_10px_rgba(255,105,180,0.8)] hover:scale-105 transition-all duration-300">
+            <h1 className="font-nunito font-bold text-[2.5rem] text-neon-pink">Welcome to</h1>
+            <h1 className="font-dongle text-[6rem] leading-[0.5] text-neon-pink [text-shadow:0_0_10px_rgba(255,105,180,0.5)] hover:[text-shadow:0_0_10px_rgba(255,105,180,0.8)] hover:scale-105 transition-all duration-300">
               CourseHub!
             </h1>
           </div>
-          <p className="font-nunito text-xl text-neon-pink-subtitle max-w-[80%] text-center">
+          <p className="font-nunito text-[1.1rem] text-neon-pink-subtitle max-w-[80%] text-center">
             Your one-stop hub to find and share UGA course resources.
           </p>
         </div>
       </div>
 
       {/* Features */}
-      <div className="flex flex-row justify-center items-start flex-wrap gap-12 max-w-[70%] mb-12">
+      <div className="flex flex-row justify-center items-start flex-wrap gap-12 max-w-[65%] mb-12">
         <div className="flex flex-col items-center gap-1 flex-1">
           <Link
             href="/course-search"
@@ -44,7 +44,7 @@ export default function Home() {
               size={85}
             />
           </Link>
-          <h1 className="font-dongle text-4xl font-bold text-neon-pink">Course Search</h1>
+          <h1 className="font-dongle text-5xl font-bold text-neon-pink">Course Search</h1>
           <p className="font-nunito text-white text-xl max-w-[80%] text-center">
             Search a course to receive an A.I. powered overview, plan-for-success and study
             resources!
@@ -60,7 +60,7 @@ export default function Home() {
               size={85}
             />
           </Link>
-          <h1 className="font-dongle text-4xl font-bold text-neon-pink text-nowrap">
+          <h1 className="font-dongle text-5xl font-bold text-neon-pink text-nowrap">
             Shared Resources
           </h1>
           <p className="font-nunito text-white text-xl max-w-[80%] text-center">
@@ -78,7 +78,7 @@ export default function Home() {
               size={85}
             />
           </Link>
-          <h1 className="font-dongle text-4xl font-bold text-neon-pink">Contribute</h1>
+          <h1 className="font-dongle text-5xl font-bold text-neon-pink">Contribute</h1>
           <p className="font-nunito text-white text-xl max-w-[80%] text-center">
             Share your own resources, add to the catalogue, and interact with the CourseHub
             Community!
@@ -88,7 +88,7 @@ export default function Home() {
 
       {/* Get Started Button */}
       <button className="bg-neon-cyan text-[1.2rem] font-bold rounded-full px-6 py-3 text-black group hover:scale-105 transition-all duration-300 hover:[box-shadow:0_0_15px_rgba(0,255,255,0.5),inset_0_0_15px_rgba(0,255,255,0.5)]">
-        <div className="group-hover:scale-110 transition-all duration-300">
+        <div className="font-inter group-hover:scale-110 transition-all duration-300">
           <Link href="/course-search">Get Started!</Link>
         </div>
       </button>

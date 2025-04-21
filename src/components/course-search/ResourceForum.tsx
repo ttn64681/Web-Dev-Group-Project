@@ -9,7 +9,7 @@ const ResourceForum: React.FC = () => {
   const router = useRouter();
 
   return (
-    <div className="bg-form-bg-purple p-6 rounded-lg font-inter">
+    <div className="bg-form-bg-purple p-10 rounded-lg font-inter">
       {/* Back Button */}
       <button
         onClick={() => router.back()}
@@ -21,17 +21,17 @@ const ResourceForum: React.FC = () => {
       {/* Video Section */}
       <div className="flex gap-6 mb-2">
         <div className="flex flex-col">
-          <VideoPostUnit />
+          <VideoPostUnit showTrash/>
         </div>
         <div className="flex-1">
-          <h3 className="text-neon-pink text-xl mb-2">Video Title</h3>
-          <h3 className="text-white">Video Description</h3>
+          <h3 className="font-nunito text-neon-pink text-2xl mb-2">Video Title</h3>
+          <h3 className="font-inter text-white text-base font-light">Video Description</h3>
         </div>
       </div>
 
       {/* Comment Input */}
       <div>
-        <h3 className="text-neon-pink text-xl mb-2">Leave a Comment!</h3>
+        <h3 className="text-neon-pink text-xl mb-2 pt-4">Leave a Comment!</h3>
         <div className="flex flex-col items-end">
           <textarea
             placeholder="Place your comment here."

@@ -14,20 +14,20 @@ const Sidebar: React.FC = () => {
   return (
     <div className={`flex h-full transition-transform duration-300 ease-in-out`}>
       {/*Sidebar Contents*/}
-      <div className={`bg-[#28162F] pl-[25px] pr-[25px] h-full ${openStatus ? 'block' : 'hidden'}`}>
-        <div className="flex pt-[20px]">
-          <h3 className="text-[#B590C4] mr-[20px]">Existing Classes: </h3>
-          <select className="w-[100px] m-auto rounded-[10px] p-[5px] bg-transparent text-white border">
+      <div className={`bg-[#28162F] pl-[25px] pr-[25px] h-full ${openStatus ? 'block ' : 'hidden'}`}>
+        <div className="flex pt-[20px] items-center">
+          <h3 className="font-nunito text-[#B590C4] text-[20px] mr-[20px]">Existing Classes: </h3>
+          <select className="w-[100px] m-auto rounded-[10px] p-[5px] bg-transparent font-nunito text-white border border-sidebar-white-purple">
             <option value="All" className="bg-[#28162F]">
               All
             </option>
           </select>
         </div>
-        <hr className="my-[20px]"></hr>
+        <hr className="my-[20px] sidebar-white-purple"></hr>
         <div className="overflow-y-auto h-[calc(100%-100px)]">
-          <h3 className="text-white mt-[10px] mb-[10px]">Class1</h3>
-          <h3 className="text-white mt-[10px] mb-[10px]">Class2</h3>
-          <h3 className="text-white mt-[10px] mb-[10px]">Class3</h3>
+          <h3 className="font-nunito text-white text-[18px] mt-[10px] mb-[10px]">Class1</h3>
+          <h3 className="font-nunito text-white text-[18px] mt-[10px] mb-[10px]">Class2</h3>
+          <h3 className="font-nunito text-white text-[18px] mt-[10px] mb-[10px]">Class3</h3>
         </div>
       </div>
 

@@ -26,12 +26,12 @@ module.exports = {
         'form-pink-border': '#C3ACCC', //used on contribution for title/desc inputs
 
         'purple-dark-transition': '#120818', // background page
+        'purple-bottom-gradient': '#301739', // background bottom gadient
         'purple-light-transition': '#29142F',
 
         'grayish-purple': '#B590C4',
 
         'heart-red': '#FF3284',
-        'disabled-purple': '#765178',
 
         'login-bg-purple': '#731778',
         'sidebar-white-purple': '#B590C4', // sidebar unhovered text and border

@@ -3,7 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   // TODO: Add form state
   // TODO: Add error handling
   // TODO: Add loading state
@@ -13,7 +13,7 @@ const Login: React.FC = () => {
 
   return (
     // entire page
-    <div className="flex flex-col items-center bg-gradient-to-b from-[#0E0613] to-[#411F4B]">
+    <div className="h-screen flex flex-col items-center bg-gradient-to-b from-[#0E0613] to-[#411F4B]">
       {/* creating card effect on login box (basically borders)*/}
       <div className="border border-neon-pink rounded-2xl py-5 m-16 min-w-[20%] bg-login-bg-purple/[24%] overflow-hidden shadow-xl/20 shadow-[0_3px_35px_rgba(248,138,255,0.3)]">
         {/* defining grid */}
@@ -63,4 +63,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Register;

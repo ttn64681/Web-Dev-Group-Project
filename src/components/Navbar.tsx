@@ -37,40 +37,45 @@ const Navbar: React.FC<NavbarProps> = ({
    * - Active state styling when on current page
    * - Smooth transitions for all animations
    */
-  const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
-    // The 'group' class allows us to style child elements when parent is hovered
-    <div className="relative group">
-      {/* Button wrapper for the link */}
-      <button className="flex items-center justify-center w-20 h-16">
-        <Link
-          href={href}
-          className={`${
-            // If current path matches link's href, use pink color
-            pathname === href ? 'text-neon-pink' : 'text-white duration-200 hover:text-neon-pink'
-          }`}
-        >
-          {children}
-        </Link>
-      </button>
+  const NavLink = ({ href, children, matchSubpaths = false }: { href: string; children: React.ReactNode; matchSubpaths?: boolean }) => {
+    // this allows a path and its subpaths to also be underlined
+    const isActive = matchSubpaths ? pathname.startsWith(href) : pathname === href;
+    
+    return (
+      // The 'group' class allows us to style child elements when parent is hovered
+      <div className="relative group">
+        {/* Button wrapper for the link */}
+        <button className="flex items-center justify-center w-20 h-16">
+          <Link
+            href={href}
+            className={`${
+              // If current path matches link's href, use pink color
+              isActive ? 'text-neon-pink' : 'text-white duration-200 hover:text-neon-pink'
+            }`}
+          >
+            {children}
+          </Link>
+        </button>
 
-      {/* Animated underline that appears on hover */}
-      {/* Initially width is 0, expands to full width on hover */}
-      <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-neon-pink group-hover:w-full transition-all duration-300" />
+        {/* Animated underline that appears on hover */}
+        {/* Initially width is 0, expands to full width on hover */}
+        <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-neon-pink group-hover:w-full transition-all duration-300" />
 
-      {/* Permanent underline for active page */}
-      {pathname === href && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-neon-pink" />}
-    </div>
-  );
+        {/* Permanent underline for active page */}
+        {isActive && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-neon-pink" />}
+      </div>
+    )
+  };
 
   return (
-    <nav className="flex flex-row justify-between items-center p-4 pl-5 pr-5 bg-nav-purple relative">
+    <nav className="flex flex-row justify-between items-center px-9 bg-nav-purple relative">
       {/* Logo section - always visible */}
       <button
         type="button"
         title="CourseHub"
         className="hover:scale-105 hover:[text-shadow:0_0_10px_rgba(255,105,180,0.5)] transition-all duration-300"
       >
-        <Link href="/" className="font-dongle text-2xl font-bold text-neon-pink">
+        <Link href="/" className="font-dongle text-[40px] font text-neon-pink">
           CourseHub
         </Link>
       </button>
@@ -78,7 +83,7 @@ const Navbar: React.FC<NavbarProps> = ({
       {/* Desktop NavLinks - hidden on mobile (md: shown) */}
       <div className="hidden md:flex gap-10 absolute left-1/2 transform -translate-x-1/2">
         <NavLink href="/">Home</NavLink>
-        <NavLink href="/course-search">Search</NavLink>
+        <NavLink href="/course-search" matchSubpaths>Search</NavLink>
         <NavLink href="/contribute">Contribute</NavLink>
       </div>
 
@@ -108,6 +113,7 @@ const Navbar: React.FC<NavbarProps> = ({
             <NavLink href="/">Home</NavLink>
             <NavLink href="/course-search">Search</NavLink>
             <NavLink href="/contribute">Contribute</NavLink>
+            <NavLink href="/login">Login</NavLink>
           </div>
         </div>
       )}

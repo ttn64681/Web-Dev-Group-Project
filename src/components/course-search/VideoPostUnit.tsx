@@ -5,7 +5,11 @@ import LoveBtn from './LoveBtn';
 import TrashBtn from './TrashBtn';
 import { useRouter } from 'next/navigation';
 
-const VideoPostUnit: React.FC = () => {
+type VideoPostUnitProps = {
+    showTrash: boolean;
+};
+
+const VideoPostUnit: React.FC<VideoPostUnitProps> = ({showTrash}) => {
   const router = useRouter();
   const redirectToForum = () => {
     router.push('/course-search/courseId/resources/postId');
@@ -17,18 +21,18 @@ const VideoPostUnit: React.FC = () => {
         <Image
           src={'https://picsum.photos/id/16/254/154'}
           alt={'Video thumbnail'}
-          width={264}
-          height={154}
+          width={220}
+          height={128}
           className="rounded-[10px]"
           onClick={redirectToForum}
         />
       </button>
       <div className="flex justify-between">
-        <div className="flex p-[10px] justify-between w-[100px]">
+        <div className="flex gap-2 w-[100px]">
           <LoveBtn />
-          <TrashBtn />
+          {showTrash && <TrashBtn />}
         </div>
-        <div className="p-[10px] pr-[20px]">
+        <div className=" ">
           <h4 className="text-white">user123</h4>
         </div>
       </div>
