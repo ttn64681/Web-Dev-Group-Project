@@ -52,7 +52,7 @@ export type Post = {
   url: string;                            // youtube, link, or music link (youtube)
   thumbnail?: string;
   postType: 'youtube' | 'link' | 'music';
-  course: string;                         // ID of the course this post belongs to "CSCI-1301"
+  course: string;                       // ObjectID (mongodb) of the course this post belongs to
   user: string;                           // ObjectID (mongodb) of the user who created the post
   likes?: string[];                       // array of user IDs who liked the post
   comments?: Comment[];                   // array of comments on the post
@@ -83,7 +83,7 @@ export async function addCourse(courseData: Course) {
   try {
     // Create the course with an automatically generated courseId
     const course = await Course.create({
-      // courseId is already concatenated from prefix and number w/in searchCourse
+      // courseId is already concatenated from prefix and number w/in searchAndAddCourse
       ...courseData,
     });
     return { success: true, course };
@@ -107,7 +107,7 @@ export async function fetchCourse(prefix: string, number: string) {
     const course = await Course.findOne({
       prefix: prefix.toUpperCase(),
       number,
-    }).populate('posts'); // Replaces post ObjectIDs with full post documents
+    }).populate('posts'); // Replaces post ObjectIDs with full post documents (first time search = empty array of post ObjectIDs)
 
     return { success: true, course };
   } catch (error) {
@@ -178,7 +178,7 @@ information in JSON format, with only the keys: "title", "description", "topics"
       // Clean response text by removing markdown code block markers (if any) and any extra whitespace
       const cleanedText = text.replace(/```json\n?|\n?```/g, '').trim();
       
-      // Parse  JSON response
+      // Parse JSON response
       courseJSON = JSON.parse(cleanedText);
       
       // Ensure plan is always an array of strings
@@ -225,6 +225,7 @@ information in JSON format, with only the keys: "title", "description", "topics"
     console.log('Plan field value:', courseJSON.plan);
 
     // Create new course with properly mapped data
+    // newCourse is the course object, not the courseId
     const newCourse = await Course.create({
       courseId: `${prefix}-${number}`,
       prefix: prefix.toUpperCase().trim(),
@@ -240,6 +241,9 @@ information in JSON format, with only the keys: "title", "description", "topics"
       })) || [], // Map each object in gemini's urls array to new course object's resourceUrls array
       posts: [] // Initialize empty posts array
     });
+
+    // Log the resourceUrls structure for verification
+    console.log('Resource URLs structure:', JSON.stringify(newCourse.resourceUrls, null, 2));
 
     return { success: true, course: newCourse };
   } catch (error) {

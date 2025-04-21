@@ -2,11 +2,9 @@
 MONGODB_URI=
 
 # OpenAI
-OPENAI_API_KEY=
-
+GEMINI
 # YouTube Data API
 YOUTUBE_API_KEY=
 
 # Authentication
-NEXTAUTH_SECRET=
 NEXTAUTH_URL=http://localhost:3000 
