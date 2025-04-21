@@ -50,18 +50,6 @@ const Items: React.FC<ItemsProps> = ({ items, onSelectItem }) => {
               title={`Select ${item.title}`}
             />
           </label>
-          {/* ORIGINAL: Simple item display without checkbox
-          <div className="flex-1">
-            <div className="flex gap-4">
-              <img src={item.url} alt={item.title} className="w-32 h-32 object-cover rounded-lg" />
-              <div>
-                <h3 className="text-white font-bold">{item.title}</h3>
-                <p className="text-grayish-purple">{item.desc}</p>
-                <p className="text-grayish-purple text-sm mt-2">Posted by: {item.owner}</p>
-              </div>
-            </div>
-          </div>
-          */}
 
           {/* Updated layout with centered checkbox and larger image */}
           <div className="flex items-center justify-center gap-10">

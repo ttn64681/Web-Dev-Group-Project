@@ -8,6 +8,49 @@ import connectMongoDB from '../../config/mongodb';
 
 // The contribute component
 
+/**
+ * Searches YouTube videos based on a query
+ * @param query - Search query string
+ * @param maxResults - Maximum number of results to return (default: 20)
+ * @returns Object containing success status and either the videos or an error message
+ */
+async function searchYouTubeVideos(query: string, maxResults: number = 20) {
+  try {
+    const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+    if (!YOUTUBE_API_KEY) {
+      return { success: false, error: 'YouTube API key not configured' };
+    }
+
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxResults}&q=${encodeURIComponent(query)}&type=video&key=${YOUTUBE_API_KEY}`
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch YouTube videos');
+    }
+
+    const data = await response.json();
+
+    // Transform the YouTube API response into our post format and store in videos
+    const videos = data.items.map((item: any) => ({
+      title: item.snippet.title,
+      description: item.snippet.description,
+      url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+      videoId: item.id.videoId, // Store videoId separately for embedding
+      thumbnail: item.snippet.thumbnails.high?.url || item.snippet.thumbnails.default.url,
+      postType: 'youtube' as const,
+      // Note: course and user will be added when creating the post
+    })); // searchYouTubeVideos
+
+    return { success: true, videos };
+    // print out all videos for testing
+    console.log(videos);
+  } catch (error) {
+    console.error('Error searching YouTube videos:', error);
+    return { success: false, error: 'Failed to search YouTube videos' };
+  }
+}
+
 type ItemType = {
   id: number;
   owner: string;
@@ -100,17 +143,19 @@ const Contribute: React.FC = () => {
   const [activeTab, setActiveTab] = useState('Videos');
   const [items, setItems] = useState<ItemType[]>([]); // set searched items
 
-  // State for tracking selected item and form input values
-  const [selectedItem, setSelectedItem] = useState<ItemType | null>(null);
+  // State for tracking selected YT video and form input values
+  const [selectedVideo, setSelectedVideo] = useState<ItemType | null>(null);
   const [formData, setFormData] = useState({
     title: '',
     desc: '',
     url: '',
   });
 
+  const [searchInput, setSearchInput] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+
   // Initialize with videos when component mounts
   useEffect(() => {
-    connectMongoDB();
     showVideos();
   }, []);
 
@@ -118,17 +163,17 @@ const Contribute: React.FC = () => {
   const showVideos = () => {
     setActiveTab('Videos');
     setItems(videoItems);
-    setSelectedItem(null);
+    setSelectedVideo(null);
   };
   const showLinks = () => {
     setActiveTab('Links');
     setItems([]); // Clear items when switching to Links
-    setSelectedItem(null);
+    setSelectedVideo(null);
   };
   const showMusic = () => {
     setActiveTab('Music');
     setItems(musicItems);
-    setSelectedItem(null);
+    setSelectedVideo(null);
   };
 
   // Handle changes to form inputs
@@ -145,7 +190,7 @@ const Contribute: React.FC = () => {
     e.preventDefault();
 
     // Validate form based on active tab
-    if (activeTab !== 'Links' && !selectedItem) {
+    if (activeTab !== 'Links' && !selectedVideo) {
       alert('Please select a video');
       return;
     }
@@ -165,11 +210,11 @@ const Contribute: React.FC = () => {
       postTitle: formData.title,
       postDescription: formData.desc,
       postUrl: formData.url,
-      selectedItem: selectedItem
+      selectedVideo: selectedVideo
         ? {
-            title: selectedItem.title,
-            description: selectedItem.desc,
-            url: selectedItem.url,
+            title: selectedVideo.title,
+            description: selectedVideo.desc,
+            url: selectedVideo.url,
           }
         : null,
     };
@@ -182,7 +227,20 @@ const Contribute: React.FC = () => {
       desc: '',
       url: '',
     });
-    setSelectedItem(null); // uncheck the selected item
+    setSelectedVideo(null); // uncheck the selected video
+  };
+
+  const searchYouTubeVideos = async (query: string) => {
+    try {
+      const response = await fetch(`/api/youtube?query=${encodeURIComponent(query)}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch YouTube videos');
+      }
+      const data = await response.json();
+      setItems(data.items);
+    } catch (error) {
+      console.error('Error searching YouTube videos:', error);
+    }
   };
 
   return (
@@ -205,7 +263,10 @@ const Contribute: React.FC = () => {
 
           {/* Course Selection */}
           <div className="border-2 border-neon-violet rounded-lg">
-            <select className="bg-nav-purple rounded-md font-semibold mr-3 flex-1 w-full h-10 text-white p-2">
+            <select 
+              className="bg-nav-purple rounded-md font-semibold mr-3 flex-1 w-full h-10 text-white p-2"
+              aria-label="Select a course"
+            >
               <option>Select course</option>
             </select>
             {/*<input type="text" placeholder="Title" className="bg-nav-purple outline-none text-white flex-1 w-5/6 mx-auto h-10" />*/}
@@ -295,16 +356,23 @@ const Contribute: React.FC = () => {
             <div className="ml-[10px] mr-[10px] grow">
               <div className="flex max-w-[500px]">
                 <input
+                  title="YouTube Search Bar"
                   type="text"
-                  placeholder="Search"
+                  placeholder={activeTab === 'Videos' ? 'YouTube Search' : 'Music Search'}
                   className="p-[5px] w-[400px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40 outline-none"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
                 />
-                <button className="p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]">
-                  <MagnifyingGlass size={24} className="align-middle" color="white" />
+                <button
+                  className="p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]"
+                  onClick={() => searchYouTubeVideos(searchInput)}
+                  title="Search YouTube videos"
+                >
+                  <MagnifyingGlass size={24} className="align-middle group-hover:scale-110 transition-transform duration-200" color="white" />
                 </button>
               </div>
             </div>
-            <Items items={items} onSelectItem={setSelectedItem} />
+            <Items items={items} onSelectItem={setSelectedVideo} />
           </div>
         )}
       </div>
