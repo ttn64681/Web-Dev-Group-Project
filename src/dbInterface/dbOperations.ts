@@ -17,7 +17,6 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
  * Represents a user in the database
  */
 export type User = {
-  _id: string;      // MongoDB ObjectID
   username: string; // The user's unique username
   password: string; // The user's hashed password
 };
@@ -26,7 +25,6 @@ export type User = {
  * Represents a course in the database
  */
 export type Course = {
-  _id: string;                // MongoDB ObjectID
   courseId: string;           // "CSCI-1301"
   prefix: string;             // "CSCI"
   number: string;             // "1301"
@@ -34,7 +32,7 @@ export type Course = {
   description?: string;
   topics?: string;
   prerequisites?: string[];
-  plan?: Array<string>;
+  plan?: string;
   resourceUrls?: Array<{
     url: string;
     description: string;
@@ -46,7 +44,6 @@ export type Course = {
  * Represents a post in the database
  */
 export type Post = {
-  _id: string;                            // MongoDB ObjectID
   title: string;                          // "Sick Coding Tips"
   description: string;
   url: string;                            // youtube, link, or music link (youtube)
@@ -123,28 +120,19 @@ export async function fetchCourse(prefix: string, number: string) {
  * @param title - Course title
  * @returns Object containing success status and either the course or an error message
  */
-export async function searchAndAddCourse(prefix: string, number: string, title: string) {
+export async function searchCourse(prefix: string, number: string, title: string) {
   await connectMongoDB();
 
   try {
     // First check if course exists using fetchCourse
     const existingCourse = await fetchCourse(prefix, number);
 
-    if (existingCourse.success && existingCourse.course) { // if course exists
+    if (existingCourse.success) {
       return existingCourse; // Return the existing course
     }
 
-    // If course not found, use Gemini API to get course information
-    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-    if (!GEMINI_API_KEY) {
-      console.error("GEMINI_API_KEY is not defined in environment variables.");
-      return { 
-        success: false, 
-        error: "GEMINI_API_KEY is not defined. Please set it in your environment variables." 
-      };
-    }
-
-    const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+    // If not found, use Gemini API to get course information
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
     const prompt = `Using the current course information from the University of Georgia's Bulletin courses website, provide a detailed overview of 
@@ -153,100 +141,30 @@ title from bulletin,
 course description from bulletin, 
 course topics from bulletin, 
 related prerequisites from bulletin, a 
-feasible plan for success (according to the class and professor) (the plan for success should simply be an array of strings), 
+feasible plan for success (according to the class and professor) (the plan for success should be code-output friendly, as in an array of strings), 
 and the course's top-5 free study links/urls from google (array of multiple top 5 recommended study resource links according to google that are best for the course and are free and are valid, working urls, along with a description for each of the 5 links) 
-information in JSON format, with only the keys: "title", "description", "topics", "prerequisites", "plan", and "urls" (with the keys "url" and "description" inside the urls array). Use exactly these keys. Do not create any extra keys other than these. Do not use markdown code.`;
+information in JSON format, with only the keys: "title", "description", "topics", "prerequisites", "plan", and "urls" (with the keys "url" and "description" inside the urls array). Use exactly these keys. Do not create any extra keys other than these.`;
 
     const result = await model.generateContent(prompt);
-    console.log('Gemini result: ', result);
     const response = await result.response;
-    console.log('Gemini response: ', response);
     const text = response.text();
-    console.log('Gemini text: ', text);
-    
-    // Validate that we got a response
-    if (!text) {
-      console.error('Empty response from Gemini API');
-      return {
-        success: false,
-        error: 'Failed to get course information from AI'
-      };
-    }
+    const courseJSON = JSON.parse(text);
 
-    let courseJSON;
-    try {
-      // Clean response text by removing markdown code block markers (if any) and any extra whitespace
-      const cleanedText = text.replace(/```json\n?|\n?```/g, '').trim();
-      
-      // Parse  JSON response
-      courseJSON = JSON.parse(cleanedText);
-      
-      // Ensure plan is always an array of strings
-      if (courseJSON.plan) {
-        if (typeof courseJSON.plan === 'string') {
-          // if plan is a string, try to parse it as JSON in case it's a stringified array
-          try {
-            const parsedPlan = JSON.parse(courseJSON.plan);
-            courseJSON.plan = Array.isArray(parsedPlan) ? parsedPlan : [courseJSON.plan];
-          } catch {
-            // if parsing fails, treat it as a single string item in array
-            courseJSON.plan = [courseJSON.plan];
-          }
-        } else if (!Array.isArray(courseJSON.plan)) {
-          // if plan neither string nor array, convert to array
-          courseJSON.plan = [String(courseJSON.plan)];
-        }
-      } else {
-        // if plan null/undefined
-        courseJSON.plan = [];
-      }
-      
-      console.log('Processed plan:', courseJSON.plan);
-      
-    } catch (parseError) {
-      console.error('Failed to parse Gemini API response:', parseError);
-      return {
-        success: false,
-        error: 'Failed to parse course information'
-      };
-    }
-
-    // Validate required fields
-    if (!courseJSON.title || !courseJSON.description) {
-      console.error('Missing required fields in Gemini API response:', courseJSON);
-      return {
-        success: false,
-        error: 'Invalid course information received'
-      };
-    }
-
-    // Debug the plan field
-    console.log('Plan field type:', typeof courseJSON.plan);
-    console.log('Plan field value:', courseJSON.plan);
-
-    // Create new course with properly mapped data
+    // Create new course with Gemini data
     const newCourse = await Course.create({
       courseId: `${prefix}-${number}`,
-      prefix: prefix.toUpperCase().trim(),
+      prefix: prefix.toUpperCase(),
       number,
-      title: courseJSON.title || title.trim(), // Use Gemini's title if available, otherwise use user's
-      description: courseJSON.description,
-      topics: courseJSON.topics,
-      prerequisites: courseJSON.prerequisites,
-      plan: courseJSON.plan || [], // Keep as array, default to empty array if undefined
-      resourceUrls: courseJSON.urls?.map((url: { url: string, description: string }) => ({
-        url: url.url,
-        description: url.description
-      })) || [], // Map each object in gemini's urls array to new course object's resourceUrls array
-      posts: [] // Initialize empty posts array
+      title,
+      ...courseJSON,
     });
 
     return { success: true, course: newCourse };
   } catch (error) {
     console.error('Error searching course:', error);
     return {
-      success: false, 
-      error: error instanceof Error ? error.message : 'Failed to search course'
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to search course',
     };
   }
 }
@@ -256,7 +174,7 @@ information in JSON format, with only the keys: "title", "description", "topics"
  * @param postData - Post data without comments and likes (which are initialized empty)
  * @returns Object containing success status and either the post or an error message
  */
-export async function addPost(postData: Post) {
+export async function addPost(postData: Omit<Post, 'comments' | 'likes'>) {
   await connectMongoDB();
 
   try {
@@ -267,7 +185,7 @@ export async function addPost(postData: Post) {
     }
 
     // Create the post
-    const post = await Post.create({ // mongoose method that creates new post in the database
+    const post = await Post.create({
       ...postData,
       course: course._id, // Use the course's MongoDB _id
     });
@@ -319,7 +237,7 @@ export async function fetchCoursePosts(courseId: string) {
  * @param commentData - Comment data without createdAt (which is set automatically)
  * @returns Object containing success status and either the updated post or an error message
  */
-export async function addComment(postId: string, commentData: Comment) {
+export async function addComment(postId: string, commentData: Omit<Comment, 'createdAt'>) {
   await connectMongoDB();
 
   try {
@@ -424,10 +342,6 @@ export async function unlikePost(postId: string, userId: string) {
   }
 }
 
-/**
- * Fetches all courses from the database
- * @returns Object containing success status and either the courses or an error message
- */
 export async function fetchAllCourses() {
   await connectMongoDB();
   try {

@@ -21,8 +21,8 @@ export interface PostTemplate extends Document {
     comment: string;
     createdAt: Date;
   }>;
-  createdAt: Date; // for sorting/filtering purposes only
-  updatedAt: Date; // for sorting/filtering purposes only
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 // Schema for the Post model
@@ -51,4 +51,4 @@ const PostSchema: Schema = new Schema(
 PostSchema.index({ createdAt: -1 }); // Sort posts by date (newest first)
 PostSchema.index({ likes: -1 }); // Sort posts by likes (descending)
 
-export default mongoose.models.Post || mongoose.model<PostTemplate>('Post', PostSchema);
+export default mongoose.models.Post || mongoose.model<IPost>('Post', PostSchema);
