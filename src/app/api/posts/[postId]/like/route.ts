@@ -16,19 +16,30 @@ export async function POST(request: NextRequest, { params }: { params: { postId:
     const userId = session?.user?.id;
     
     if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Unauthorized' 
+      }, { status: 401 });
     }
 
     const result = await likePost(params.postId, userId);
 
-    if (result.success) {
-      return NextResponse.json(result.post);
-    } else {
-      return NextResponse.json({ error: result.error }, { status: 400 });
+    if (!result.success) {
+      return NextResponse.json({ 
+        success: false, 
+        error: result.error || 'Failed to like post' 
+      }, { status: 400 });
     }
+    
+    return NextResponse.json({ 
+      success: true, 
+      post: result.post 
+    });
   } catch (error) {
     console.error('Error liking post:', error);
-    return NextResponse.json({ error: 'Failed to like post' }, { status: 500 });
+    return NextResponse.json({ 
+      success: false, 
+      error: 'Failed to like post' 
+    }, { status: 500 });
   }
-  
 }

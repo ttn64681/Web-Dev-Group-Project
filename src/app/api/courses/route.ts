@@ -32,39 +32,57 @@ export async function GET(request: NextRequest) {
       
       // First try to fetch the course
       const result = await fetchCourse(prefix, number);
-      console.log(`Fetch result: ${JSON.stringify(result)}`);
+      console.log(`Fetch result:`, result);
       
-      // If course doesn't exist, create it
-      if (!result.success) {
+      // If course doesn't exist or fetch failed, create it
+      if (!result.success || !result.course) {
         console.log(`Course not found, attempting to create: ${prefix}-${number}`);
         
         // Create the course with the provided title and add to mongoDB
         const createResult = await searchAndAddCourse(prefix, number, title);
-        console.log(`Create result: ${JSON.stringify(createResult)}`);
+        console.log(`Create result:`, createResult);
         
-        if (!createResult.success) {
-          console.error(`Failed to create course: ${createResult.error}`);
-          return NextResponse.json({ error: createResult.error }, { status: 500 });
+        if (!createResult.success || !createResult.course) {
+          console.error(`Failed to create course:`, createResult.error);
+          return NextResponse.json({ 
+            success: false, 
+            error: createResult.error || 'Failed to create course' 
+          }, { status: 500 });
         }
-        return NextResponse.json(createResult.course);
+        return NextResponse.json({ 
+          success: true, 
+          course: createResult.course 
+        });
       }
       
       // if course exists, return it
       console.log(`Returning existing course: ${prefix}-${number}`);
-      return NextResponse.json(result.course);
-    } // if
+      return NextResponse.json({ 
+        success: true, 
+        course: result.course 
+      });
+    }
 
     // Otherwise, fetch all courses
     console.log('No specific course requested, fetching all courses');
     const result = await fetchAllCourses();
-    if (!result.success) {
-      console.error(`Failed to fetch all courses: ${result.error}`);
-      return NextResponse.json({ error: result.error }, { status: 500 });
+    if (!result.success || !result.courses) {
+      console.error(`Failed to fetch all courses:`, result.error);
+      return NextResponse.json({ 
+        success: false, 
+        error: result.error || 'Failed to fetch courses' 
+      }, { status: 500 });
     }
-    return NextResponse.json({ courses: result.courses });
+    return NextResponse.json({ 
+      success: true, 
+      courses: result.courses 
+    });
   } catch (error) {
-    console.error('Error fetching courses:', error);
-    return NextResponse.json({ error: 'Failed to fetch courses' }, { status: 500 });
+    console.error('Error in courses API:', error);
+    return NextResponse.json({ 
+      success: false, 
+      error: 'Internal server error' 
+    }, { status: 500 });
   }
 }
 

@@ -13,7 +13,7 @@ export interface CourseTemplate extends Document {
   topics?: string[];
   description?: string;
   prerequisites?: string[];
-  plan?: string;
+  plan?: string[];
   resourceUrls?: Array<{
     url: string;
     description: string;
@@ -32,7 +32,7 @@ const CourseSchema: Schema = new Schema(
     topics: [{ type: String }],
     description: { type: String },
     prerequisites: [{ type: String }],
-    plan: { type: String },
+    plan: [{ type: String }],
     resourceUrls: [{
       url: { type: String, required: true },
       description: { type: String, required: true }

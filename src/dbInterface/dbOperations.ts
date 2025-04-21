@@ -34,7 +34,7 @@ export type Course = {
   description?: string;
   topics?: string;
   prerequisites?: string[];
-  plan?: string;
+  plan?: Array<string>;
   resourceUrls?: Array<{
     url: string;
     description: string;
@@ -130,11 +130,11 @@ export async function searchAndAddCourse(prefix: string, number: string, title: 
     // First check if course exists using fetchCourse
     const existingCourse = await fetchCourse(prefix, number);
 
-    if (existingCourse.success) {
+    if (existingCourse.success && existingCourse.course) { // if course exists
       return existingCourse; // Return the existing course
     }
 
-    // If not found, use Gemini API to get course information
+    // If course not found, use Gemini API to get course information
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_API_KEY) {
       console.error("GEMINI_API_KEY is not defined in environment variables.");
@@ -143,7 +143,7 @@ export async function searchAndAddCourse(prefix: string, number: string, title: 
         error: "GEMINI_API_KEY is not defined. Please set it in your environment variables." 
       };
     }
-    
+
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
@@ -153,14 +153,76 @@ title from bulletin,
 course description from bulletin, 
 course topics from bulletin, 
 related prerequisites from bulletin, a 
-feasible plan for success (according to the class and professor) (the plan for success should be code-output friendly, as in an array of strings), 
+feasible plan for success (according to the class and professor) (the plan for success should simply be an array of strings), 
 and the course's top-5 free study links/urls from google (array of multiple top 5 recommended study resource links according to google that are best for the course and are free and are valid, working urls, along with a description for each of the 5 links) 
-information in JSON format, with only the keys: "title", "description", "topics", "prerequisites", "plan", and "urls" (with the keys "url" and "description" inside the urls array). Use exactly these keys. Do not create any extra keys other than these.`;
+information in JSON format, with only the keys: "title", "description", "topics", "prerequisites", "plan", and "urls" (with the keys "url" and "description" inside the urls array). Use exactly these keys. Do not create any extra keys other than these. Do not use markdown code.`;
 
     const result = await model.generateContent(prompt);
+    console.log('Gemini result: ', result);
     const response = await result.response;
+    console.log('Gemini response: ', response);
     const text = response.text();
-    const courseJSON = JSON.parse(text); // response JSON we work with
+    console.log('Gemini text: ', text);
+    
+    // Validate that we got a response
+    if (!text) {
+      console.error('Empty response from Gemini API');
+      return {
+        success: false,
+        error: 'Failed to get course information from AI'
+      };
+    }
+
+    let courseJSON;
+    try {
+      // Clean response text by removing markdown code block markers (if any) and any extra whitespace
+      const cleanedText = text.replace(/```json\n?|\n?```/g, '').trim();
+      
+      // Parse  JSON response
+      courseJSON = JSON.parse(cleanedText);
+      
+      // Ensure plan is always an array of strings
+      if (courseJSON.plan) {
+        if (typeof courseJSON.plan === 'string') {
+          // if plan is a string, try to parse it as JSON in case it's a stringified array
+          try {
+            const parsedPlan = JSON.parse(courseJSON.plan);
+            courseJSON.plan = Array.isArray(parsedPlan) ? parsedPlan : [courseJSON.plan];
+          } catch {
+            // if parsing fails, treat it as a single string item in array
+            courseJSON.plan = [courseJSON.plan];
+          }
+        } else if (!Array.isArray(courseJSON.plan)) {
+          // if plan neither string nor array, convert to array
+          courseJSON.plan = [String(courseJSON.plan)];
+        }
+      } else {
+        // if plan null/undefined
+        courseJSON.plan = [];
+      }
+      
+      console.log('Processed plan:', courseJSON.plan);
+      
+    } catch (parseError) {
+      console.error('Failed to parse Gemini API response:', parseError);
+      return {
+        success: false,
+        error: 'Failed to parse course information'
+      };
+    }
+
+    // Validate required fields
+    if (!courseJSON.title || !courseJSON.description) {
+      console.error('Missing required fields in Gemini API response:', courseJSON);
+      return {
+        success: false,
+        error: 'Invalid course information received'
+      };
+    }
+
+    // Debug the plan field
+    console.log('Plan field type:', typeof courseJSON.plan);
+    console.log('Plan field value:', courseJSON.plan);
 
     // Create new course with properly mapped data
     const newCourse = await Course.create({
@@ -171,11 +233,11 @@ information in JSON format, with only the keys: "title", "description", "topics"
       description: courseJSON.description,
       topics: courseJSON.topics,
       prerequisites: courseJSON.prerequisites,
-      plan: courseJSON.plan,
-      resourceUrls: courseJSON.urls.map((url: { url: string, description: string }) => ({
+      plan: courseJSON.plan || [], // Keep as array, default to empty array if undefined
+      resourceUrls: courseJSON.urls?.map((url: { url: string, description: string }) => ({
         url: url.url,
         description: url.description
-      })), // Map each object in gemini's urls array to new course object's resourceUrls array
+      })) || [], // Map each object in gemini's urls array to new course object's resourceUrls array
       posts: [] // Initialize empty posts array
     });
 
@@ -183,7 +245,8 @@ information in JSON format, with only the keys: "title", "description", "topics"
   } catch (error) {
     console.error('Error searching course:', error);
     return {
-      success: false, error: 'Failed to search course',
+      success: false, 
+      error: error instanceof Error ? error.message : 'Failed to search course'
     };
   }
 }

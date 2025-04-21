@@ -30,8 +30,8 @@ async function searchYouTubeVideos(query: string, maxResults: number = 20) {
     }
 
     const data = await response.json();
-    
-    // Transform the YouTube API response into our post format 
+
+    // Transform the YouTube API response into our post format and store in videos
     const videos = data.items.map((item: any) => ({
       title: item.snippet.title,
       description: item.snippet.description,
@@ -40,9 +40,11 @@ async function searchYouTubeVideos(query: string, maxResults: number = 20) {
       thumbnail: item.snippet.thumbnails.high?.url || item.snippet.thumbnails.default.url,
       postType: 'youtube' as const,
       // Note: course and user will be added when creating the post
-    }));
+    })); // searchYouTubeVideos
 
     return { success: true, videos };
+    // print out all videos for testing
+    console.log(videos);
   } catch (error) {
     console.error('Error searching YouTube videos:', error);
     return { success: false, error: 'Failed to search YouTube videos' };
@@ -149,6 +151,9 @@ const Contribute: React.FC = () => {
     url: '',
   });
 
+  const [searchInput, setSearchInput] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+
   // Initialize with videos when component mounts
   useEffect(() => {
     showVideos();
@@ -225,6 +230,19 @@ const Contribute: React.FC = () => {
     setSelectedVideo(null); // uncheck the selected video
   };
 
+  const searchYouTubeVideos = async (query: string) => {
+    try {
+      const response = await fetch(`/api/youtube?query=${encodeURIComponent(query)}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch YouTube videos');
+      }
+      const data = await response.json();
+      setItems(data.items);
+    } catch (error) {
+      console.error('Error searching YouTube videos:', error);
+    }
+  };
+
   return (
     <div>
       {/* Contribution Title */}
@@ -245,7 +263,10 @@ const Contribute: React.FC = () => {
 
           {/* Course Selection */}
           <div className="border-2 border-neon-violet rounded-lg">
-            <select className="bg-nav-purple rounded-md font-semibold mr-3 flex-1 w-full h-10 text-white p-2">
+            <select 
+              className="bg-nav-purple rounded-md font-semibold mr-3 flex-1 w-full h-10 text-white p-2"
+              aria-label="Select a course"
+            >
               <option>Select course</option>
             </select>
             {/*<input type="text" placeholder="Title" className="bg-nav-purple outline-none text-white flex-1 w-5/6 mx-auto h-10" />*/}
@@ -335,12 +356,19 @@ const Contribute: React.FC = () => {
             <div className="ml-[10px] mr-[10px] grow">
               <div className="flex max-w-[500px]">
                 <input
+                  title="YouTube Search Bar"
                   type="text"
-                  placeholder="YouTube Search"
+                  placeholder={activeTab === 'Videos' ? 'YouTube Search' : 'Music Search'}
                   className="p-[5px] w-[400px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40 outline-none"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
                 />
-                <button className="p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]">
-                  <MagnifyingGlass size={24} className="align-middle" color="white" />
+                <button
+                  className="p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]"
+                  onClick={() => searchYouTubeVideos(searchInput)}
+                  title="Search YouTube videos"
+                >
+                  <MagnifyingGlass size={24} className="align-middle group-hover:scale-110 transition-transform duration-200" color="white" />
                 </button>
               </div>
             </div>

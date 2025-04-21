@@ -11,11 +11,20 @@ export async function GET(request: NextRequest) {
   try {
     const result = await fetchCoursePosts(courseId);
     if (!result.success) {
-        return NextResponse.json({ error: result.error }, { status: 500 });
+        return NextResponse.json({ 
+          success: false, 
+          error: result.error || 'Failed to fetch posts' 
+        }, { status: 500 });
     }
-    return NextResponse.json({ posts: result.posts });
+    return NextResponse.json({ 
+      success: true, 
+      posts: result.posts 
+    });
   } catch (error) {
     console.error('Error fetching posts:', error);
-    return NextResponse.json({ error: 'Failed to fetch posts' }, { status: 500 });
+    return NextResponse.json({ 
+      success: false, 
+      error: 'Failed to fetch posts' 
+    }, { status: 500 });
   }
 }
