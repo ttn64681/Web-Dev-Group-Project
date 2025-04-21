@@ -18,13 +18,14 @@ import { NextApiRequestCookies } from 'next/dist/server/api-utils';
 export async function GET(request: NextRequest) {
   try {
     // Get query parameters via URL
-    // e.g. http://localhost:3000/api/courses?prefix=CSCI&number=1301&title=Introduction%20to%20Computer%20Science
+    // e.g. http://localhost:3000/api/courses?prefix=CSCI&number=1301&title=Introduction%20to%20Computer%20Science&objectId=123456
     const { searchParams } = new URL(request.url);
     const prefix = searchParams.get('prefix');
     const number = searchParams.get('number');
     const title = searchParams.get('title') || '';
+    const objectId = searchParams.get('objectId') || '';
 
-    console.log(`API Request: prefix=${prefix}, number=${number}, title=${title}`);
+    console.log(`API Request: prefix=${prefix}, number=${number}, title=${title}, objectId=${objectId}`);
 
     // If prefix and number are provided, fetch specific course
     if (prefix && number) {
