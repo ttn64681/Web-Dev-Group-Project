@@ -40,12 +40,14 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
       if (response?.error) {
         console.error(response.error);
+        setMessage('Incorrect username or password entered')
         //setError(response.error.message || "An error occured");
       } else {
         
       }
     } catch (e: any) {
       console.error(e);
+      setMessage('Incorrect username or password')
       console.log("There was an error logging in");
       //setError("Check your Credentials");
     }

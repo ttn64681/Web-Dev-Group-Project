@@ -23,16 +23,16 @@ type ItemsProps = {
 
 const Items: React.FC<ItemsProps> = ({ items, onSelectItem }) => {
   // State for tracking selected item
-  const [selectedItem, setSelectedItem] = useState<number | null>(null);
+  const [selectedItem, setSelectedItem] = useState<ItemType | null>(null);
 
   // Handler for checkbox changes
   const handleCheckboxChange = (item: ItemType) => {
-    if (selectedItem === item.id) {
+    if (selectedItem === item) {
       // if already checked, uncheck
       setSelectedItem(null);
       onSelectItem(null);
     } else {
-      setSelectedItem(item.id);
+      setSelectedItem(item);
       onSelectItem(item);
     }
   };
@@ -41,12 +41,12 @@ const Items: React.FC<ItemsProps> = ({ items, onSelectItem }) => {
     <div className="flex flex-col gap-4 mt-4">
       {/* Maps out the items*/}
       {items.map((item) => (
-        <div key={item.id} className="flex items-start gap-4 p-4 bg-[#33203A] rounded-lg">
+        <div key={item.date} className="flex items-start gap-4 p-4 bg-[#33203A] rounded-lg">
           {/* Added checkbox input */}
           <label className="flex items-center gap-2">
             <input
               type="checkbox"
-              checked={selectedItem === item.id}
+              checked={selectedItem === item}
               onChange={() => handleCheckboxChange(item)}
               className="mt-1 scale-150"
               title={`Select ${item.title}`}

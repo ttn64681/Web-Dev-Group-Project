@@ -23,6 +23,7 @@ type ItemType = {
   url: string;
   date: string;
   channel: string;
+  thumbnail?: string;
 };
 
 type CourseType = {
@@ -65,6 +66,7 @@ const Contribute: React.FC = () => {
   const [activeTab, setActiveTab] = useState('Videos');
   const [items, setItems] = useState<ItemType[]>([]); // set searched items
   const [courses, setCourses] = useState<CourseType[]>([]); // set courses for search bar
+  const [selectedCourse, setSelectedCourse] = useState('');
 
   // State for tracking selected YT video and form input values
   const [selectedVideo, setSelectedVideo] = useState<ItemType | null>(null);
@@ -144,22 +146,42 @@ const Contribute: React.FC = () => {
         : null,
     };
 
+    if(activeTab == 'Links') {
+      console.log("The selected course is: ", selectedCourse);
+      console.log("The Link title is: \n", postData.postTitle);
+      console.log("The Link description is: \n", postData.postDescription);
+      console.log("The Link url is: \n", postData.postUrl);
+    }
+
+    if(activeTab == 'Videos') {
+      console.log("The selected course is: ", selectedCourse);
+      console.log("The Video Posts title is: \n", postData.postTitle);
+      console.log("The Video Posts description is: \n", postData.postDescription);
+      console.log("The Videos url is: \n", selectedVideo?.url);
+      console.log("The Videos thumbnail url is: \n", selectedVideo?.thumbnail);
+    }
+
+    if(activeTab == 'Music') {
+      console.log("The selected course is: ", selectedCourse);
+      console.log("The Music Posts title is: \n", postData.postTitle);
+      console.log("The Music Posts description is: \n", postData.postDescription);
+      console.log("The Music url is: \n", selectedVideo?.url);
+      console.log("The Music thumbnail url is: \n", selectedVideo?.thumbnail);
+    }
+
     // Reset form and selection
     setFormData({
       title: '',
       desc: '',
       url: '',
     });
-    setSelectedVideo(null); // uncheck the selected video
   };
 
   const fetchCourses = async () => {
-    console.log("Fetching courses");
     try {
       const response = await fetch(`/api/courses`);
       const data = await response.json();
 
-      console.log("Data: ", data);
       if (data.success) {
         setCourses(data.courses);
       } else {
@@ -208,6 +230,7 @@ const Contribute: React.FC = () => {
             <select
               className="bg-nav-purple rounded-md font-semibold mr-3 flex-1 w-full h-10 text-white p-2"
               aria-label="Select a course"
+              onChange={(e) => setSelectedCourse(e.target.value)}
             >
               {courses.map((course, index) => (
                 <option key={index}>
