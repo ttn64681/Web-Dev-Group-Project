@@ -3,15 +3,19 @@ import mongoose from "mongoose";
 
 const  connectMongoDB = async (): Promise<void> => {
     try {
-        const uri = process.env.NEXT_PUBLIC_MONGODB_URI; //To use this make sure your .env file has NEXT_PUBLIC_MONGODB_URI, as that is the value it is searching for
+        console.log("Attempting to connect to MongoDB...");
+        const uri = process.env.MONGODB_URI;
         if (!uri) {
+            console.error("MONGODB_URI is not defined in environment variables.");
             throw new Error("MONGODB_URI is not defined in environment variables.");
         }
-
+        
+        console.log("MongoDB URI found, connecting...");
         await mongoose.connect(uri);
         console.log("Connected to MongoDB.");
     } catch (error) {
-        console.log("Error connecting to MongoDB:", (error as Error).message);
+        console.error("Error connecting to MongoDB:", (error as Error).message);
+        throw error; // Re-throw the error to propagate it up
     }
 };
 

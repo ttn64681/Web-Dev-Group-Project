@@ -32,12 +32,14 @@ const Navbar: React.FC<NavbarProps> = ({
   const [isLoggedin, setIsLoggedIn] = useState(!!session?.user);
   const [User, setUser] = useState('');
 
+
   useEffect(() => {
     setIsLoggedIn(session?.user != null);
     if (status == "authenticated") {
       isAuthenticated = true;
       setIsLoggedIn(true);
       setUser(session?.user.username);
+      username = session.user.username;
     } else {
       setIsLoggedIn(false);
       isAuthenticated = false;
@@ -103,14 +105,14 @@ const Navbar: React.FC<NavbarProps> = ({
         </Link>
       </button>
 
-      {/* Desktop Navigation - hidden on mobile (md: shown) */}
+      {/* Desktop NavLinks - hidden on mobile (md: shown) */}
       <div className="hidden md:flex gap-10 absolute left-1/2 transform -translate-x-1/2">
         <NavLink href="/">Home</NavLink>
         <NavLink href="/course-search">Search</NavLink>
         <NavLink href="/contribute">Contribute</NavLink>
       </div>
 
-      {/* Mobile Menu Button - shown on mobile, hidden on desktop (md:hidden) */}
+      {/* Mobile Hamburger Button - shown on mobile, hidden on desktop (md:hidden) */}
       <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         className="md:hidden text-white hover:text-neon-pink transition-colors duration-200"

@@ -43,7 +43,7 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
     courseName: '',
   });
 
-  const [courseData, setCourseData] = useState({
+  const [courseJSON, setcourseJSON] = useState({
     title: '-',
     topics: '-',
     description: '-',
@@ -68,31 +68,29 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
 
       <div className="w-3/5 ml-auto mr-auto h-full pb-10">
         {/*TITLE*/}
-        {activeTab == "Overview" ? 
-          (
-            <div className="flex justify-center items-center mt-[50px] mb-[30px]">
-              <MagnifyingGlass
-                size={64}
-                color="#6CFEFE"
-                className="ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]"
-              />
-              <h2 className="text-[3em] text-[#6CFEFE] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]">
-                Course Search
-              </h2>
-            </div>
-          ):(
-            <div className="flex justify-center items-center mt-[50px] mb-[30px]">
-              <FileText
-                size={64}
-                color="#F09A35"
-                className="ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]"
-              />
-              <h2 className="text-[3em] text-[#F09A35] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]">
-                Resources
-              </h2>
-            </div>
-          )
-        }
+        {activeTab == 'Overview' ? (
+          <div className="flex justify-center items-center mt-[50px] mb-[30px]">
+            <MagnifyingGlass
+              size={64}
+              color="#6CFEFE"
+              className="ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]"
+            />
+            <h2 className="text-[3em] text-[#6CFEFE] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]">
+              Course Search
+            </h2>
+          </div>
+        ) : (
+          <div className="flex justify-center items-center mt-[50px] mb-[30px]">
+            <FileText
+              size={64}
+              color="#F09A35"
+              className="ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]"
+            />
+            <h2 className="text-[3em] text-[#F09A35] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]">
+              Resources
+            </h2>
+          </div>
+        )}
 
         {isVideoSelected ? (
           /* RESOURCE FORUM - Shows if video is selected*/
