@@ -1,7 +1,7 @@
 'use client';
 
 import CourseSearch from '@/components/CourseSearch';
-import connectMongoDB from '../../../../config/mongodb';
+import connectMongoDB from '../../../../../../config/mongodb';
 
 export default function CourseSearchPage() {
   // TODO: Add page layout
@@ -13,7 +13,7 @@ export default function CourseSearchPage() {
 
   return (
     <div>
-      <CourseSearch activeTab={'Overview'} courseId={''} isVideoSelected={false} />
+      <CourseSearch activeTab="Overview" isCourseSelected={false} isVideoSelected={true} />
     </div>
   );
 }

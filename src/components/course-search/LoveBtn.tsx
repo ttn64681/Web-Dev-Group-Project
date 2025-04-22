@@ -2,11 +2,49 @@
 import React, { useState, useEffect } from 'react';
 import { Heart } from '@phosphor-icons/react';
 
-const LoveBtn: React.FC = () => {
-  const [loved, setLoved] = useState(false);
+type LoveBtnProps = {
+  likes: number,
+  likedStatus: boolean,
+  postId: string
+}
 
-  const handleClick = () => {
-    setLoved((loved) => !loved);
+const LoveBtn: React.FC<LoveBtnProps> = ({likes, likedStatus, postId}: LoveBtnProps) => {
+
+  const [liked, setLiked] = useState(likedStatus);
+  const [likeNum, setLikeNum] = useState(likes);
+
+
+  const handleClick = async () => {
+
+    //Changes liked status
+    setLiked((liked) => !liked);
+
+    //Updates like numbers by 1
+    if (liked) {
+
+      //LOCAL CHANGE
+      setLikeNum(likeNum => likeNum + 1);
+
+      //GLOBAL CHANGE
+      const response = await fetch(`/api/posts/${postId}/like`, {
+        method: 'DELETE'
+      })
+      await response.json()
+      
+    } 
+    //Updates like numbers down by 1
+    else {
+
+      //LOCAL CHANGE
+      setLikeNum(likeNum => likeNum - 1);
+
+      //GLOBAL CHANGE
+      const response = await fetch(`/api/posts/${postId}/unlike`, {
+        method: 'DELETE'
+      })
+      await response.json();
+    }
+
   };
 
   return (
@@ -17,10 +55,10 @@ const LoveBtn: React.FC = () => {
             size={24}
             color="#B3B3B3"
             className="mr-[3px] hover:scale-125 transition-transform duration-200"
-            weight={`${loved ? 'fill' : 'bold'}`}
+            weight={`${liked ? 'fill' : 'bold'}`}
           />
         </button>
-        <h3 className="text-white font-bold">#</h3>
+        <h3 className="text-white font-bold">{likes}</h3>
       </div>
     </div>
   );

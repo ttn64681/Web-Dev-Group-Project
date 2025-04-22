@@ -1,4 +1,5 @@
 'use client';
+import mongoose from 'mongoose';
 import { useState, useEffect } from 'react';
 import CourseSearchArea from './course-search/CourseSearchArea';
 import OverviewBox from './course-search/OverviewBox';
@@ -7,17 +8,23 @@ import Sidebar from './course-search/Sidebar';
 import { MagnifyingGlass, FileText } from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
 import ResourceForum from './course-search/ResourceForum';
+import { Course } from '@/dbInterface/dbOperations';
+import { Post } from '@/dbInterface/dbOperations';
 
 type CourseSearchProps = {
   activeTab: string;
-  courseId: string;
+  isCourseSelected: boolean;
   isVideoSelected: boolean;
+  courseInfo?: Course;
+  postInfo?: Post;
 };
 
 const CourseSearch: React.FC<CourseSearchProps> = ({
-  activeTab,
-  courseId,
+  activeTab,  
+  isCourseSelected,
   isVideoSelected,
+  courseInfo,
+  postInfo
 }: CourseSearchProps) => {
   // TODO: Add state management for:
   // - Course search inputs
@@ -39,7 +46,7 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
 
   const [courseSearchData, setCourseSearchData] = useState({
     prefix: '-',
-    courseNum: 0,
+    courseNum: '',
     courseName: '',
   });
 
@@ -54,8 +61,54 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
     router.push('/course-search/courseId/');
   };
   const showResources = () => {
-    router.push('/course-search/courseId/resources/');
+    if (isCourseSelected) {
+      router.push('/course-search/courseId/resources/'); 
+    }
   };
+
+
+  //Course submission 
+  async function submitInfo(e: React.MouseEvent<HTMLButtonElement>) {
+
+    //Prevents default behavior
+    e.preventDefault();
+
+    //Checks if valid information is filled out
+    if (courseSearchData.prefix.length == 4 && courseSearchData.courseNum.length == 4 && courseSearchData.courseName.length != 0) {
+
+      //Retrieves course JSON information from prefix, courseNum, and courseName provided
+      const courseJSON = await getSearchInfo(courseSearchData.prefix, courseSearchData.courseNum, courseSearchData.courseName);
+      
+      //Retrieves id and pushes 
+      router.push(`course-search/${courseJSON._id}`);
+
+    }
+  }
+
+  async function getSearchInfo(prefix: string, courseNum: string, title: string) {
+
+    //Fetches information
+    const response = 
+    await fetch(`/api/courses?prefix=${prefix}&number=${courseNum}&title=${title}`, {
+      method: 'GET'
+    });
+
+    await response.json();
+
+    return response.json()
+
+  }
+
+
+  //Updates search info when input is placed into the form
+  const updateSearchInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCourseSearchData(
+      {
+        ...courseSearchData,
+        [e.target.name]: e.target.value 
+      }        
+    );
+  }
 
   //COMPONENT MATERIALS ============================================
 
@@ -94,15 +147,19 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
 
         {isVideoSelected ? (
           /* RESOURCE FORUM - Shows if video is selected*/
-          <ResourceForum />
+          postInfo && <ResourceForum postInfo={postInfo}/>
         ) : (
+          //Ensures courseInfo must exist
+          courseInfo &&
+
           /* SEARCH AREA - Shows if video is not selected and on search mode*/
+
           <div>
             <h4 className="text-[#D163D7] m-[10px]">
               Enter the 4 letter prefix, 4 digit number, and course name.
             </h4>
             <div className="mt-[10px] mb-[10px]">
-              <CourseSearchArea />
+              <CourseSearchArea submitFunc={submitInfo} editFunc={updateSearchInfo}/>
             </div>
 
             {/* TABS*/}
@@ -115,15 +172,15 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
               </button>
               <button
                 onClick={showResources}
-                className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Resources' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}
+                className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Resources' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} ${isCourseSelected ? "opacity-100" : "opacity-25"} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}
               >
                 Resources
               </button>
             </div>
 
-            {/* TODO: Add course overview content and resources*/}
+            {/* OVERVIEW OR RESOURCES BOX*/}
             <div className="mt-[10px]">
-              {activeTab == 'Overview' ? <OverviewBox /> : <ResourcesBox />}
+              {activeTab == 'Overview' ? <OverviewBox isCourseSelected={isCourseSelected} courseInfo={courseInfo} /> : <ResourcesBox isCourseSelected={isCourseSelected} courseInfo={courseInfo}/>}
             </div>
           </div>
         )}
