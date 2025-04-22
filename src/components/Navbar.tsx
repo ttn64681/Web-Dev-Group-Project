@@ -33,18 +33,17 @@ const Navbar: React.FC<NavbarProps> = ({
   const [User, setUser] = useState('');
 
 
-  useEffect(() => {
-    setIsLoggedIn(session?.user != null);
-    if (status == "authenticated") {
+  useEffect(() => { 
+    if (status === "authenticated" && session?.user) {
       isAuthenticated = true;
       setIsLoggedIn(true);
-      setUser(session?.user.username);
-      username = session.user.username;
+      setUser(session.user.username || '');
     } else {
-      setIsLoggedIn(false);
       isAuthenticated = false;
+      setIsLoggedIn(false);
+      setUser('');
     }
-  }, [status]);
+  }, [status, session]);
 
   const handleLogout = () => {
     onLogout();
