@@ -1,7 +1,9 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import CourseSearch from '@/components/CourseSearch';
 import connectMongoDB from '../../../../../config/mongodb';
+import { Course } from '@/dbInterface/dbOperations';
 
 export default function CourseSearchPage() {
   // TODO: Add page layout
@@ -9,11 +11,31 @@ export default function CourseSearchPage() {
   // TODO: Add error boundary
   // TODO: Add loading states
 
-  //Default pages
+  //STATE INFO
+  const [currCourse, setCurrCourse] = useState< Course | undefined>(undefined)
+  
+  //URL PROCESSING
+  useEffect(() => {
+
+    const fetchCourseInfo = async () => {
+      const currURL = new URL(window.location.href);
+      const currURLpath = currURL.pathname;
+      const objectId = currURLpath.substring(currURLpath.lastIndexOf('/') + 1);
+
+      const response = await fetch(`api/courses/${objectId}`, {
+        method: 'GET'
+      }) 
+
+      setCurrCourse(await response.json())
+    }
+
+    fetchCourseInfo();
+
+  }, []);
 
   return (
     <div>
-      <CourseSearch activeTab="Overview" isCourseSelected={false} isVideoSelected={false} />
+      <CourseSearch activeTab="Overview" isCourseSelected={false} isVideoSelected={false} courseInfo={currCourse}/>
     </div>
   );
 }

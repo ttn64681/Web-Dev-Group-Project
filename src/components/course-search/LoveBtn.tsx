@@ -4,26 +4,47 @@ import { Heart } from '@phosphor-icons/react';
 
 type LoveBtnProps = {
   likes: number,
-  likedStatus: boolean
+  likedStatus: boolean,
+  postId: string
 }
 
-const LoveBtn: React.FC<LoveBtnProps> = ({likes, likedStatus}: LoveBtnProps) => {
+const LoveBtn: React.FC<LoveBtnProps> = ({likes, likedStatus, postId}: LoveBtnProps) => {
 
   const [liked, setLiked] = useState(likedStatus);
   const [likeNum, setLikeNum] = useState(likes);
 
 
-  const handleClick = () => {
+  const handleClick = async () => {
 
     //Changes liked status
     setLiked((liked) => !liked);
 
-    liked ? setLikeNum(likeNum => likeNum + 1) :  setLikeNum(likeNum => likeNum - 1);
+    //Updates like numbers by 1
+    if (liked) {
 
-    //Update likes BELOW
-    /*
-    
-    */
+      //LOCAL CHANGE
+      setLikeNum(likeNum => likeNum + 1);
+
+      //GLOBAL CHANGE
+      const response = await fetch(`/api/posts/${postId}/like`, {
+        method: 'DELETE'
+      })
+      await response.json()
+      
+    } 
+    //Updates like numbers down by 1
+    else {
+
+      //LOCAL CHANGE
+      setLikeNum(likeNum => likeNum - 1);
+
+      //GLOBAL CHANGE
+      const response = await fetch(`/api/posts/${postId}/unlike`, {
+        method: 'DELETE'
+      })
+      await response.json();
+    }
+
   };
 
   return (

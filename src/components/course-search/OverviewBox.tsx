@@ -16,7 +16,7 @@ const OverviewBox: React.FC<OverviewBoxProps> = ({
 
   //topicArray declaration
   let topicArray = ['Topic 1', 'Topic 2', 'Topic 3'];
-  if (courseInfo) {
+  if (courseInfo.topics) {
     topicArray = [];
     topicArray = courseInfo.topics.split(',');
   }

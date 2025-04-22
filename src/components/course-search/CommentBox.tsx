@@ -1,15 +1,15 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 
-type CommentProps = {
+type CommentBoxProps = {
   username: string,
   commentText: string
 }
 
-const Comment: React.FC<CommentProps> = ({
+const CommentBox: React.FC<CommentBoxProps> = ({
   username,
   commentText
-}: CommentProps) => {
+}: CommentBoxProps) => {
   return (
     <div className="bg-comment-bg-purple p-4 rounded-lg">
       <div className="flex flex-col">
@@ -22,4 +22,4 @@ const Comment: React.FC<CommentProps> = ({
   );
 };
 
-export default Comment;
+export default CommentBox;

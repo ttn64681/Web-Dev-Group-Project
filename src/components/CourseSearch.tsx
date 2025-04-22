@@ -66,8 +66,9 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
     }
   };
 
-  //Course searching 
-  async function getSearchInfo (e: React.SyntheticEvent<HTMLFormElement>) {
+
+  //Course submission 
+  async function submitInfo(e: React.MouseEvent<HTMLButtonElement>) {
 
     //Prevents default behavior
     e.preventDefault();
@@ -75,16 +76,28 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
     //Checks if valid information is filled out
     if (courseSearchData.prefix.length == 4 && courseSearchData.courseNum.length == 4 && courseSearchData.courseName.length != 0) {
 
-      //Fetches information
-      const response = 
-      await fetch(`/api/courses?prefix=${courseSearchData.prefix}&number=${courseSearchData.courseNum}`, {
-        method: 'GET'
-      });
+      //Retrieves course JSON information from prefix, courseNum, and courseName provided
+      const courseJSON = await getSearchInfo(courseSearchData.prefix, courseSearchData.courseNum, courseSearchData.courseName);
+      
+      //Retrieves id and pushes 
+      router.push(`course-search/${courseJSON._id}`);
 
-      return await response.json();
     }
   }
 
+  async function getSearchInfo(prefix: string, courseNum: string, title: string) {
+
+    //Fetches information
+    const response = 
+    await fetch(`/api/courses?prefix=${prefix}&number=${courseNum}&title=${title}`, {
+      method: 'GET'
+    });
+
+    await response.json();
+
+    return response.json()
+
+  }
 
 
   //Updates search info when input is placed into the form
@@ -134,15 +147,19 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
 
         {isVideoSelected ? (
           /* RESOURCE FORUM - Shows if video is selected*/
-          <ResourceForum postInfo={postInfo}/>
+          postInfo && <ResourceForum postInfo={postInfo}/>
         ) : (
+          //Ensures courseInfo must exist
+          courseInfo &&
+
           /* SEARCH AREA - Shows if video is not selected and on search mode*/
+
           <div>
             <h4 className="text-[#D163D7] m-[10px]">
               Enter the 4 letter prefix, 4 digit number, and course name.
             </h4>
             <div className="mt-[10px] mb-[10px]">
-              <CourseSearchArea submitFunc={getSearchInfo} editFunc={updateSearchInfo}/>
+              <CourseSearchArea submitFunc={submitInfo} editFunc={updateSearchInfo}/>
             </div>
 
             {/* TABS*/}
