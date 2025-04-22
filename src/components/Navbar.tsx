@@ -126,6 +126,7 @@ const Navbar: React.FC<NavbarProps> = ({
           {/* Close button in top-right corner */}
           <div className="absolute top-4 right-4">
             <button
+              title="Close Menu"
               onClick={() => setIsMenuOpen(false)}
               className="text-white hover:text-neon-pink transition-colors duration-200"
             >

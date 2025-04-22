@@ -56,8 +56,9 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
 
   return (
     <div>
-      <button className="hover:scale-110 transition-transform duration-200">
+      <button className="hover:scale-110 transition-transform duration-200" title="Video thumbnail">
         <Image
+          title="Video thumbnail"
           src={thumbnail ? thumbnail : "https://picsum.photos/id/5/264/154"}
           alt={'Video thumbnail'}
           width={264}
