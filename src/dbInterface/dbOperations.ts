@@ -46,7 +46,7 @@ export type Course = {
  * Represents a post in the database
  */
 export type Post = {
-  _id: string;                            // MongoDB ObjectID
+  _id?: string;                            // MongoDB ObjectID
   title: string;                          // "Sick Coding Tips"
   description: string;
   url: string;                            // youtube, link, or music link (youtube)
@@ -54,8 +54,8 @@ export type Post = {
   postType: 'youtube' | 'link' | 'music';
   course: string;                       // ObjectID (mongodb) of the course this post belongs to
   user: string;                           // ObjectID (mongodb) of the user who created the post
-  likes?: string[];                       // array of user IDs who liked the post
-  comments?: Comment[];                   // array of comments on the post
+  likes: string[];                       // array of user IDs who liked the post
+  comments: Comment[];                    // array of comments on the post (initialized as empty array)
 };
 
 /**
@@ -203,7 +203,7 @@ information in JSON format, with only the keys: "title", "description", "topics"
       
       console.log('Processed plan:', courseJSON.plan);
       
-    } catch (parseError) {
+    } catch (parseError) { // if parsing fails
       console.error('Failed to parse Gemini API response:', parseError);
       return {
         success: false,
@@ -219,10 +219,6 @@ information in JSON format, with only the keys: "title", "description", "topics"
         error: 'Invalid course information received'
       };
     }
-
-    // Debug the plan field
-    console.log('Plan field type:', typeof courseJSON.plan);
-    console.log('Plan field value:', courseJSON.plan);
 
     // Create new course with properly mapped data
     // newCourse is the course object, not the courseId
@@ -270,10 +266,12 @@ export async function addPost(postData: Post) {
       return { success: false, error: 'Course not found' };
     }
 
-    // Create the post
+    // Create the post with initialized empty arrays for comments and likes
     const post = await Post.create({ // mongoose method that creates new post in the database
       ...postData,
       course: course._id, // Use the course's MongoDB _id
+      comments: [], // Initialize empty comments array
+      likes: []     // Initialize empty likes array
     });
 
     // Update the course's posts array
@@ -290,7 +288,7 @@ export async function addPost(postData: Post) {
 
 /**
  * Fetches all posts for a specific course
- * @param courseId - The ID of the course
+ * @param courseId - The ID of the course ("CSCI-1301")
  * @returns Object containing success status and either the posts or an error message
  */
 export async function fetchCoursePosts(courseId: string) {
@@ -298,7 +296,7 @@ export async function fetchCoursePosts(courseId: string) {
 
   try {
     // First get the course
-    const course = await Course.findOne({ courseId });
+    const course = await Course.findOne({ courseId }); // search for course by courseId
     if (!course) {
       return { success: false, error: 'Course not found' };
     }
@@ -309,6 +307,8 @@ export async function fetchCoursePosts(courseId: string) {
       .populate('course') // Replace course ObjectID with full course document
       .populate('comments.user', 'username') // Replace comments user ObjectIDs with user documents (only username field)
       .sort({ likes: -1, createdAt: -1 }); // Sort by most likes first, then by newest first
+
+    console.log('Posts: ', posts);
 
     return { success: true, posts };
   } catch (error) {
@@ -440,5 +440,105 @@ export async function fetchAllCourses() {
   } catch (error) {
     console.error('Error fetching all courses:', error);
     return { success: false, error: 'Failed to fetch courses' };
+  }
+}
+
+/**
+ * Deletes a post from the database
+ * @param postId - The ID of the post to delete
+ * @param userId - The ID of the user attempting to delete the post
+ * @returns Object containing success status and either a success message or an error message
+ */
+export async function deletePost(postId: string, userId: string) {
+  try {
+    await connectMongoDB();
+
+    // First find the post to check if it exists and if the user is authorized
+    const post = await Post.findById(postId);
+    
+    // if post not found
+    if (!post) {
+      return {
+        success: false,
+        error: 'Post not found'
+      };
+    }
+
+    // Check if user is the owner of the post
+    if (post.user.toString() !== userId) {
+      return {
+        success: false,
+        error: 'Not authorized'
+      };
+    }
+
+    // Get the course to update its posts array
+    const course = await Course.findById(post.course);
+    if (course) {
+      // Remove the post ID from the course's posts array
+      await Course.findByIdAndUpdate(course._id, {
+        $pull: { posts: postId } // $pull removes the post ID from the posts array
+      });
+    }
+
+    // Delete the post
+    await Post.findByIdAndDelete(postId);
+
+    return {
+      success: true,
+      message: 'Post deleted successfully'
+    };
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    return {
+      success: false,
+      error: 'Failed to delete post'
+    };
+  }
+}
+
+export async function fetchCoursePost(postId: string) {
+  try {
+    await connectMongoDB();
+    const post = await Post.findById(postId)
+      .populate('user', 'name image')
+      .populate('comments.user', 'name image')
+      .lean(); // returns the post as a plain JavaScript object
+    
+    if (!post) {
+      return {
+        success: false,
+        error: 'Post not found'
+      };
+    }
+
+    // Type assertion to help TypeScript understand the structure
+    const typedPost = post as any;
+
+    return {
+      success: true,
+      post: {
+        ...typedPost,
+        _id: typedPost._id.toString(),
+        user: typedPost.user ? {
+          ...typedPost.user,
+          _id: typedPost.user._id.toString()
+        } : null,
+        comments: typedPost.comments ? typedPost.comments.map((comment: any) => ({
+          ...comment,
+          _id: comment._id.toString(),
+          user: comment.user ? {
+            ...comment.user,
+            _id: comment.user._id.toString()
+          } : null
+        })) : []
+      }
+    };
+  } catch (error) {
+    console.error('Error fetching post:', error);
+    return {
+      success: false,
+      error: 'Failed to fetch post'
+    };
   }
 }

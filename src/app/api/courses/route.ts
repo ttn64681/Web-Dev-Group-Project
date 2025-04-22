@@ -8,24 +8,61 @@ import { NextApiRequestCookies } from 'next/dist/server/api-utils';
  *   method: 'GET',
  * })
  *
- * GET /api/courses?prefix=CSCI&number=1301&title=Introduction%20to%20Computer%20Science - Get specific course
+ * GET /api/courses?prefix=CSCI&number=1301&title=Introduction%20to%20Computer%20Science - Get specific course by prefix & number
  * If course doesn't exist, it will be created automatically.
  * Frontend call example:
  * fetch('/api/courses?prefix=CSCI&number=1301&title=Introduction%20to%20Computer%20Science', {
+ *   method: 'GET',
+ * })
+ *
+ * GET /api/courses?courseId=CSCI-1301 - Get specific course by courseId
+ * Frontend call example:
+ * fetch('/api/courses?courseId=CSCI-1301', {
  *   method: 'GET',
  * })
  */
 export async function GET(request: NextRequest) {
   try {
     // Get query parameters via URL
-    // e.g. http://localhost:3000/api/courses?prefix=CSCI&number=1301&title=Introduction%20to%20Computer%20Science&objectId=123456
+    // e.g. http://localhost:3000/api/courses?prefix=CSCI&number=1301&title=Introduction%20to%20Computer%20Science&courseId=CSCI-1301
     const { searchParams } = new URL(request.url);
     const prefix = searchParams.get('prefix');
     const number = searchParams.get('number');
     const title = searchParams.get('title') || '';
-    const objectId = searchParams.get('objectId') || '';
+    const courseId = searchParams.get('courseId') || '';
 
-    console.log(`API Request: prefix=${prefix}, number=${number}, title=${title}, objectId=${objectId}`);
+    console.log(`API Request: prefix=${prefix}, number=${number}, title=${title}, courseId=${courseId}`);
+
+
+    
+    // If courseId is provided, try to fetch by courseId first
+    if (courseId) {
+      console.log(`Attempting to fetch course by courseId: ${courseId}`);
+      const [coursePrefix, courseNumber] = courseId.split('-');
+      
+      // Check if courseId is in correct format
+      if (!coursePrefix || !courseNumber) {
+        console.error(`Invalid courseId format: ${courseId}`);
+        return NextResponse.json({ 
+          success: false, 
+          error: 'Invalid courseId format. Expected format: PREFIX-NUMBER (e.g., CSCI-1301)' 
+        }, { status: 400 });
+      }
+
+      // Fetch course by courseId's prefix and number
+      const result = await fetchCourse(coursePrefix, courseNumber);
+      console.log(`Fetch result by courseId:`, result);
+      
+      if (result.success && result.course) {
+        console.log(`Returning course found by courseId: ${courseId}`);
+        return NextResponse.json({ 
+          success: true, 
+          course: result.course 
+        });
+      }
+    }
+
+
 
     // If prefix and number are provided, fetch specific course
     if (prefix && number) {
@@ -54,7 +91,7 @@ export async function GET(request: NextRequest) {
           success: true, 
           course: createResult.course 
         });
-      }
+      } // if course doesn't exist, create it
       
       // if course exists, return it
       console.log(`Returning existing course: ${prefix}-${number}`);
@@ -62,7 +99,9 @@ export async function GET(request: NextRequest) {
         success: true, 
         course: result.course 
       });
-    }
+    } // if prefix and number are provided, fetch specific course
+
+
 
     // Otherwise, fetch all courses
     console.log('No specific course requested, fetching all courses');
