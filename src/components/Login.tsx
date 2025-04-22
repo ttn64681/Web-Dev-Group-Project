@@ -26,6 +26,9 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     if (reason === 'not_logged_in') {
       setMessage('Please log in to begin contributing.');
     }
+    if (reason === 'account_created_successfully') {
+      setMessage('Account created succesfully');
+    }
   }, [reason]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
@@ -35,6 +38,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       // Pull user inputs from the login page, send them to the login function
       // inside of the actions folder
       const formData = new FormData(event.currentTarget);
+      console.log("form data: ", formData);
       const response = await doCredentialLogin(formData);
       router.push('/');
 
