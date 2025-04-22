@@ -140,6 +140,9 @@ const Contribute: React.FC = () => {
   };
 
   // Handle form submission with validation
+  // Tracks whether form has been submitted
+  const [submitted, setSubmitted] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -158,6 +161,8 @@ const Contribute: React.FC = () => {
       alert('Please enter a URL');
       return;
     }
+
+    setSubmitted(true);
 
     // Create post data object
     const postData = {
@@ -179,37 +184,44 @@ const Contribute: React.FC = () => {
       desc: '',
       url: '',
     });
+
+    // makes the button usable again after 2 seconds
+    setTimeout(() => setSubmitted(false), 2000);
+
     setSelectedItem(null); // uncheck the selected item
   };
+
+  
+
 
   return (
     <div className="">
       {/* Contribution Title */}
-      <div className="flex flex-row justify-center items-start flex-wrap gap-5 mt-[30px] pb-10">
+      <div className="flex flex-row justify-center items-start flex-wrap gap-3 sm:gap-5 mt-[30px] pt-5 pb-10">
         <div className="flex flex-col-row items-center">
-          <div>
+          <div className="">
             <UsersThree 
               color="#BD11FF"
-              className="drop-shadow-[0_0_10px_rgba(189,17,255,1)] -mt-2" 
-              size={70} />
+              className="drop-shadow-[0_0_10px_rgba(189,17,255,1)] -mt-2 w-14 h-14 sm:w-16 sm:h-16" 
+            />
           </div>
         </div>
 
-        <h1 className="font-dongle font-medium text-7xl text-neon-violet drop-shadow-[0_0_10px_rgba(189,17,255,1)]">Contribution</h1>
+        <h1 className="font-dongle font-medium text-6xl sm:text-7xl text-neon-violet drop-shadow-[0_0_10px_rgba(189,17,255,1)]">Contribution</h1>
       </div>
 
       {/* Container For All Form Elements */}
       <div className="flex flex-col items-center gap-5 pb-10">
 
         <div className="flex-1 w-5/6 mx-auto h-full">
-          <h4 className="font-nunito text-[#D163D7] mb-[10px]">
+          <h4 className="font-nunito text-[#D163D7] mb-[10px] text-sm sm:text-base">
             Select one of the existing classes to post a resource to
           </h4>
-          <p className="font-nunito text-disabled-purple mb-2">Class:</p>
+          <p className="font-nunito text-disabled-purple mb-2 text-sm sm:text-base">Class:</p>
 
           {/* Course Selection */}
-          <div className="border-2 border-neon-violet rounded-lg">
-            <select className="bg-nav-purple rounded-md mr-3 flex-1 w-full h-10 font-nunito text-lg text-white p-2">
+          <div className="border-2 border-neon-violet rounded-lg h-9 sm:h-11">
+            <select className="bg-nav-purple rounded-md mr-3 flex-1 w-full h-8 sm:h-10 font-nunito text-base sm:text-lg text-white pl-2 sm:p-2">
               <option>Select course</option>
             </select>
             {/*<input type="text" placeholder="Title" className="bg-nav-purple outline-none text-white flex-1 w-5/6 mx-auto h-10" />*/}
@@ -219,19 +231,19 @@ const Contribute: React.FC = () => {
           <div className="pt-2 pb-2">
             <button
               onClick={showVideos}
-              className={`m-[10px] ml-0 p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Videos' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}
+              className={`m-[10px] ml-0 p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Videos' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border-[2px] rounded-[10px] inline`}
             >
               Videos
             </button>
             <button
               onClick={showLinks}
-              className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Links' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}
+              className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Links' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border-[2px] rounded-[10px] inline`}
             >
               Links
             </button>
             <button
               onClick={showMusic}
-              className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Music' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}
+              className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Music' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border-[2px] rounded-[10px] inline`}
             >
               Music
             </button>
@@ -242,7 +254,7 @@ const Contribute: React.FC = () => {
         <form onSubmit={handleSubmit} className="flex flex-col h-full gap-5 w-5/6 mx-auto text-white">
           {/* Video/Music Top Container */}
           <div className="bg-component-purple rounded-lg pt-9 pb-5 px-10 -mt-5">
-            <p className="pb-4 text-2xl font-semibold">
+            <p className="pb-4 text-xl sm:text-2xl font-semibold">
               {activeTab === 'Videos' && 'Enter Video Details'}
               {activeTab === 'Links' && 'Enter Post Details'}
               {activeTab === 'Music' && 'Enter Music Details'}
@@ -269,7 +281,7 @@ const Contribute: React.FC = () => {
               value={formData.title}
               onChange={handleFormChange}
               placeholder="Title"
-              className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-full mx-auto h-full border-2 border-form-pink-border rounded-md p-2 mb-4"
+              className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-full h-9 sm:h-11 border-2 border-form-pink-border rounded-md p-2 mx-auto mb-4"
               required
             />
 
@@ -282,49 +294,48 @@ const Contribute: React.FC = () => {
               required
             />
             {activeTab === 'Links' && (
-              <div className="flex justify-end">
+              <div className="flex justify-center sm:justify-end">
                 <button
                   type="submit"
-                  className="p-[5px] pl-[15px] pr-[15px] text-white border-white hover:scale-110 transition-transform duration-200 border-[3px] rounded-[10px] inline"
+                  className=" p-[5px] pl-[15px] pr-[15px] text-white border-white hover:scale-110 transition-transform duration-200 border-[3px] rounded-[10px] inline"
                 >
-                  Submit Post
+                  {submitted ? 'Submitted' : 'Submit Post'}
                 </button>
               </div>
             )}
           </div>
 
-
-
           {/* Video/Music Bottom Container - Hidden for Links tab */}
           {activeTab !== 'Links' && (
             // flex-1 w-5/6 mx-auto h-full text-white 
             <div className="bg-component-purple rounded-lg py-9 px-10">
-              <h2 className="text-white text-2xl pb-4 font-semibold">
+              <h2 className="text-white text-xl sm:text-2xl pb-4 font-semibold">
                 {activeTab === 'Videos' ? 'Search Videos' : 'Search Music'}
               </h2>
               <div className="grow">
-                <div className="flex ">
+                <div className="flex h-8 sm:h-10">
                   <input
                     type="text"
                     placeholder="Search"
                     className="p-[5px] w-full bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40 outline-none"
                   />
-                  <button className="p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]">
+                  <button className="px-[5px] sm:p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]">
                     <MagnifyingGlass size={24} className="align-middle" color="white" />
                   </button>
                 </div>
               </div>
-              <h4 className="mt-10 text-base text-[#EFDEF0]">
+              <h4 className="mt-6 sm:mt-10 text-sm sm:text-base text-[#EFDEF0]">
                 {activeTab === 'Videos' ? 'Select a video:' : 'Select a song'}
               </h4>
 
-              <Items items={items} onSelectItem={setSelectedItem} />
-              <div className="flex justify-end">
+              <Items items={items} selectedItem={selectedItem} onSelectItem={setSelectedItem} />
+              <div className="flex justify-center sm:justify-end">
                 <button
                   type="submit"
-                  className="p-[5px] pl-[15px] pr-[15px] text-white border-white hover:scale-110 transition-transform duration-200 border-[3px] rounded-[10px] inline"
+                  disabled={submitted}
+                  className={`mt-3 sm:m-0 p-[5px] pl-[15px] pr-[15px] border-white border-[3px] rounded-[10px] transition-transform duration-200 text-white  inline ${submitted ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'}`}
                 >
-                  Submit Post
+                  {submitted ? 'Submitted' : 'Submit Post'}
                 </button>
               </div>
             </div>

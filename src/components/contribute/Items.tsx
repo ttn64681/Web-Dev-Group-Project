@@ -15,66 +15,29 @@ type ItemType = {
 // onSelectItem prop for handling selection
 type ItemsProps = {
   items: ItemType[];
+  selectedItem: ItemType | null;
   onSelectItem: (item: ItemType | null) => void;
 };
 
-const Items: React.FC<ItemsProps> = ({ items, onSelectItem }) => {
-  // State for tracking selected item
-  const [selectedItem, setSelectedItem] = useState<number | null>(null);
-
+const Items: React.FC<ItemsProps> = ({ items, selectedItem, onSelectItem }) => {
   // Handler for checkbox changes
   const handleCheckboxChange = (item: ItemType) => {
-    if (selectedItem === item.id) { // if already checked, uncheck
-      setSelectedItem(null);
+    if (selectedItem?.id === item.id) { // if already checked, uncheck
       onSelectItem(null);
     } else {
-      setSelectedItem(item.id);
       onSelectItem(item);
     }
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-2">
       {items.map((item) => (
-        <div key={item.id} className="flex items-start gap-4 pr-4 py-4 bg-[#33203A] rounded-lg">
-          {/* NEW: Added checkbox input */}
-          <input
-            type="checkbox"
-            checked={selectedItem === item.id}
-            onChange={() => handleCheckboxChange(item)}
-            className="mt-1 self-center"
-            style={{ transform: 'scale(1.5)' }}
-          />
-          {/* ORIGINAL: Simple item display without checkbox
-          <div className="flex-1">
-            <div className="flex gap-4">
-              <img src={item.url} alt={item.title} className="w-32 h-32 object-cover rounded-lg" />
-              <div>
-                <h3 className="text-white font-bold">{item.title}</h3>
-                <p className="text-grayish-purple">{item.desc}</p>
-                <p className="text-grayish-purple text-sm mt-2">Posted by: {item.owner}</p>
-              </div>
-            </div>
-          </div>
-          */}
-          {/* NEW: Updated layout with centered checkbox and larger image */}
-          <div className="flex items-center justify-center gap-10">
-            <div className="flex-1">
-              <div className="flex gap-4">
-                <img 
-                  src={`https://picsum.photos/seed/${item.id}/350/200`} 
-                  alt={item.title} 
-                  className="w-[350px] h-[200px] object-cover rounded-lg" 
-                />
-                <div>
-                  <h3 className="text-white text-xl font-bold">{item.title}</h3>
-                  <p className="text-grayish-purple">{item.desc}</p>
-                  <p className="text-grayish-purple text-sm mt-2">Posted by: {item.owner}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Item
+          key={item.id}
+          item={item}
+          isSelected={selectedItem?.id === item.id}
+          onSelectItem={() => handleCheckboxChange(item)}
+        />
       ))}
     </div>
   );
