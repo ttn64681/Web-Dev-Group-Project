@@ -542,3 +542,30 @@ export async function fetchCoursePost(postId: string) {
     };
   }
 }
+
+/**
+ * Fetches all courses with the given prefix
+ * @param prefix - Course prefix (e.g., "CSCI")
+ * @returns Object containing success status and either the courses array or an error message
+ */
+export async function fetchCoursesByPrefix(prefix: string) {
+  await connectMongoDB();
+
+  try {
+    // Find all courses with the given prefix
+    const courses = await Course.find({
+      prefix: prefix,
+    });
+
+    return { 
+      success: true, 
+      courses 
+    };
+  } catch (error) {
+    console.error('Error fetching courses by prefix:', error);
+    return { 
+      success: false, 
+      error: 'Failed to fetch courses by prefix' 
+    };
+  }
+}

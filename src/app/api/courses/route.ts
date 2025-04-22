@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { addCourse, fetchCourse, searchAndAddCourse, fetchAllCourses } from '@/dbInterface/dbOperations';
+import { addCourse, fetchCourse, searchAndAddCourse, fetchAllCourses, fetchCoursesByPrefix } from '@/dbInterface/dbOperations';
 import { NextApiRequestCookies } from 'next/dist/server/api-utils';
 
 /** GET /api/courses - Get all courses (used for course searches)
@@ -20,6 +20,12 @@ import { NextApiRequestCookies } from 'next/dist/server/api-utils';
  * fetch('/api/courses?courseId=CSCI-1301', {
  *   method: 'GET',
  * })
+ * 
+ * GET /api/courses?prefix=CSCI - Get all courses with the given prefix
+ * Frontend call example:
+ * fetch('/api/courses?prefix=CSCI', {
+ *   method: 'GET',
+ * })
  */
 export async function GET(request: NextRequest) {
   try {
@@ -33,9 +39,9 @@ export async function GET(request: NextRequest) {
 
     console.log(`API Request: prefix=${prefix}, number=${number}, title=${title}, courseId=${courseId}`);
 
-
     
-    // If courseId is provided, try to fetch by courseId first
+    
+    // If courseId is provided, try to fetch by courseId first (to be used in contribute)
     if (courseId) {
       console.log(`Attempting to fetch course by courseId: ${courseId}`);
       const [coursePrefix, courseNumber] = courseId.split('-');
@@ -62,7 +68,24 @@ export async function GET(request: NextRequest) {
       }
     }
 
-
+    // If only prefix is provided (no number), fetch all courses with that prefix
+    if (prefix && !number) {
+      console.log(`Fetching all courses with prefix: ${prefix}`);
+      const result = await fetchCoursesByPrefix(prefix);
+      
+      if (!result.success) {
+        console.error(`Failed to fetch courses by prefix:`, result.error);
+        return NextResponse.json({ 
+          success: false, 
+          error: result.error || 'Failed to fetch courses by prefix' 
+        }, { status: 500 });
+      }
+      
+      return NextResponse.json({ 
+        success: true, 
+        courses: result.courses 
+      });
+    }
 
     // If prefix and number are provided, fetch specific course
     if (prefix && number) {

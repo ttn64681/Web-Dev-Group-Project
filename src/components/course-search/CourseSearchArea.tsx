@@ -12,8 +12,19 @@ const CourseSearchArea: React.FC<CourseSearchAreaProps> = ({
   submitFunc,
   editFunc
 }: CourseSearchAreaProps) => {
+  // Add a form submission handler
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // Prevent default form submission
+    // Create a proper button click event
+    const buttonEvent = {
+      preventDefault: () => {},
+      currentTarget: document.querySelector('button[type="submit"]') as HTMLButtonElement
+    } as React.MouseEvent<HTMLButtonElement>;
+    submitFunc(buttonEvent);
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="flex w-[100%]">
         <div className="ml-[10px] mr-[10px]">
           <h3 className="text-[#765178]">Prefix</h3>
@@ -52,7 +63,11 @@ const CourseSearchArea: React.FC<CourseSearchAreaProps> = ({
               onChange={editFunc}
               required
             />
-            <button className="p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]" onClick={submitFunc}>
+            <button 
+              type="submit" 
+              className="p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]"
+              aria-label="Search course"
+            >
               <MagnifyingGlass size={24} className="align-middle" color="white" />
             </button>
           </div>

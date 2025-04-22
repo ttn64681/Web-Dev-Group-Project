@@ -35,7 +35,7 @@ export default function CourseSearchPage() {
   //Processes the component 
   return (
     <div>
-      <CourseSearch activeTab="Overview" isCourseSelected={false} isVideoSelected={false} courseInfo={currCourse}/>
+      <CourseSearch activeTab="Overview" isCourseSelected={false} isPostSelected={false} courseInfo={currCourse}/>
     </div>
   );
 }

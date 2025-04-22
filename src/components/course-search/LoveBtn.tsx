@@ -50,7 +50,7 @@ const LoveBtn: React.FC<LoveBtnProps> = ({likes, likedStatus, postId}: LoveBtnPr
   return (
     <div>
       <div className="flex content-center">
-        <button onClick={handleClick}>
+        <button onClick={handleClick} title={liked ? "Unlike" : "Like"}>
           <Heart
             size={24}
             color="#B3B3B3"

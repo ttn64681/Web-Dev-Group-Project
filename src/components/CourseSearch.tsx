@@ -14,7 +14,7 @@ import { Post } from '@/dbInterface/dbOperations';
 type CourseSearchProps = {
   activeTab: string;
   isCourseSelected: boolean;
-  isVideoSelected: boolean;
+  isPostSelected: boolean;
   courseInfo?: Course;
   postInfo?: Post;
 };
@@ -22,7 +22,7 @@ type CourseSearchProps = {
 const CourseSearch: React.FC<CourseSearchProps> = ({
   activeTab,  
   isCourseSelected,
-  isVideoSelected,
+  isPostSelected,
   courseInfo,
   postInfo
 }: CourseSearchProps) => {
@@ -69,34 +69,59 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
 
   //Course submission 
   async function submitInfo(e: React.MouseEvent<HTMLButtonElement>) {
-
     //Prevents default behavior
     e.preventDefault();
 
     //Checks if valid information is filled out
     if (courseSearchData.prefix.length == 4 && courseSearchData.courseNum.length == 4 && courseSearchData.courseName.length != 0) {
-
-      //Retrieves course JSON information from prefix, courseNum, and courseName provided
-      const courseJSON = await getSearchInfo(courseSearchData.prefix, courseSearchData.courseNum, courseSearchData.courseName);
-      
-      //Retrieves id and pushes 
-      router.push(`course-search/${courseJSON._id}`);
-
+      try {
+        //Retrieves course JSON information from prefix, courseNum, and courseName provided
+        const courseData = await getSearchInfo(courseSearchData.prefix, courseSearchData.courseNum, courseSearchData.courseName);
+        
+        // Update the courseInfo state with the fetched data
+        setcourseJSON({
+          title: courseData.title || '-',
+          topics: courseData.topics || '-',
+          description: courseData.description || '-',
+          successPlan: Array.isArray(courseData.plan) ? courseData.plan.join(', ') : '-',
+        });
+        
+        //Retrieves id and pushes 
+        router.push(`/course-search/${courseData._id}`);
+      } catch (error) {
+        console.error("Error submitting course search:", error);
+        // You could add error handling UI here
+      }
+    } else {
+      console.log("Invalid input data:", courseSearchData);
+      // You could add validation UI feedback here
     }
   }
 
   async function getSearchInfo(prefix: string, courseNum: string, title: string) {
+    try {
+      //Fetches information
+      const response = await fetch(`/api/courses?prefix=${prefix}&number=${courseNum}&title=${encodeURIComponent(title)}`, {
+        method: 'GET'
+      });
 
-    //Fetches information
-    const response = 
-    await fetch(`/api/courses?prefix=${prefix}&number=${courseNum}&title=${title}`, {
-      method: 'GET'
-    });
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
 
-    await response.json();
-
-    return response.json()
-
+      const data = await response.json();
+      console.log("Course search response:", data);
+      
+      if (!data.success) {
+        throw new Error(data.error || "Failed to fetch course information");
+      }
+      
+      return data.course;
+    } catch (error) {
+      console.error("Error fetching course:", error);
+      // Return a default course object or throw the error
+      throw error;
+    }
   }
 
 
@@ -145,7 +170,7 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
           </div>
         )}
 
-        {isVideoSelected ? (
+        {isPostSelected ? (
           /* RESOURCE FORUM - Shows if video is selected*/
           postInfo && <ResourceForum postInfo={postInfo}/>
         ) : (

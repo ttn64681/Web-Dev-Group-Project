@@ -17,7 +17,7 @@ const Sidebar: React.FC = () => {
       <div className={`bg-[#28162F] pl-[25px] pr-[25px] h-full ${openStatus ? 'block' : 'hidden'}`}>
         <div className="flex pt-[20px]">
           <h3 className="text-[#B590C4] mr-[20px]">Existing Classes: </h3>
-          <select className="w-[100px] m-auto rounded-[10px] p-[5px] bg-transparent text-white border">
+          <select className="w-[100px] m-auto rounded-[10px] p-[5px] bg-transparent text-white border" title="Existing Classes">
             <option value="All" className="bg-[#28162F]">
               All
             </option>
