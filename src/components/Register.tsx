@@ -1,15 +1,33 @@
 'use client';
-import React from 'react';
+import React, { FormEvent } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const Login: React.FC = () => {
+interface RegisterProps {
+  onRegister: (username: string, password: string) => void;
+}
+
+const Login: React.FC<RegisterProps> = ({ onRegister }) => {
   // TODO: Add form state
   // TODO: Add error handling
   // TODO: Add loading state
   // TODO: Add authentication logic
   // TODO: Add styling
   // TODO: Add form validation
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
+    event.preventDefault();
+
+    try {
+      const formData = new FormData(event.currentTarget);
+      const username = formData.get("username") as string;
+      const password = formData.get("password") as string;
+
+      onRegister(username, password);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     // entire page
@@ -32,16 +50,20 @@ const Login: React.FC = () => {
             </h1>
           </div>
           {/* input fields and register button */}
-          <form className="grid grid-cols-1 grid-rows-3 content-center justify-center gap-5 w-[80%]">
+          <form className="grid grid-cols-1 grid-rows-3 content-center justify-center gap-5 w-[80%]"
+            onSubmit={handleSubmit}
+          >
             <input
               className="h-10 rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white"
               type="text"
               placeholder="Username"
+              name="username"
             />
             <input
               className="h-10 rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white"
               type="password"
               placeholder="Password"
+              name="password"
             />
             <button
               className="h-10 bg-gray-200 rounded-full m-1 text-lg font-bold text-[rgb(40,22,47)]"
@@ -50,7 +72,7 @@ const Login: React.FC = () => {
               Register
             </button>
           </form>
-          {/* linking to register page */}
+          {/* linking to login page */}
           <p className="text-white text-center text-sm">
             Already have an account?{' '}
             <Link className="underline font-bold" href="/login">
