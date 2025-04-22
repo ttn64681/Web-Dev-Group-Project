@@ -20,7 +20,7 @@ module.exports = {
         'neon-violet': '#BD11FF',
 
         'nav-purple': '#28162F',
-        'footer-purple': '#A63FAC',
+        'footer-purple': '#765178',
         'component-purple': '#33203A',
         'form-pink': '#FDD7FF', //used on contribution for title/desc inputs
         'form-pink-border': '#C3ACCC', //used on contribution for title/desc inputs

@@ -13,38 +13,37 @@ const LoveBtn: React.FC<LoveBtnProps> = ({likes, likedStatus, postId}: LoveBtnPr
   const [liked, setLiked] = useState(likedStatus);
   const [likeNum, setLikeNum] = useState(likes);
 
-
   const handleClick = async () => {
-
     //Changes liked status
     setLiked((liked) => !liked);
 
-    //Updates like numbers by 1
-    if (liked) {
+    // JR YOU FLIPPED THE LOGIC, it should be:
+    // if not liked, like
+    // if liked, unlike
 
+    //Updates like numbers by +1
+    if (!liked) {
       //LOCAL CHANGE
       setLikeNum(likeNum => likeNum + 1);
 
       //GLOBAL CHANGE
       const response = await fetch(`/api/posts/${postId}/like`, {
-        method: 'DELETE'
+        method: 'POST'
       })
       await response.json()
       
-    } 
-    //Updates like numbers down by 1
-    else {
+    } else { // Updates like numbers by -1 unless likeNum === 0
+      if (likeNum > 0) {
+        //LOCAL CHANGE
+        setLikeNum(likeNum => likeNum - 1);
 
-      //LOCAL CHANGE
-      setLikeNum(likeNum => likeNum - 1);
-
-      //GLOBAL CHANGE
-      const response = await fetch(`/api/posts/${postId}/unlike`, {
-        method: 'DELETE'
-      })
-      await response.json();
+        //GLOBAL CHANGE
+        const response = await fetch(`/api/posts/${postId}/unlike`, {
+          method: 'POST'
+        })
+        await response.json();
+      }
     }
-
   };
 
   return (
@@ -58,7 +57,7 @@ const LoveBtn: React.FC<LoveBtnProps> = ({likes, likedStatus, postId}: LoveBtnPr
             weight={`${liked ? 'fill' : 'bold'}`}
           />
         </button>
-        <h3 className="text-white font-bold">{likes}</h3>
+        <h3 className="text-white font-bold">{likeNum}</h3>
       </div>
     </div>
   );

@@ -8,53 +8,63 @@ import { Post } from '@/dbInterface/dbOperations';
 
 type ResourcesBoxProps = {
   isCourseSelected: boolean,
-  courseInfo: Course
+  courseInfo?: Course
 }
 
-const ResourcesBox: React.FC<ResourcesBoxProps> = ({isCourseSelected, courseInfo} : ResourcesBoxProps) => {
+const ResourcesBox: React.FC<ResourcesBoxProps> = ({
+  isCourseSelected,
+  courseInfo
+} : ResourcesBoxProps) => {
 
-  const [linkUnitNum, setLinkUnitNum] = useState(1)
-  const [postsInfo, setPostsInfo] = useState<Post[]>([])
+  const [linkUnitNum, setLinkUnitNum] = useState(1);
+  const [postsInfo, setPostsInfo] = useState<Post[]>([]);
 
-  /**
-   * 
-   * @returns 
-   */
+  // Generates a unique number for each link unit starting at 1
   const handleLinkGenerate = () => {
-    setLinkUnitNum(linkUnitNum => linkUnitNum + 1)
-    return linkUnitNum - 1;
-  }
+    setLinkUnitNum((prev) => prev + 1);
+    return linkUnitNum;
+  };
 
   /**
    * Retrieves the post JSONs from an array of object ids of posts
    * @param postIdArr - Array of post ids incorporated in course
    */
   const retrievePostInfo = async (postIdArr: string[]) => {
-
-    //Initialize empty array
-    let retrievedPosts = [];
-
-    //Retrieve information from each postId and pushes to postsInfo
-    for (let i = 0; i < postIdArr.length; i++) {
-      const response = await fetch(`api/posts/${postIdArr[i]}`, {
-        method: 'GET'
-      }) 
-
-      retrievedPosts.push(await response.json());
+    // Set postsInfo to empty array if no post ids
+    if (!postIdArr || postIdArr.length === 0) {
+      setPostsInfo([]);
+      return;
     }
 
-    setPostsInfo(retrievedPosts);
+    try {
+      //Initialize empty array
+      const retrievedPosts = await Promise.all(
+        postIdArr.map(async (postId) => {
+          const response = await fetch(`/api/posts/${postId}`, {
+            method: 'GET'
+          });
+          if (!response.ok) {
+            throw new Error(`Failed to fetch post ${postId}`);
+          }
+          return response.json();
+        })
+      );
 
+      setPostsInfo(retrievedPosts);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      setPostsInfo([]); // set to empty array if error
+    }
   }
 
   //When mounted, postInfo is updated accordingly
   useEffect(() => {
-    if (!courseInfo.posts) {
-      return;
+    if (courseInfo?.posts) {
+      retrievePostInfo(courseInfo.posts);
+    } else {
+      setPostsInfo([]);
     }
-
-    retrievePostInfo(courseInfo.posts);
-  },[])
+  }, [courseInfo?.posts]);
 
   return (
     <div>
@@ -65,7 +75,7 @@ const ResourcesBox: React.FC<ResourcesBoxProps> = ({isCourseSelected, courseInfo
           isCourseSelected ? 
             <div>
               {
-                courseInfo.resourceUrls && 
+                courseInfo?.resourceUrls && 
                 courseInfo?.resourceUrls.map((resource: {url: string, description: string}) => (
                     <LinkUnit 
                       key={resource.url}
@@ -95,11 +105,21 @@ const ResourcesBox: React.FC<ResourcesBoxProps> = ({isCourseSelected, courseInfo
                 //Determine if user has liked the post
                 /*
                  */
-                let hasLikedBefore = false;
+                const hasLikedBefore = false;
 
                 //Render videopost unit
-                const videoUnit = <VideoPostUnit key={post.title} forumMode={false}  postId={post._id.$oid} courseId={courseInfo._id.$oid} thumbnail={post.thumbnail} likes={post.likes.length} username={post.user} isLiked={hasLikedBefore}/>
-                return videoUnit;
+                return (
+                  <VideoPostUnit 
+                    key={post._id || ''} 
+                    forumMode={false}  
+                    postId={post._id || ''} 
+                    courseId={courseInfo?._id || ''} 
+                    thumbnail={post.thumbnail} 
+                    likes={post.likes?.length || 0} 
+                    username={post.user} 
+                    isLiked={hasLikedBefore}
+                  />
+                );
               })
             }
           </div>
@@ -111,7 +131,6 @@ const ResourcesBox: React.FC<ResourcesBoxProps> = ({isCourseSelected, courseInfo
             </div>
         }
       </div>
-
     </div>
   );
 };

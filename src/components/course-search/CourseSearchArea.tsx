@@ -34,8 +34,8 @@ const CourseSearchArea: React.FC<CourseSearchAreaProps> = ({
             placeholder="ABCD"
             className="w-[60px] p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-[10px] text-white placeholder-opacity-40"
             onChange={editFunc}
-            min={4}
-            max={4}
+            minLength={4}
+            maxLength={4}
             required
           />
         </div>
@@ -43,12 +43,12 @@ const CourseSearchArea: React.FC<CourseSearchAreaProps> = ({
           <h3 className="text-[#765178]">Number</h3>
           <input
             type="text"
-            name="courseNumber"
+            name="courseNum"
             placeholder="XXXX"
             className="w-[60px] p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-[10px] text-white placeholder-opacity-40"
             onChange={editFunc}
-            min={4}
-            max={4}
+            minLength={4}
+            maxLength={4}
             required
           />
         </div>

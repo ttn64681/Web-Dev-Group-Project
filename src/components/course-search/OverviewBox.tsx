@@ -6,7 +6,7 @@ import { Course } from '@/dbInterface/dbOperations';
 
 type OverviewBoxProps = {
   isCourseSelected: boolean,
-  courseInfo: Course
+  courseInfo?: Course
 }
 
 const OverviewBox: React.FC<OverviewBoxProps> = ({
@@ -15,19 +15,21 @@ const OverviewBox: React.FC<OverviewBoxProps> = ({
 } : OverviewBoxProps) => {
 
   //topicArray declaration
-  let topicArray = ['Topic 1', 'Topic 2', 'Topic 3'];
-  if (courseInfo.topics) {
-    topicArray = [];
-    topicArray = courseInfo.topics.split(',');
+  let topicArray: string[] = ['Topic 1', 'Topic 2', 'Topic 3'];
+  
+  if (courseInfo?.topics) {
+    // Ensure topics is treated as an array
+    topicArray = Array.isArray(courseInfo.topics) 
+      ? courseInfo.topics 
+      : [courseInfo.topics];
   }
-
 
   return (
     <div className="bg-[#33203A] p-[20px] rounded-[20px]">
       {/*TITLE */}
       <div className="flex m-[20px]">
         <h3 className="text-[1.2em] text-[#F88AFF] mr-[20px]">Title:</h3>
-        <h4 className="text-[#E2D0E6]">{isCourseSelected ? courseInfo.title : "Example title"}</h4>
+        <h4 className="text-[#E2D0E6]">{isCourseSelected && courseInfo ? courseInfo.title : "Example title"}</h4>
       </div>
 
       {/* TOPICS */}
@@ -45,17 +47,21 @@ const OverviewBox: React.FC<OverviewBoxProps> = ({
       {/* DESCRIPTION */}
       <div className="m-[20px]">
         <h3 className="text-[1.2em] text-[#F88AFF] mr-[20px]"> Description:</h3>
-        <h4 className="text-[#E2D0E6]"> {isCourseSelected ? courseInfo.description : "Example description"} </h4>
+        <h4 className="text-[#E2D0E6]"> {isCourseSelected && courseInfo ? courseInfo.description : "Example description"} </h4>
       </div>
 
       {/* SUCCESS PLAN */}
       <div className="m-[20px]">
         <h3 className="text-[1.2em] text-[#F88AFF] mr-[20px]"> Plan for Success:</h3>
         {
-          isCourseSelected ?
+          isCourseSelected && courseInfo ?
             <div className="flex flex-col">
-              {
-                courseInfo.plan
+              { // map plan and display each item as a list item
+                courseInfo.plan && Array.isArray(courseInfo.plan) 
+                  ? courseInfo.plan.map((item: string, index: number) => (
+                      <h4 key={index} className="text-[#E2D0E6]">{item}</h4>
+                    ))
+                  : <h4 className="text-[#E2D0E6]">No success plan available</h4>
               }
             </div>
             :

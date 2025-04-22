@@ -58,11 +58,16 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
   });
 
   const showOverview = () => {
-    router.push('/course-search/courseId/');
+    if (courseInfo) {
+      router.push(`/course-search/${courseInfo.courseId}`);
+    } else {
+      router.push('/course-search');
+    }
   };
+  
   const showResources = () => {
-    if (isCourseSelected) {
-      router.push('/course-search/courseId/resources/'); 
+    if (courseInfo) {
+      router.push(`/course-search/${courseInfo.courseId}/resources`);
     }
   };
 
@@ -73,35 +78,37 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
     e.preventDefault();
 
     //Checks if valid information is filled out
-    if (courseSearchData.prefix.length == 4 && courseSearchData.courseNum.length == 4 && courseSearchData.courseName.length != 0) {
+    if (courseSearchData.prefix.length === 4 && courseSearchData.courseNum.length === 4 && courseSearchData.courseName.length > 0) {
       try {
         //Retrieves course JSON information from prefix, courseNum, and courseName provided
         const courseData = await getSearchInfo(courseSearchData.prefix, courseSearchData.courseNum, courseSearchData.courseName);
         
-        // Update the courseInfo state with the fetched data
-        setcourseJSON({
-          title: courseData.title || '-',
-          topics: courseData.topics || '-',
-          description: courseData.description || '-',
-          successPlan: Array.isArray(courseData.plan) ? courseData.plan.join(', ') : '-',
-        });
-        
-        //Retrieves id and pushes 
-        router.push(`/course-search/${courseData._id}`);
+        if (courseData) {
+          // Update the courseInfo state with the fetched data
+          setcourseJSON({
+            title: courseData.title || '-',
+            topics: courseData.topics || '-',
+            description: courseData.description || '-',
+            successPlan: Array.isArray(courseData.plan) ? courseData.plan.join(', ') : '-',
+          });
+          
+          //Retrieves course id (CS1301) and pushes to the course page
+          router.push(`/course-search/${courseData.courseId}`);
+        }
       } catch (error) {
         console.error("Error submitting course search:", error);
-        // You could add error handling UI here
+
       }
     } else {
       console.log("Invalid input data:", courseSearchData);
-      // You could add validation UI feedback here
+
     }
   }
 
   async function getSearchInfo(prefix: string, courseNum: string, title: string) {
     try {
       //Fetches information
-      const response = await fetch(`/api/courses?prefix=${prefix}&number=${courseNum}&title=${encodeURIComponent(title)}`, {
+      const response = await fetch(`/api/courses?prefix=${encodeURIComponent(prefix)}&number=${encodeURIComponent(courseNum)}&title=${encodeURIComponent(title)}`, {
         method: 'GET'
       });
 
@@ -124,15 +131,13 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
     }
   }
 
-
   //Updates search info when input is placed into the form
   const updateSearchInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCourseSearchData(
-      {
-        ...courseSearchData,
-        [e.target.name]: e.target.value 
-      }        
-    );
+    const { name, value } = e.target;
+    setCourseSearchData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   }
 
   //COMPONENT MATERIALS ============================================
@@ -171,14 +176,10 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
         )}
 
         {isPostSelected ? (
-          /* RESOURCE FORUM - Shows if video is selected*/
+          /* RESOURCE FORUM - Shows if user has selected a post*/
           postInfo && <ResourceForum postInfo={postInfo}/>
         ) : (
-          //Ensures courseInfo must exist
-          courseInfo &&
-
-          /* SEARCH AREA - Shows if video is not selected and on search mode*/
-
+          /* SEARCH AREA - Shows if user has not selected a post and on search mode*/
           <div>
             <h4 className="text-[#D163D7] m-[10px]">
               Enter the 4 letter prefix, 4 digit number, and course name.
@@ -191,13 +192,13 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
             <div className="">
               <button
                 onClick={showOverview}
-                className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Overview' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}
+                className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab == 'Overview' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border-[2px] rounded-[10px] inline`}
               >
                 Overview
               </button>
               <button
                 onClick={showResources}
-                className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Resources' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} ${isCourseSelected ? "opacity-100" : "opacity-25"} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}
+                className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab == 'Resources' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} ${isCourseSelected ? "opacity-100" : "opacity-25"} hover:scale-110 transition-transform duration-200 border-[2px] rounded-[10px] inline`}
               >
                 Resources
               </button>

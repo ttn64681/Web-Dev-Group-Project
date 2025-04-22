@@ -85,7 +85,6 @@ export async function POST(request: NextRequest) {
         error: course.error || 'Failed to fetch course' 
       }, { status: 500 });
     }
-
     
     // Create the post data object
     const postData = {
