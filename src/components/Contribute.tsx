@@ -14,42 +14,6 @@ import connectMongoDB from '../../config/mongodb';
  * @param maxResults - Maximum number of results to return (default: 20)
  * @returns Object containing success status and either the videos or an error message
  */
-async function searchYouTubeVideos(query: string, maxResults: number = 20) {
-  try {
-    const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
-    if (!YOUTUBE_API_KEY) {
-      return { success: false, error: 'YouTube API key not configured' };
-    }
-
-    const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxResults}&q=${encodeURIComponent(query)}&type=video&key=${YOUTUBE_API_KEY}`
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch YouTube videos');
-    }
-
-    const data = await response.json();
-
-    // Transform the YouTube API response into our post format and store in videos
-    const videos = data.items.map((item: any) => ({
-      title: item.snippet.title,
-      description: item.snippet.description,
-      url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
-      videoId: item.id.videoId, // Store videoId separately for embedding
-      thumbnail: item.snippet.thumbnails.high?.url || item.snippet.thumbnails.default.url,
-      postType: 'youtube' as const,
-      // Note: course and user will be added when creating the post
-    })); // searchYouTubeVideos
-
-    return { success: true, videos };
-    // print out all videos for testing
-    console.log(videos);
-  } catch (error) {
-    console.error('Error searching YouTube videos:', error);
-    return { success: false, error: 'Failed to search YouTube videos' };
-  }
-}
 
 type ItemType = {
   id: number;
@@ -57,7 +21,14 @@ type ItemType = {
   title: string;
   desc: string;
   url: string;
+  date: string;
+  channel: string;
+  thumbnail?: string;
 };
+
+type CourseType = {
+  title: string;
+}
 
 // const linkItems: ItemType[] = [
 //   {
@@ -83,54 +54,6 @@ type ItemType = {
 //   },
 // ];
 
-const videoItems: ItemType[] = [
-  {
-    id: 1,
-    owner: 'user_one',
-    title: 'Helpful video',
-    desc: 'This video helped me a lot',
-    url: 'https://www.youtube.com/',
-  },
-  {
-    id: 2,
-    owner: 'user_two',
-    title: 'Another helpful video',
-    desc: 'I wouldnt have passed the final without this one!',
-    url: 'https://www.youtube.com/',
-  },
-  {
-    id: 3,
-    owner: 'user_three',
-    title: 'My favorite video',
-    desc: 'I just love this video',
-    url: 'https://www.youtube.com/',
-  },
-];
-
-const musicItems: ItemType[] = [
-  {
-    id: 1,
-    owner: 'user_one',
-    title: 'Music suggestion',
-    desc: 'This song really helps me study',
-    url: 'https://music.youtube.com/',
-  },
-  {
-    id: 2,
-    owner: 'user_two',
-    title: 'Music playlist',
-    desc: 'This playlist got me through the midterm',
-    url: 'https://music.youtube.com/',
-  },
-  {
-    id: 3,
-    owner: 'user_three',
-    title: 'Lofi',
-    desc: 'Love this playlist',
-    url: 'https://music.youtube.com/',
-  },
-];
-
 const Contribute: React.FC = () => {
   // TODO: Add state management
   // TODO: Implement YouTube API
@@ -142,6 +65,8 @@ const Contribute: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState('Videos');
   const [items, setItems] = useState<ItemType[]>([]); // set searched items
+  const [courses, setCourses] = useState<CourseType[]>([]); // set courses for search bar
+  const [selectedCourse, setSelectedCourse] = useState('');
 
   // State for tracking selected YT video and form input values
   const [selectedVideo, setSelectedVideo] = useState<ItemType | null>(null);
@@ -156,13 +81,15 @@ const Contribute: React.FC = () => {
 
   // Initialize with videos when component mounts
   useEffect(() => {
+    connectMongoDB();
     showVideos();
+    fetchCourses();
   }, []);
 
   // Functions to switch between tabs and update items list
   const showVideos = () => {
     setActiveTab('Videos');
-    setItems(videoItems);
+    //setItems();
     setSelectedVideo(null);
   };
   const showLinks = () => {
@@ -172,7 +99,7 @@ const Contribute: React.FC = () => {
   };
   const showMusic = () => {
     setActiveTab('Music');
-    setItems(musicItems);
+    //setItems();
     setSelectedVideo(null);
   };
 
@@ -212,14 +139,35 @@ const Contribute: React.FC = () => {
       postUrl: formData.url,
       selectedVideo: selectedVideo
         ? {
-            title: selectedVideo.title,
-            description: selectedVideo.desc,
-            url: selectedVideo.url,
-          }
+          title: selectedVideo.title,
+          description: selectedVideo.desc,
+          url: selectedVideo.url,
+        }
         : null,
     };
 
-    console.log('Post Data:', postData);
+    if(activeTab == 'Links') {
+      console.log("The selected course is: ", selectedCourse);
+      console.log("The Link title is: \n", postData.postTitle);
+      console.log("The Link description is: \n", postData.postDescription);
+      console.log("The Link url is: \n", postData.postUrl);
+    }
+
+    if(activeTab == 'Videos') {
+      console.log("The selected course is: ", selectedCourse);
+      console.log("The Video Posts title is: \n", postData.postTitle);
+      console.log("The Video Posts description is: \n", postData.postDescription);
+      console.log("The Videos url is: \n", selectedVideo?.url);
+      console.log("The Videos thumbnail url is: \n", selectedVideo?.thumbnail);
+    }
+
+    if(activeTab == 'Music') {
+      console.log("The selected course is: ", selectedCourse);
+      console.log("The Music Posts title is: \n", postData.postTitle);
+      console.log("The Music Posts description is: \n", postData.postDescription);
+      console.log("The Music url is: \n", selectedVideo?.url);
+      console.log("The Music thumbnail url is: \n", selectedVideo?.thumbnail);
+    }
 
     // Reset form and selection
     setFormData({
@@ -227,19 +175,35 @@ const Contribute: React.FC = () => {
       desc: '',
       url: '',
     });
-    setSelectedVideo(null); // uncheck the selected video
   };
+
+  const fetchCourses = async () => {
+    try {
+      const response = await fetch(`/api/courses`);
+      const data = await response.json();
+
+      if (data.success) {
+        setCourses(data.courses);
+      } else {
+        console.log("There was an error retrieving courses");
+      }
+    } catch (error) {
+      console.error('Failed to fetch videos:', error);
+    }
+  }
 
   const searchYouTubeVideos = async (query: string) => {
     try {
       const response = await fetch(`/api/youtube?query=${encodeURIComponent(query)}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch YouTube videos');
-      }
       const data = await response.json();
-      setItems(data.items);
+
+      if (data.success) {
+        setItems(data.videos);
+      } else {
+        console.error(data.error);
+      }
     } catch (error) {
-      console.error('Error searching YouTube videos:', error);
+      console.error('Failed to fetch videos:', error);
     }
   };
 
@@ -263,10 +227,16 @@ const Contribute: React.FC = () => {
 
           {/* Course Selection */}
           <div className="border-2 border-neon-violet rounded-lg">
-            <select 
+            <select
               className="bg-nav-purple rounded-md font-semibold mr-3 flex-1 w-full h-10 text-white p-2"
               aria-label="Select a course"
+              onChange={(e) => setSelectedCourse(e.target.value)}
             >
+              {courses.map((course, index) => (
+                <option key={index}>
+                  {course.title}
+                </option>
+              ))}
               <option>Select course</option>
             </select>
             {/*<input type="text" placeholder="Title" className="bg-nav-purple outline-none text-white flex-1 w-5/6 mx-auto h-10" />*/}

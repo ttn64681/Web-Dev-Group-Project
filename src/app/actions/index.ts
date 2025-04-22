@@ -8,6 +8,7 @@ export async function doLogout() {
     console.log("User is logged out!");
 }
 
+// Attempt to login using nextAuth, passing the username and password to the credentials login
 export async function doCredentialLogin(formData: FormData): Promise<any> {
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;

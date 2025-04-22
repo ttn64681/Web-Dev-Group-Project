@@ -5,6 +5,8 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import { SessionProvider } from 'next-auth/react';
 import { doLogout } from './actions';
+import { useEffect } from 'react';
+import { getSession } from 'next-auth/react';
 
 const nunito = Nunito({ subsets: ['latin'], variable: '--font-nunito' }); // conventional variable names
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -15,6 +17,12 @@ const dongle = Dongle({
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+
+  const session = getSession();
+  useEffect(() => {
+      
+    }, [session]);
+    
   // TODO: Add authentication state management
   const isAuthenticated = false;
   const username = undefined;
