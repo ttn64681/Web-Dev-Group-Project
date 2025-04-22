@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { fetchCoursePosts, addPost, fetchCourse } from '@/dbInterface/dbOperations';
 import { auth } from '../../../../auth';
 
+
 /** GET /api/posts - Get all posts for a course to display in sidebar
 * Frontend call example:
 * GET /api/posts?courseId=123 - Get all posts for a specific course
