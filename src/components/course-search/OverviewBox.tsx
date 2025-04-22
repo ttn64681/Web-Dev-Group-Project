@@ -9,12 +9,19 @@ const OverviewBox: React.FC = () => {
         <h3 className="text-[1.2em] text-[#F88AFF] mr-[20px] font-bold">Title:</h3>
         <h4 className="font-inter text-[#E2D0E6]">Course Title</h4>
       </div>
-      <div className="flex m-[20px]">
-        <h3 className="text-[1.2em] text-[#F88AFF] mr-[20px] font-bold">Topic:</h3>
-        <div className="flex">
+      <div className="flex flex-col sm:flex-row flex-wrap md:items-center m-[20px] ">
+        <h3 className="text-[1.2em] text-[#F88AFF] mr-[20px] mb-1 sm:mb-0 font-bold">Topic:</h3>
+        <div className="flex flex-col sm:flex-row flex-wrap gap-2">
           <TopicMinibox />
           <TopicMinibox />
           <TopicMinibox />
+          {/* <TopicMinibox />
+          <TopicMinibox />
+          <TopicMinibox />
+          <TopicMinibox />
+          <TopicMinibox />
+          <TopicMinibox />
+          <TopicMinibox /> */}
         </div>
       </div>
       <div className="m-[20px]">

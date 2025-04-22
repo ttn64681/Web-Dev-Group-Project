@@ -16,8 +16,8 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({showTrash}) => {
   };
 
   return (
-    <div>
-      <button className="hover:scale-110 transition-transform duration-200">
+    <div className="py-2 md:py-0 w-full max-w-[220px]">
+      <button className="block w-full hover:scale-110 transition-transform duration-200">
         <Image
           src={'https://picsum.photos/id/16/254/154'}
           alt={'Video thumbnail'}
@@ -27,13 +27,14 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({showTrash}) => {
           onClick={redirectToForum}
         />
       </button>
-      <div className="flex justify-between">
-        <div className="flex gap-2 w-[100px]">
+      <div className="flex justify-between items-center mt-2">
+        {/* w-[100px] */}
+        <div className="flex gap-2 ">
           <LoveBtn />
           {showTrash && <TrashBtn />}
         </div>
-        <div className=" ">
-          <h4 className="text-white">user123</h4>
+        <div>
+          <h4 className="text-white text-sm">user123</h4>
         </div>
       </div>
     </div>

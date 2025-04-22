@@ -70,24 +70,24 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
         {/*TITLE*/}
         {activeTab == "Overview" ? 
           (
-            <div className="flex justify-center items-start mt-[50px] mb-[30px]">
+            <div className="flex justify-center items-center mt-[50px] mb-[30px]">
               <MagnifyingGlass
-                size={50}
+                // size={50}
                 color="#6CFEFE"
-                className="ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]"
+                className="w-14 h-14 sm:w-16 sm:h-16 ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]"
               />
-              <h2 className="font-dongle text-7xl text-[#6CFEFE] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]">
+              <h2 className="font-dongle text-6xl sm:text-7xl text-[#6CFEFE] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]">
                 Course Search
               </h2>
             </div>
           ):(
             <div className="flex justify-center items-start mt-[50px] mb-[30px]">
               <FileText
-                size={56}
+                // size={56}
                 color="#F09A35"
-                className="ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]"
+                className="w-14 h-14 sm:w-16 sm:h-16 ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]"
               />
-              <h2 className="font-dongle text-7xl text-[#F09A35] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]">
+              <h2 className="font-dongle text-6xl sm:text-7xl text-[#F09A35] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]">
                 Resources
               </h2>
             </div>
@@ -100,7 +100,7 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
         ) : (
           /* SEARCH AREA - Shows if video is not selected and on search mode*/
           <div>
-            <h4 className="font-nunito text-[#D163D7] m-[10px]">
+            <h4 className="font-nunito text-[#D163D7] text-sm sm:text-base m-[10px]">
               Enter the 4 letter prefix, 4 digit number, and course name.
             </h4>
             <div className="mt-[10px] mb-[10px]">

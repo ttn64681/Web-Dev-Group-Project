@@ -214,7 +214,7 @@ const Contribute: React.FC = () => {
       <div className="flex flex-col items-center gap-5 pb-10">
 
         <div className="flex-1 w-5/6 mx-auto h-full">
-          <h4 className="font-nunito text-[#D163D7] mb-[10px] text-sm sm:text-base">
+          <h4 className="font-nunito text-[#D163D7] text-sm sm:text-base mb-[10px] ">
             Select one of the existing classes to post a resource to
           </h4>
           <p className="font-nunito text-disabled-purple mb-2 text-sm sm:text-base">Class:</p>

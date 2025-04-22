@@ -19,12 +19,13 @@ const ResourceForum: React.FC = () => {
       </button>
 
       {/* Video Section */}
-      <div className="flex gap-6 mb-2">
-        <div className="flex flex-col">
+      <div className="flex flex-col md:flex-row gap-3 md:gap-6 mb-2">
+        <h3 className="md:hidden font-nunito text-neon-pink text-2xl">Video Title</h3>
+        <div className="flex flex-col w-full max-w-[220px]">
           <VideoPostUnit showTrash/>
         </div>
         <div className="flex-1">
-          <h3 className="font-nunito text-neon-pink text-2xl mb-2">Video Title</h3>
+          <h3 className="hidden md:block font-nunito text-neon-pink text-2xl mb-2">Video Title</h3>
           <h3 className="font-inter text-white text-base font-light">Video Description</h3>
         </div>
       </div>

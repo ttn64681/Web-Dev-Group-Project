@@ -16,7 +16,7 @@ const ResourcesBox: React.FC = () => {
       </div>
       <div className="bg-[#33203A] p-[15px] rounded-[12px]">
         <h3 className="text-white p-[20px] font-bold text-[1.2em]">Student Top Recommended:</h3>
-        <div className="flex justify-between px-[20px] flex-wrap">
+        <div className="flex flex-wrap justify-between px-[20px]">
           <VideoPostUnit showTrash={false}/>
           <VideoPostUnit showTrash={false}/>
           <VideoPostUnit showTrash={false}/>
