@@ -17,11 +17,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
   return (
     // entire page
-    <div className="flex flex-col items-center">
+    <div className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center bg-gradient-to-b from-[#0E0613] to-[#411F4B] overflow-hidden px-4 sm:px-6 md:px-8">
       {/* creating card effect on login box (basically borders)*/}
-      <div className="border border-neon-pink rounded-2xl py-8 m-16 min-w-[30%] bg-login-bg-purple/[24%] overflow-hidden shadow-xl/20 shadow-[0_3px_35px_rgba(248,138,255,0.3)]">
+      <div className="border border-neon-pink rounded-2xl py-8 w-[50%] md:w-[400px] bg-login-bg-purple/[24%] overflow-hidden shadow-[0_3px_35px_rgba(248,138,255,0.3)]">
         {/* defining grid */}
-        <div className="grid content-center justify-items-center w-[400px] h-[400px] grid-rows-[1/7_1/7_4/7_1/7] gap-6">
+        <div className="grid content-center justify-items-center w-full h-auto md:h-[400px] md:w-[400px] grid-rows-[auto_auto_1fr_auto] gap-6">
           {/* gap between logo and Login title */}
           <div className="grid content-center justify-items-center gap-2">
             <Image
@@ -29,9 +29,9 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               alt="CourseHub Horizontal Logo"
               width={365}
               height={104.5}
-              className="w-[120px] min-w-[100px]"
+              className="w-[80px] min-w-[100px] md:w-[120px]"
             />
-            <h1 className="text-white text-center font-nunito text-5xl [text-shadow:0_0_4px_rgba(127,34,163,1.0)]">
+            <h1 className="text-white text-center font-nunito text-4xl md:text-5xl [text-shadow:0_0_4px_rgba(127,34,163,1.0)]">
               Login
             </h1>
           </div>
