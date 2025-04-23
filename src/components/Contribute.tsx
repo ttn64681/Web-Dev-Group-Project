@@ -70,7 +70,7 @@ const Contribute: React.FC = () => {
   const [courses, setCourses] = useState<CourseType[]>([]); // set courses for search bar
   const [selectedCourse, setSelectedCourse] = useState('');
   const [selectedCourseId, setSelectedCourseId] = useState('');
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession(); ////////////////////////////////////////////////////////////// USE SESSIOn
 
   // State for tracking selected YT video and form input values
   const [selectedVideo, setSelectedVideo] = useState<ItemType | null>(null);

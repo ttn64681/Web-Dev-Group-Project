@@ -10,47 +10,44 @@ import { auth } from '../../../../../../auth';
  * })
  */
 export async function POST(request: NextRequest, { params }: { params: { postId: string } }) {
-    try {
-      // Get the authenticated user's session
-      const session = await auth();
-      const userId = session?.user?.id;
-      
-      if (!userId) {
-        return NextResponse.json({ 
-          success: false, 
-          error: 'Unauthorized' 
-        }, { status: 401 });
-      }
+  try {
+    // Get comment data from request body
+    const { comment, userId } = await request.json();
+    // Get the authenticated user's session
 
-      // Get comment data from request body
-      const { comment } = await request.json();
-      
-      if (!comment) {
-        return NextResponse.json({ 
-          success: false, 
-          error: 'Comment text is required' 
-        }, { status: 400 });
-      }
-  
-      const result = await addComment(params.postId, { user: userId, comment });
-  
-      if (!result.success) {
-        return NextResponse.json({ 
-          success: false, 
-          error: result.error || 'Failed to add comment' 
-        }, { status: 400 });
-      }
-      
-      return NextResponse.json({ 
-        success: true, 
-        message: 'Comment added successfully',
-        post: result.post
-      });
-    } catch (error) {
-      console.error('Error adding comment:', error);
-      return NextResponse.json({ 
-        success: false, 
-        error: 'Failed to add comment' 
-      }, { status: 500 });
+    if (!userId) {
+      return NextResponse.json({
+        success: false,
+        error: 'Unauthorized'
+      }, { status: 401 });
     }
+
+    if (!comment) {
+      return NextResponse.json({
+        success: false,
+        error: 'Comment text is required'
+      }, { status: 400 });
+    }
+
+    const result = await addComment(params.postId, { user: userId, comment });
+
+    if (!result.success) {
+      return NextResponse.json({
+        success: false,
+        error: result.error || 'Failed to add comment'
+      }, { status: 400 });
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: 'Comment added successfully',
+      post: result.post
+    });
+  } catch (error) {
+    console.error('Error adding comment:', error);
+    return NextResponse.json({
+      success: false,
+      error: 'Failed to add comment'
+    }, { status: 500 });
   }
+}
