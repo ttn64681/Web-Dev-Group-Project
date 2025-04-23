@@ -11,6 +11,10 @@ const Sidebar: React.FC = () => {
     console.log('toggled');
   };
 
+  const clickLink = () => {
+    
+  }
+
   return (
     <div className={`flex h-full transition-transform duration-300 ease-in-out`}>
       {/*Sidebar Contents*/}

@@ -107,7 +107,7 @@ export async function fetchCourse(prefix: string, number: string) {
     const course = await Course.findOne({
       prefix: prefix.toUpperCase(),
       number,
-    }).populate('posts'); // Replaces post ObjectIDs with full post documents (first time search = empty array of post ObjectIDs)
+    })/*.populate('posts'); // Replaces post ObjectIDs with full post documents (first time search = empty array of post ObjectIDs)*/
 
     return { success: true, course };
   } catch (error) {
@@ -303,9 +303,11 @@ export async function fetchCoursePosts(courseId: string) {
 
     // Find all posts for the course and populate the user, comments, and course
     const posts = await Post.find({ course: course._id })
+      /*
       .populate('user', 'username') // Replace user ObjectID with user document (only username field)
       .populate('course') // Replace course ObjectID with full course document
       .populate('comments.user', 'username') // Replace comments user ObjectIDs with user documents (only username field)
+      */
       .sort({ likes: -1, createdAt: -1 }); // Sort by most likes first, then by newest first
 
     console.log('Posts: ', posts);
@@ -501,8 +503,10 @@ export async function fetchCoursePost(postId: string) {
   try {
     await connectMongoDB();
     const post = await Post.findById(postId)
+    /*
       .populate('user', 'name image')
       .populate('comments.user', 'name image')
+    */
       .lean(); // returns the post as a plain JavaScript object
     
     if (!post) {

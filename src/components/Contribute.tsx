@@ -28,6 +28,7 @@ type ItemType = {
 
 type CourseType = {
   title: string;
+  courseId: string;
 }
 
 // const linkItems: ItemType[] = [
@@ -113,7 +114,7 @@ const Contribute: React.FC = () => {
   };
 
   // Handle form submission with validation
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validate form based on active tab
@@ -132,11 +133,31 @@ const Contribute: React.FC = () => {
       return;
     }
 
+    //Construct thumbnail
+    let thumbnail = null;
+    if (formData.url.length >= 24 && formData.url.substring(0, 24) == 'https://www.youtube.com') {
+        const url = new URL(formData.url);
+        const urlParams = new URLSearchParams(url.search);
+        const videoId = urlParams.get("v");
+        thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+    } else {
+        thumbnail = "/logo/LinkItemLogo.png"
+    }
+
+    //Determine type
+    let selectedType = 'youtube';
+    if (activeTab == 'Links') {selectedType = 'link'};
+    if (activeTab == 'Music')  {selectedType = 'music'};
+
     // Create post data object
     const postData = {
       postTitle: formData.title,
       postDescription: formData.desc,
       postUrl: formData.url,
+      postThumbnail: thumbnail,
+      postType: selectedType,
+      courseId: selectedCourse
+      /*
       selectedVideo: selectedVideo
         ? {
           title: selectedVideo.title,
@@ -144,7 +165,22 @@ const Contribute: React.FC = () => {
           url: selectedVideo.url,
         }
         : null,
+      */
     };
+
+    const response = await fetch('/api/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application-json'
+      },
+      body: JSON.stringify(postData)
+    })
+
+    const responseMsg = await response.json()
+
+    console.log(responseMsg.success)
+    console.log(responseMsg.failure)
+
 
     if(activeTab == 'Links') {
       console.log("The selected course is: ", selectedCourse);
@@ -233,7 +269,7 @@ const Contribute: React.FC = () => {
               onChange={(e) => setSelectedCourse(e.target.value)}
             >
               {courses.map((course, index) => (
-                <option key={index}>
+                <option key={index} value={course.courseId}>
                   {course.title}
                 </option>
               ))}
