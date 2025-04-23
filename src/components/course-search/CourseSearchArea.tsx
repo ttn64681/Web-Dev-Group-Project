@@ -5,7 +5,7 @@ import { MagnifyingGlass } from '@phosphor-icons/react';
 
 const CourseSearchArea: React.FC = () => {
   return (
-    <div className="flex flex-col sm:flex-row gap-3 sm:gap-0 w-[100%]">
+    <div className="flex flex-wrap sm:flex-row sm:gap-0 w-[100%]">
       <div className="mx-[10px]">
         <h3 className="font-nunito text-[#765178]">Prefix</h3>
         <input

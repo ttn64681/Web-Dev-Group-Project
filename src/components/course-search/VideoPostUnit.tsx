@@ -16,7 +16,7 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({showTrash}) => {
   };
 
   return (
-    <div className="py-2 md:py-0 w-full max-w-[220px]">
+    <div className="p-2 w-full max-w-[220px]">
       <button className="block w-full hover:scale-110 transition-transform duration-200">
         <Image
           src={'https://picsum.photos/id/16/254/154'}

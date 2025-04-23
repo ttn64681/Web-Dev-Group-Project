@@ -66,17 +66,17 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
         <Sidebar />
       </div>
 
-      <div className="w-3/5 mx-auto h-full pb-10">
+      <div className="w-full md:w-3/5 mr-[30px] md:mx-auto h-full pb-10">
         {/*TITLE*/}
         {activeTab == "Overview" ? 
           (
-            <div className="flex justify-center items-center mt-[50px] mb-[30px]">
+            <div className="flex gap-2 md:gap-0 justify-center items-center mt-[50px] mb-[30px]">
               <MagnifyingGlass
                 // size={50}
                 color="#6CFEFE"
-                className="w-14 h-14 sm:w-16 sm:h-16 ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]"
+                className="w-12 h-12 md:w-16 md:h-16 md:mx-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]"
               />
-              <h2 className="font-dongle text-6xl sm:text-7xl text-[#6CFEFE] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]">
+              <h2 className="font-dongle text-6xl md:text-7xl text-[#6CFEFE] md:mx-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]">
                 Course Search
               </h2>
             </div>
@@ -85,9 +85,9 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
               <FileText
                 // size={56}
                 color="#F09A35"
-                className="w-14 h-14 sm:w-16 sm:h-16 ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]"
+                className="w-14 h-14 md:w-16 md:h-16 ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]"
               />
-              <h2 className="font-dongle text-6xl sm:text-7xl text-[#F09A35] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]">
+              <h2 className="font-dongle text-6xl md:text-7xl text-[#F09A35] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]">
                 Resources
               </h2>
             </div>
