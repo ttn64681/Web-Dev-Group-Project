@@ -32,15 +32,15 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
 
   //Redirects to the forum
   const redirectToForum = () => {
-    router.push(`/course-search/courseId/resources/${postId}`);
+    router.push(`/course-search/${courseId}/resources/${postId}`);
   };
 
   //Handles deletion of post and redirection when deleted
   const trashClick = async () => {
 
     //Deletes post information
-    const deleteResponse = await fetch(`api/posts/${postId}`, {
-    method: 'DELETE',
+    const deleteResponse = await fetch(`api/posts/${postId}/delete`, {
+      method: 'DELETE',
     });
 
     await deleteResponse.json();

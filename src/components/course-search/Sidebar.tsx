@@ -1,19 +1,78 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,} from 'react';
 import { ArrowLeft } from '@phosphor-icons/react';
 import { ArrowRight } from '@phosphor-icons/react';
+import { MagnifyingGlass } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
+import { Course } from '@/dbInterface/dbOperations';
+import { Router } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const Sidebar: React.FC = () => {
-  const [openStatus, setOpenStatus] = useState(true);
+  const router = useRouter();
+
+  const [openStatus, setOpenStatus] = useState<Boolean>(true);
+  const [courses, setCourses] = useState<Course[]>([])
+  const [prefixSearchData, setPrefixSearchData] = useState<string>('');
 
   const toggleOpen = () => {
     setOpenStatus(!openStatus);
     console.log('toggled');
   };
 
-  const clickLink = () => {
-    
+  //Continuously collects search data
+  const updateSearchData = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPrefixSearchData(e.target.value);
   }
+
+  //Submits info when a sufficient prefix is found
+  const submitInfo = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (prefixSearchData.length == 4) {
+
+      //Gets data for a specific prefix
+      const response = await fetch(`api/courses/${prefixSearchData}`, {
+        method: 'GET'
+      })
+
+      //Updates accordingly
+      const courseData = await response.json();
+      setCourses(courseData.courses);
+
+    } else if (prefixSearchData.length == 0) {
+
+      //Gets data
+      const response = await fetch(`api/courses`, {
+        method: 'GET'
+      })
+
+      //Updates accordingly
+      const courseData = await response.json();
+      setCourses(courseData.courses);
+    }
+  }
+
+  //Redirects to appropriateCourse
+  const courseRedirect = (e: React.MouseEvent<HTMLElement>) => {
+    const courseId = e.currentTarget.id;
+    router.push(`/course-search/${courseId}`);
+  }
+
+  //Fetches initial courses.
+  useEffect(() => {
+    const fetchInitialCourses = async () => {
+
+      //Gets all courses
+      const response = await fetch(`api/courses`, {
+        method: 'GET'
+      })
+  
+      //Updates accordingly
+      const courseData = await response.json();
+      setCourses(courseData.courses);
+
+    }
+
+    fetchInitialCourses();
+  }, [])
 
   return (
     <div className={`flex h-full transition-transform duration-300 ease-in-out`}>
@@ -21,17 +80,33 @@ const Sidebar: React.FC = () => {
       <div className={`bg-[#28162F] pl-[25px] pr-[25px] h-full ${openStatus ? 'block' : 'hidden'}`}>
         <div className="flex pt-[20px]">
           <h3 className="text-[#B590C4] mr-[20px]">Existing Classes: </h3>
-          <select className="w-[100px] m-auto rounded-[10px] p-[5px] bg-transparent text-white border" title="Existing Classes">
-            <option value="All" className="bg-[#28162F]">
-              All
-            </option>
-          </select>
+          <div className="flex max-w-[500px]">
+            <input
+              type="text"
+              name="courseName"
+              placeholder="Course Prefix"
+              className="p-[5px] w-[200px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40"
+              onChange={updateSearchData}
+              required
+            />
+            <button 
+              className="p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]"
+              aria-label="Search course"
+              onClick={submitInfo}
+            >
+              <MagnifyingGlass size={24} className="align-middle" color="white" />
+            </button>
+          </div>
         </div>
         <hr className="my-[20px]"></hr>
         <div className="overflow-y-auto h-[calc(100%-100px)]">
-          <h3 className="text-white mt-[10px] mb-[10px]">Class1</h3>
-          <h3 className="text-white mt-[10px] mb-[10px]">Class2</h3>
-          <h3 className="text-white mt-[10px] mb-[10px]">Class3</h3>
+          {
+            courses.map((course) => (
+              <h3 id={course.courseId} key={course._id} className="text-[#B590C4] pt-[10px] pb-[10px] pl-[5px] pr-[5px] opacity-100 hover:text-white hover:bg-opacity-[3%] hover:bg-white rounded-[10px]"  onClick={courseRedirect}>
+                {course.title} 
+              </h3>
+            ))
+          }
         </div>
       </div>
 
@@ -53,3 +128,4 @@ const Sidebar: React.FC = () => {
 };
 
 export default Sidebar;
+
