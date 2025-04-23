@@ -4,6 +4,8 @@ import Image from 'next/image';
 import LoveBtn from './LoveBtn';
 import TrashBtn from './TrashBtn';
 import { useRouter } from 'next/navigation';
+import User from "../../../src/app/models/userSchema";
+import connectMongoDB from '../../../config/mongodb';
 
 type VideoPostUnitProps = {
   forumMode: boolean, 
@@ -27,8 +29,26 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
   : VideoPostUnitProps
 ) => {
 
+  const [user, setUser] = useState('');
+    useEffect(() => {
+      setUser('');
+      loadUser();
+    }, []);
+
   //Establishes router
   const router = useRouter();
+
+  async function loadUser() {
+    try {
+      const response = await fetch(`/api/users/${username}`);
+      if (!response.ok) throw new Error('Failed to fetch user');
+  
+      const userData = await response.json();
+      setUser(userData.username); // Adjust based on what data you return
+    } catch (error) {
+      console.error("Error loading user:", error);
+    }
+  }
 
   //Redirects to the forum
   const redirectToForum = () => {
@@ -86,7 +106,7 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
               <LoveBtn likes={likes} likedStatus={isLiked} postId={postId}/>
             </div>
             <div className="p-[10px] pr-[20px]">
-              <h4 className="text-white">{username}</h4>
+              <h4 className="text-white">{user ? user : "Loading..."}</h4>
             </div>
           </div>
       }

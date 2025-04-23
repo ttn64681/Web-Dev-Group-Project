@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchCoursePosts, addPost, fetchCourse } from '@/dbInterface/dbOperations';
-import { auth } from '../../../../auth';
-
 
 /** GET /api/posts - Get all posts for a course to display in sidebar
 * Frontend call example:
@@ -47,18 +45,17 @@ export async function GET(request: NextRequest) {
 */
 export async function POST(request: NextRequest) {
   // Get the authenticated user's session
-  const session = await auth();
-  const userId = session?.user?.id;
+  try {
+    const { title, description, url, thumbnail, postType, courseId, userId, username } = await request.json();
+    console.log(`INFO DUMP: ${title}, ${description}, ${url}, ${thumbnail}, ${postType}, ${courseId}, ${userId}`);
   if (!userId) {
     return NextResponse.json({ 
       success: false, 
-      error: 'Unauthorized' 
+      error: 'Unauthorized'   
     }, { status: 401 });
   }
 
-  try {
     // Get the post data from the request body
-    const { title, description, url, thumbnail, postType, courseId } = await request.json();
     // Validate required fields
     if (!title || !description || !url || !postType || !courseId ) {
       return NextResponse.json({ 
@@ -93,7 +90,7 @@ export async function POST(request: NextRequest) {
       url,
       thumbnail,
       postType,
-      course: course.course._id,
+      course: course.course.courseId,
       user: userId,
       comments: [], // Initialize empty comments array
       likes: []     // Initialize empty likes array
@@ -121,3 +118,7 @@ export async function POST(request: NextRequest) {
     }, { status: 500 });
   }
 }
+function getServerSession(authOptions: any) {
+  throw new Error('Function not implemented.');
+}
+

@@ -53,7 +53,7 @@ export type Post = {
   thumbnail?: string;
   postType: 'youtube' | 'link' | 'music';
   course: string;                       // ObjectID (mongodb) of the course this post belongs to
-  user: string;                           // ObjectID (mongodb) of the user who created the post
+  user: any;                           // ObjectID (mongodb) of the user who created the post
   likes: string[];                       // array of user IDs who liked the post
   comments?: Comment[];                    // array of comments on the post (initialized as empty array)
 };
@@ -258,7 +258,6 @@ information in JSON format, with only the keys: "title", "description", "topics"
  */
 export async function addPost(postData: Post) {
   await connectMongoDB();
-
   try {
     // First get the course to ensure it exists
     const course = await Course.findOne({ courseId: postData.course });

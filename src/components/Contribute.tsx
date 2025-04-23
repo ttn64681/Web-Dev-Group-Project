@@ -1,10 +1,11 @@
 'use client';
 import { UsersThree } from '@phosphor-icons/react';
 import Items from './contribute/Items';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import CourseSearchArea from './course-search/CourseSearchArea';
 import { MagnifyingGlass } from '@phosphor-icons/react';
 import connectMongoDB from '../../config/mongodb';
+import { useSession } from 'next-auth/react';
 
 // The contribute component
 
@@ -68,6 +69,8 @@ const Contribute: React.FC = () => {
   const [items, setItems] = useState<ItemType[]>([]); // set searched items
   const [courses, setCourses] = useState<CourseType[]>([]); // set courses for search bar
   const [selectedCourse, setSelectedCourse] = useState('');
+  const [selectedCourseId, setSelectedCourseId] = useState('');
+  const { data: session, status } = useSession();
 
   // State for tracking selected YT video and form input values
   const [selectedVideo, setSelectedVideo] = useState<ItemType | null>(null);
@@ -113,6 +116,12 @@ const Contribute: React.FC = () => {
     }));
   };
 
+  const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCourse(e.target.value);
+
+
+  };
+
   // Handle form submission with validation
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -153,8 +162,8 @@ const Contribute: React.FC = () => {
     const postData = {
       postTitle: formData.title,
       postDescription: formData.desc,
-      postUrl: formData.url,
-      postThumbnail: thumbnail,
+      postUrl: selectedVideo?.url,
+      postThumbnail: selectedVideo?.thumbnail,
       postType: selectedType,
       courseId: selectedCourse
       /*
@@ -168,12 +177,22 @@ const Contribute: React.FC = () => {
       */
     };
 
+    const userId = session?.user?.id;
+    const username = session?.user?.username;
+
     const response = await fetch('/api/posts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application-json'
       },
-      body: JSON.stringify(postData)
+      body: JSON.stringify({title: postData.postTitle,
+        description: postData.postDescription,
+        url: postData.postUrl,
+        thumbnail: postData.postThumbnail,
+        postType: postData.postType,
+        courseId: postData.courseId,
+        userId: userId,
+        username: username})
     })
 
     const responseMsg = await response.json()
@@ -266,7 +285,7 @@ const Contribute: React.FC = () => {
             <select
               className="bg-nav-purple rounded-md font-semibold mr-3 flex-1 w-full h-10 text-white p-2"
               aria-label="Select a course"
-              onChange={(e) => setSelectedCourse(e.target.value)}
+              onChange={handleOnChange}
             >
               {courses.map((course, index) => (
                 <option key={index} value={course.courseId}>

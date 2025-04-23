@@ -119,7 +119,7 @@ const ResourcesBox: React.FC<ResourcesBoxProps> = ({
                     thumbnail={post.thumbnail || ''} 
                     likes={post.likes?.length || 0} 
                     username={post.user} 
-                    isLiked={hasLikedBefore || true}
+                    isLiked={hasLikedBefore}
                   />
                 );
               })
