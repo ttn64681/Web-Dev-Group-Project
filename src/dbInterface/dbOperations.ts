@@ -55,7 +55,7 @@ export type Post = {
   course: string;                       // ObjectID (mongodb) of the course this post belongs to
   user: string;                           // ObjectID (mongodb) of the user who created the post
   likes: string[];                       // array of user IDs who liked the post
-  comments: Comment[];                    // array of comments on the post (initialized as empty array)
+  comments?: Comment[];                    // array of comments on the post (initialized as empty array)
 };
 
 /**
@@ -451,7 +451,8 @@ export async function fetchAllCourses() {
  * @param userId - The ID of the user attempting to delete the post
  * @returns Object containing success status and either a success message or an error message
  */
-export async function deletePost(postId: string, userId: string) {
+/*export async function deletePost(postId: string, userId: string) {
+
   try {
     await connectMongoDB();
 
@@ -497,7 +498,7 @@ export async function deletePost(postId: string, userId: string) {
       error: 'Failed to delete post'
     };
   }
-}
+}*/
 
 export async function fetchCoursePost(postId: string) {
   try {
@@ -524,16 +525,13 @@ export async function fetchCoursePost(postId: string) {
       post: {
         ...typedPost,
         _id: typedPost._id.toString(),
-        user: typedPost.user ? {
-          ...typedPost.user,
-          _id: typedPost.user._id.toString()
-        } : null,
+        user: typedPost.user,
         comments: typedPost.comments ? typedPost.comments.map((comment: any) => ({
           ...comment,
-          _id: comment._id.toString(),
+          _id: comment._id,//toString()
           user: comment.user ? {
             ...comment.user,
-            _id: comment.user._id.toString()
+            _id: comment.user._id//toString()
           } : null
         })) : []
       }

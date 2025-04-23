@@ -30,32 +30,34 @@ const ResourcesBox: React.FC<ResourcesBoxProps> = ({
    * @param postIdArr - Array of post ids incorporated in course
    */
   const retrievePostInfo = async (postIdArr: string[]) => {
-    // Set postsInfo to empty array if no post ids
     if (!postIdArr || postIdArr.length === 0) {
       setPostsInfo([]);
       return;
     }
-
+  
+    const retrievedPosts = [];
+  
     try {
-      //Initialize empty array
-      const retrievedPosts = await Promise.all(
-        postIdArr.map(async (postId) => {
-          const response = await fetch(`/api/posts/${postId}`, {
-            method: 'GET'
-          });
+      for (const postId of postIdArr) {
+        try {
+          const response = await fetch(`/api/posts/${postId}`);
           if (!response.ok) {
             throw new Error(`Failed to fetch post ${postId}`);
           }
-          return response.json();
-        })
-      );
-
+  
+          const postData = await response.json();
+          retrievedPosts.push(postData.post);
+        } catch (err) {
+          console.warn(`Skipping post ${postId} due to fetch error.`, err);
+        }
+      }
+  
       setPostsInfo(retrievedPosts);
     } catch (error) {
-      console.error('Error fetching posts:', error);
-      setPostsInfo([]); // set to empty array if error
+      console.error('Unexpected error fetching posts:', error);
+      setPostsInfo([]); // Fallback
     }
-  }
+  };
 
   //When mounted, postInfo is updated accordingly
   useEffect(() => {
@@ -114,10 +116,10 @@ const ResourcesBox: React.FC<ResourcesBoxProps> = ({
                     forumMode={false}  
                     postId={post._id || ''} 
                     courseId={courseInfo?._id || ''} 
-                    thumbnail={post.thumbnail} 
+                    thumbnail={post.thumbnail || ''} 
                     likes={post.likes?.length || 0} 
                     username={post.user} 
-                    isLiked={hasLikedBefore}
+                    isLiked={hasLikedBefore || true}
                   />
                 );
               })
