@@ -28,7 +28,7 @@ const LoveBtn: React.FC<LoveBtnProps> = ({likes, likedStatus, postId}: LoveBtnPr
 
       //GLOBAL CHANGE
       const response = await fetch(`/api/posts/${postId}/like`, {
-        method: 'POST'
+        method: 'PUT'
       })
       await response.json()
       
@@ -39,7 +39,7 @@ const LoveBtn: React.FC<LoveBtnProps> = ({likes, likedStatus, postId}: LoveBtnPr
 
         //GLOBAL CHANGE
         const response = await fetch(`/api/posts/${postId}/unlike`, {
-          method: 'POST'
+          method: 'DELETE'
         })
         await response.json();
       }
