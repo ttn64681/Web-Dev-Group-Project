@@ -12,6 +12,7 @@ const CourseSearchArea: React.FC<CourseSearchAreaProps> = ({
   submitFunc,
   editFunc
 }: CourseSearchAreaProps) => {
+  
   // Add a form submission handler
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent default form submission

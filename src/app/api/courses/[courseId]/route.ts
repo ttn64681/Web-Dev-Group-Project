@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { addCourse, fetchCourse, searchCourse, fetchAllCourses } from '@/dbInterface/dbOperations';
+import { addCourse, fetchCourse, searchAndAddCourse, fetchAllCourses } from '@/dbInterface/dbOperations';
 
 // GET /api/courses - Get all courses (used for course searches)
 // GET /api/courses?prefix=CSCI&number=1301 - Get specific course
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await searchCourse(prefix, number, title);
+    const result = await searchAndAddCourse(prefix, number, title);
 
     if (!result.success) {
       return NextResponse.json({ error: result.error }, { status: 500 });

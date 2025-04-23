@@ -76,10 +76,10 @@ const ResourcesBox: React.FC<ResourcesBoxProps> = ({
             <div>
               {
                 courseInfo?.resourceUrls && 
-                courseInfo?.resourceUrls.map((resource: {url: string, description: string}) => (
+                courseInfo?.resourceUrls.map((resource: {url: string, description: string}, index : number) => (
                     <LinkUnit 
                       key={resource.url}
-                      number={handleLinkGenerate()}
+                      number={index + 1}
                       link={resource.url}
                       description={resource.description}
                     />

@@ -34,14 +34,14 @@ const OverviewBox: React.FC<OverviewBoxProps> = ({
 
       {/* TOPICS */}
       <div className="flex m-[20px]">
-        <h3 className="text-[1.2em] text-[#F88AFF] mr-[20px]">Topic:</h3>
-          <div className="flex">
-            {
-              topicArray.map((topic: string) => {
-                return <TopicMinibox key={topic} topicText={topic} />
-              }) 
-            }
-          </div>
+        <h3 className="text-[1.2em] text-[#F88AFF] mr-[20px]">Topics:</h3>
+        <div className="flex flex-wrap">
+          {
+            topicArray.map((topic: string) => {
+              return <TopicMinibox key={topic} topicText={topic} />
+            }) 
+          }
+        </div>
       </div>
 
       {/* DESCRIPTION */}
