@@ -32,7 +32,7 @@ export type Course = {
   number: string;             // "1301"
   title: string;
   description?: string;
-  topics?: string;
+  topics?: string[];
   prerequisites?: string[];
   plan?: Array<string>;
   resourceUrls?: Array<{
@@ -147,12 +147,12 @@ export async function searchAndAddCourse(prefix: string, number: string, title: 
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
-    const prompt = `Using the current course information from the University of Georgia's Bulletin courses website, provide a detailed overview of 
+    const prompt = `Using ONLY the current course information from the University of Georgia's Bulletin courses website, provide a detailed overview of 
 ${prefix} ${number} (${title}) at the University of Georgia, and return the 
-title from bulletin, 
-course description from bulletin, 
-course topics from bulletin, 
-related prerequisites from bulletin, a 
+title from UGA Bulletin (format: "CSCI-1301 Introduction to Computer Science"), 
+course description from UGA Bulletin, 
+course topics from UGA Bulletin (string array), 
+related prerequisites from UGA Bulletin, a 
 feasible plan for success (according to the class and professor) (the plan for success should simply be an array of strings), 
 and the course's top-5 free study links/urls from google (array of multiple top 5 recommended study resource links according to google that are best for the course and are free and are valid, working urls, along with a description for each of the 5 links) 
 information in JSON format, with only the keys: "title", "description", "topics", "prerequisites", "plan", and "urls" (with the keys "url" and "description" inside the urls array). Use exactly these keys. Do not create any extra keys other than these. Do not use markdown code.`;
