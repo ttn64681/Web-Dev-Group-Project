@@ -46,76 +46,81 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   // Get the authenticated user's session
   try {
+
     const { title, description, url, thumbnail, postType, courseId, userId, username } = await request.json();
     console.log(`INFO DUMP: ${title}, ${description}, ${url}, ${thumbnail}, ${postType}, ${courseId}, ${userId}`);
-  if (!userId) {
-    return NextResponse.json({ 
-      success: false, 
-      error: 'Unauthorized'   
-    }, { status: 401 });
-  }
-
-    // Get the post data from the request body
-    // Validate required fields
-    if (!title || !description || !url || !postType || !courseId ) {
-      return NextResponse.json({ 
-        success: false, 
-        error: 'Missing required fields: title, description, url, postType, and course are required' 
-      }, { status: 400 });
-    }
-
-    // Validate postType
-    if (!['youtube', 'link', 'music'].includes(postType)) {
-      return NextResponse.json({ 
-        success: false, 
-        error: 'Invalid postType. Must be one of: youtube, link, music' 
-      }, { status: 400 });
-    }
-
-    const [coursePrefix, courseNumber] = courseId.split('-');
-
-    // Fetch course object id from courseId
-    const course = await fetchCourse(coursePrefix, courseNumber);
-    if (!course.success) {
-      return NextResponse.json({ 
-        success: false, 
-        error: course.error || 'Failed to fetch course' 
-      }, { status: 500 });
-    }
     
-    // Create the post data object
-    const postData = {
-      title,
-      description,
-      url,
-      thumbnail,
-      postType,
-      course: course.course.courseId,
-      user: userId,
-      comments: [], // Initialize empty comments array
-      likes: []     // Initialize empty likes array
-    };
-
-    // Add the post to the database
-    const result = await addPost(postData);
-
-    if (!result.success) {
+    if (!userId) {
       return NextResponse.json({ 
         success: false, 
-        error: result.error || 'Failed to add post' 
-      }, { status: 500 });
+        error: 'Unauthorized'   
+      }, { status: 401 });
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      post: result.post 
-    }, { status: 201 });
+      // Get the post data from the request body
+      // Validate required fields
+      if (!title || !description || !url || !postType || !courseId ) {
+        return NextResponse.json({ 
+          success: false, 
+          error: 'Missing required fields: title, description, url, postType, and course are required' 
+        }, { status: 400 });
+      }
+
+      // Validate postType
+      if (!['youtube', 'link', 'music'].includes(postType)) {
+        return NextResponse.json({ 
+          success: false, 
+          error: 'Invalid postType. Must be one of: youtube, link, music' 
+        }, { status: 400 });
+      }
+
+      const [coursePrefix, courseNumber] = courseId.split('-');
+
+      // Fetch course object id from courseId
+      const course = await fetchCourse(coursePrefix, courseNumber);
+      if (!course.success) {
+        return NextResponse.json({ 
+          success: false, 
+          error: course.error || 'Failed to fetch course' 
+        }, { status: 500 });
+      }
+      
+      // Create the post data object
+      const postData = {
+        title,
+        description,
+        url,
+        thumbnail,
+        postType,
+        course: course.course.courseId,
+        user: userId,
+        comments: [], // Initialize empty comments array
+        likes: []     // Initialize empty likes array
+      };
+
+      // Add the post to the database
+      const result = await addPost(postData);
+
+      if (!result.success) {
+        return NextResponse.json({ 
+          success: false, 
+          error: result.error || 'Failed to add post' 
+        }, { status: 500 });
+      }
+
+      return NextResponse.json({ 
+        success: true, 
+        post: result.post 
+      }, { status: 201 });
+
   } catch (error) {
+
     console.error('Error adding post:', error);
     return NextResponse.json({ 
       success: false, 
       error: 'Failed to add post' 
     }, { status: 500 });
+
   }
 }
 function getServerSession(authOptions: any) {

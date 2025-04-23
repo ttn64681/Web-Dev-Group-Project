@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { addComment } from '@/dbInterface/dbOperations';
 import { auth } from '../../../../../../auth';
+import { useSession } from 'next-auth/react';
 
 /** POST /api/posts/[postId]/comment - Used to add a comment to a post
  * Frontend call example:
@@ -11,10 +12,13 @@ import { auth } from '../../../../../../auth';
  */
 export async function POST(request: NextRequest, { params }: { params: { postId: string } }) {
   try {
-    // Get comment data from request body
-    const { comment, userId } = await request.json();
-    // Get the authenticated user's session
 
+    // Get comment data from request body
+    const { user, comment} = await request.json();
+    const userId = user
+
+    console.log("USER ID: ", userId);
+    
     if (!userId) {
       return NextResponse.json({
         success: false,

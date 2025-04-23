@@ -1,10 +1,11 @@
 'use client';
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import React, { useState, useEffect } from 'react';
 import LinkUnit from './LinkUnit';
 import VideoPostUnit from './VideoPostUnit';
 import { Course } from '@/dbInterface/dbOperations';
 import { Post } from '@/dbInterface/dbOperations';
+import { useSession } from 'next-auth/react';
 
 type ResourcesBoxProps = {
   isCourseSelected: boolean,
@@ -18,6 +19,8 @@ const ResourcesBox: React.FC<ResourcesBoxProps> = ({
 
   const [linkUnitNum, setLinkUnitNum] = useState(1);
   const [postsInfo, setPostsInfo] = useState<Post[]>([]);
+
+  const {data: session, status} = useSession();
 
   // Generates a unique number for each link unit starting at 1
   const handleLinkGenerate = () => {
@@ -58,6 +61,33 @@ const ResourcesBox: React.FC<ResourcesBoxProps> = ({
       setPostsInfo([]); // Fallback
     }
   };
+
+  /*
+    Checks if a user has liked before
+  */
+  const checkHasLikedBefore = (likeArray: string[]) => {
+
+      //User ID check
+      const userId = session?.user?.id
+  
+      //If user is not authenticated, it is false for them and they cannot like.
+      if (!userId) {
+        return false;
+      }
+
+      //likeArray should be an array of ObjectId[]
+      for (let i = 0; i < likeArray.length; i++) {
+        const stringifiedId = likeArray[i].toString();
+
+        if (userId == stringifiedId) {
+          return true
+        }
+      }
+      
+      return false;
+
+  }
+
 
   //When mounted, postInfo is updated accordingly
   useEffect(() => {
@@ -104,11 +134,10 @@ const ResourcesBox: React.FC<ResourcesBoxProps> = ({
           <div className="flex justify-between pl-[40px] pr-[40px] flex-wrap">
             {
               postsInfo.map((post) => {
-                //Determine if user has liked the post
-                /*
-                 */
-                const hasLikedBefore = false;
 
+                //Determine if user has liked the post
+                const hasLikedBefore = checkHasLikedBefore(post.likes);
+              
                 //Render videopost unit
                 return (
                   <VideoPostUnit 

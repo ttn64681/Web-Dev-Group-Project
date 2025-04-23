@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Heart } from '@phosphor-icons/react';
+import { useSession } from 'next-auth/react';
 
 type LoveBtnProps = {
   likes: number,
@@ -10,8 +11,14 @@ type LoveBtnProps = {
 
 const LoveBtn: React.FC<LoveBtnProps> = ({likes, likedStatus, postId}: LoveBtnProps) => {
 
-  const [liked, setLiked] = useState(likedStatus);
+  const [liked, setLiked] = useState<boolean>(likedStatus);
   const [likeNum, setLikeNum] = useState(likes);
+
+  const {data: session, status} = useSession();
+
+  useEffect(() => {
+    setLiked(likedStatus);
+  }, [likedStatus]);
 
   const handleClick = async () => {
     //Changes liked status
@@ -20,6 +27,7 @@ const LoveBtn: React.FC<LoveBtnProps> = ({likes, likedStatus, postId}: LoveBtnPr
     // JR YOU FLIPPED THE LOGIC, it should be:
     // if not liked, like
     // if liked, unlike
+    // HEARD KING
 
     //Updates like numbers by +1
     if (!liked) {
@@ -28,7 +36,10 @@ const LoveBtn: React.FC<LoveBtnProps> = ({likes, likedStatus, postId}: LoveBtnPr
 
       //GLOBAL CHANGE
       const response = await fetch(`/api/posts/${postId}/like`, {
-        method: 'PUT'
+        method: 'PUT',
+        body: JSON.stringify({
+          userId: session?.user?.id
+        })
       })
       await response.json()
       
@@ -45,6 +56,11 @@ const LoveBtn: React.FC<LoveBtnProps> = ({likes, likedStatus, postId}: LoveBtnPr
       }
     }
   };
+
+  useEffect(() => {
+    console.log('Love btn postRender-liked: ', likedStatus)
+    setLiked(likedStatus);
+  },[])
 
   return (
     <div>

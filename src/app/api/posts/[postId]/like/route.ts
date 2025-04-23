@@ -12,7 +12,7 @@ export async function PUT(request: NextRequest, { params }: { params: { postId: 
   try {
     // Get the authenticated user's session
     const session = await auth();
-    const userId = session?.user?.id;
+    const {userId} = await request.json()
     
     if (!userId) {
       return NextResponse.json({ 

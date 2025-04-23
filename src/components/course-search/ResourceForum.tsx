@@ -5,6 +5,7 @@ import CommentBox from './CommentBox';
 import { Comment, Post } from '@/dbInterface/dbOperations';
 import { ArrowLeft } from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react'
 
 type ResourceBoxProps = {
   postInfo: Post
@@ -16,17 +17,26 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
   //Comment state
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState<Comment[]>(postInfo.comments || []);
+  const [userId, setUserId] = useState<String>('');
+  const [liked, setLiked] = useState<boolean>(false);
+  const [courseId, setCourseId] = useState<string>('');
 
   //Sets up the router
   const router = useRouter();
 
+  //Sets up session
+  const {data: session, status} = useSession();
+
   //Handles adding comment into forum
   const addComment = async() => {
+
+    const userId = session?.user?.id;
+
     if (commentText.length === 0 || !postInfo._id) return;
 
     //Adds comment locally
     const newComment: Comment = {
-      user: 'User', //GET USER
+      user: userId, //GET USER
       comment: commentText,
       // you can add date but i want to throw up rn
       // bruh its okay we wont add it rn
@@ -60,6 +70,48 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
     setCommentText(e.target.value);
   }
 
+  /*
+    Checks if a user has liked before
+  */
+  const checkHasLikedBefore = (likeArray: string[]) => {
+
+      //User ID check
+      const userId = session?.user?.id
+  
+      //If user is not authenticated, it is false for them and they cannot like.
+      if (!userId) {
+        return false;
+      }
+
+      //likeArray should be an array of ObjectId[]
+      for (let i = 0; i < likeArray.length; i++) {
+        const stringifiedId = likeArray[i].toString();
+
+        if (userId == stringifiedId) {
+          return true
+        }
+      }
+      
+      return false;
+
+  }
+
+  const extractCourseId = () => {
+      // Get the courseId from the URL
+      const currURL = new URL(window.location.href);
+      const currURLpath = currURL.pathname;
+      // Extract the courseId from the path (e.g., /course-search/CSCI-1301/resources)
+      const pathParts = currURLpath.split('/');
+      const extractedCourseId = pathParts[pathParts.indexOf('course-search') + 1];
+
+      setCourseId(extractedCourseId);
+  }
+
+  useEffect(() => {
+    const result = checkHasLikedBefore(postInfo.likes);
+    setLiked(result);
+  }, []);
+
   return (
     <div className="bg-form-bg-purple p-6 rounded-lg font-inter">
       {/* Back Button */}
@@ -77,10 +129,11 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
           <VideoPostUnit 
             forumMode={true} 
             postId={postInfo._id || ''}
+            courseId={courseId}
             thumbnail={postInfo.thumbnail}
             likes={postInfo.likes?.length || 0}
             username={postInfo.user}
-            isLiked={false} // This should be determined by checking if current user's ID is in postInfo.likes
+            isLiked={liked} // This should be determined by checking if current user's ID is in postInfo.likes
           />
         </div>
         <div className="flex-1">
@@ -117,7 +170,7 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
           {comments.map((comment, index) => (
             <CommentBox 
               key={index} 
-              username={comment.user} 
+              username={comment.user._id} 
               commentText={comment.comment} 
             />
           ))}

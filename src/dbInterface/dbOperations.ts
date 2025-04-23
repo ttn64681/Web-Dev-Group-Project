@@ -62,7 +62,7 @@ export type Post = {
  * Represents a comment on a post
  */
 export type Comment = {
-  user: string; // ObjectID (mongodb) of the user who made the comment
+  user: any; // ObjectID (mongodb) of the user who made the comment
   comment: string; // The comment text
   createdAt?: Date; // Optional timestamp of when the comment was created
 };
@@ -180,7 +180,11 @@ information in JSON format, with only the keys: "title", "description", "topics"
       //const cleanedText = text.replace(/```json\n?|\n?```/g, '').trim();
       
       // Parse JSON response
-      courseJSON = JSON.parse(cleanedText);
+      try {
+        courseJSON = JSON.parse(cleanedText);
+      } catch(e) {
+        console.log("Failed to parse JSON.")
+      }
       
       // Ensure plan is always an array of strings
       if (courseJSON.plan) {
@@ -189,8 +193,9 @@ information in JSON format, with only the keys: "title", "description", "topics"
           try {
             const parsedPlan = JSON.parse(courseJSON.plan);
             courseJSON.plan = Array.isArray(parsedPlan) ? parsedPlan : [courseJSON.plan];
-          } catch {
+          } catch(e) {
             // if parsing fails, treat it as a single string item in array
+            console.log("Failed to parse JSON - 2")
             courseJSON.plan = [courseJSON.plan];
           }
         } else if (!Array.isArray(courseJSON.plan)) {
@@ -328,7 +333,13 @@ export async function fetchCoursePosts(courseId: string) {
 export async function addComment(postId: string, commentData: Comment) {
   await connectMongoDB();
 
+  console.log(postId);
+  console.log(commentData);
+  console.log(commentData.user);
+  console.log(commentData.comment);
+
   try {
+    
     // Update the post by adding the new comment
     const post = await Post.findByIdAndUpdate(
       postId,
@@ -348,9 +359,12 @@ export async function addComment(postId: string, commentData: Comment) {
     }
 
     return { success: true, post };
+
   } catch (error) {
+
     console.error('Error adding comment:', error);
     return { success: false, error: 'Failed to add comment' };
+
   }
 }
 
