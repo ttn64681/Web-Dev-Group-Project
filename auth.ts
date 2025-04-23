@@ -75,7 +75,7 @@ export const {
             // Attach custom properties to the session
             if (token) {
                 session.user = {
-                    id: token._id as string,
+                    id: token.id as string,
                     username: token.username as string,
                     email: "NA",
                     emailVerified: null,
