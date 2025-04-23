@@ -19,11 +19,11 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
     // entire page
     <div className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center bg-gradient-to-b from-[#0E0613] to-[#411F4B] overflow-hidden px-4 sm:px-6 md:px-8">
       {/* creating card effect on Register box (basically borders)*/}
-      <div className="border border-neon-pink rounded-2xl py-8 w-[50%] md:w-[400px] bg-login-bg-purple/[24%] overflow-hidden shadow-[0_3px_35px_rgba(248,138,255,0.3)]">
-        {/* defining grid */}
-        <div className="grid content-center justify-items-center w-full h-auto md:h-[400px] md:w-[400px] grid-rows-[auto_auto_1fr_auto] gap-6">
+      <div className="border border-neon-pink rounded-2xl py-8 w-[310px] sm:w-[350px] md:w-[400px] bg-login-bg-purple/[24%] overflow-hidden shadow-[0_3px_35px_rgba(248,138,255,0.3)]">
+        {/* Register container */}
+        <div className="flex flex-col justify-center items-center w-full h-auto gap-6">
           {/* gap between logo and Register title */}
-          <div className="grid content-center justify-items-center gap-2">
+          <div className="flex flex-col justify-center items-center gap-2">
             <Image
               src="/logo/logo-horizontal_730x209.png"
               alt="CourseHub Horizontal Logo"
@@ -36,28 +36,28 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
             </h1>
           </div>
           {/* input fields and Register button */}
-          <form className="grid grid-cols-1 grid-rows-3 content-center justify-center gap-6 w-[85%]">
+          <form className="flex flex-col justify-center items-center gap-6 w-[85%] ">
             <input
-              className="h-12 rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white text-lg"
+              className="h-11 md:h-12 w-[90%] rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white text-base md:text-lg"
               type="text"
               placeholder="Username"
             />
             <input
-              className="h-12 rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white text-lg"
+              className="h-11 md:h-12 w-[90%] rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white text-base md:text-lg"
               type="password"
               placeholder="Password"
             />
             <button
-              className="h-12 bg-gray-200 rounded-full m-1 text-xl font-bold text-[rgb(40,22,47)]"
+              className="h-11 md:h-12 w-[90%] bg-gray-200 rounded-full m-1 text-lg md:text-xl font-bold text-[rgb(40,22,47)]"
               type="submit"
             >
               Register
             </button>
           </form>
           {/* linking to register page */}
-          <p className="text-white text-center text-base">
+          <p className="text-white text-center text-sm md:text-base">
             Already have an account?{' '}
-            <Link className="underline font-bold" href="/register">
+            <Link className="underline font-bold" href="/login">
               Login
             </Link>
           </p>
