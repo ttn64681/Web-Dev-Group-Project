@@ -79,7 +79,7 @@ const Sidebar: React.FC = () => {
       {/*Sidebar Contents*/}
       <div className={`bg-[#28162F] pl-[25px] pr-[25px] h-full ${openStatus ? 'block' : 'hidden'}`}>
         <div className="flex pt-[20px]">
-          <h3 className="text-[#B590C4] mr-[20px]">Existing Classes: </h3>
+          <h3 className="font-nunito text-[#B590C4] text-[20px] mr-[20px]">Existing Classes: </h3>
           <div className="flex max-w-[500px]">
             <input
               type="text"
@@ -98,7 +98,7 @@ const Sidebar: React.FC = () => {
             </button>
           </div>
         </div>
-        <hr className="my-[20px]"></hr>
+        <hr className="my-[20px] sidebar-white-purple"></hr>
         <div className="overflow-y-auto h-[calc(100%-100px)]">
           {
             courses.map((course) => (

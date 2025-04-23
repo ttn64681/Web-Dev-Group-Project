@@ -101,8 +101,8 @@ const ResourcesBox: React.FC<ResourcesBoxProps> = ({
   return (
     <div>
       {/* AI LINKS DISPLAY*/}
-      <div className="p-[30px]">
-        <h3 className="text-[#F88AFF]">AI Top-5 Recommended</h3>
+      <div className="pt-[20px] pb-[30px] px-[40px]">
+        <h3 className="text-[#F88AFF] font-bold text-[1.2em]">AI Top-5 Recommended</h3>
         {
           isCourseSelected ? 
             <div>
@@ -127,8 +127,8 @@ const ResourcesBox: React.FC<ResourcesBoxProps> = ({
       </div>
 
       {/* VIDEOS DISPLAY */}
-      <div className="bg-[#33203A] p-[30px] rounded-[20px]">
-        <h3 className="text-white pl-[40px] pb-[20px] font-bold fon">Student Top Recommended:</h3>
+      <div className="bg-[#33203A] p-[15px] rounded-[12px]">
+        <h3 className="text-white p-[20px] font-bold text-[1.2em]">Student Top Recommended:</h3>
         {
          isCourseSelected ? 
           <div className="flex justify-between pl-[40px] pr-[40px] flex-wrap">

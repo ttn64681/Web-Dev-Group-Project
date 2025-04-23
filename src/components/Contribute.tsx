@@ -2,7 +2,6 @@
 import { UsersThree } from '@phosphor-icons/react';
 import Items from './contribute/Items';
 import React, { useState, useEffect } from 'react';
-import CourseSearchArea from './course-search/CourseSearchArea';
 import { MagnifyingGlass } from '@phosphor-icons/react';
 import connectMongoDB from '../../config/mongodb';
 import { useSession } from 'next-auth/react';
@@ -123,6 +122,9 @@ const Contribute: React.FC = () => {
   };
 
   // Handle form submission with validation
+  // Tracks whether form has been submitted
+  const [submitted, setSubmitted] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -145,18 +147,19 @@ const Contribute: React.FC = () => {
     //Construct thumbnail
     let thumbnail = null;
     if (formData.url.length >= 24 && formData.url.substring(0, 24) == 'https://www.youtube.com') {
-        const url = new URL(formData.url);
-        const urlParams = new URLSearchParams(url.search);
-        const videoId = urlParams.get("v");
-        thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+      const url = new URL(formData.url);
+      const urlParams = new URLSearchParams(url.search);
+      const videoId = urlParams.get("v");
+      thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
     } else {
-        thumbnail = "/logo/LinkItemLogo.png"
+      thumbnail = "/logo/LinkItemLogo.png"
     }
 
     //Determine type
     let selectedType = 'youtube';
-    if (activeTab == 'Links') {selectedType = 'link'};
-    if (activeTab == 'Music')  {selectedType = 'music'};
+    if (activeTab == 'Links') { selectedType = 'link' };
+    if (activeTab == 'Music') { selectedType = 'music' };
+    setSubmitted(true);
 
     // Create post data object
     const postData = {
@@ -185,14 +188,16 @@ const Contribute: React.FC = () => {
       headers: {
         'Content-Type': 'application-json'
       },
-      body: JSON.stringify({title: postData.postTitle,
+      body: JSON.stringify({
+        title: postData.postTitle,
         description: postData.postDescription,
         url: postData.postUrl,
         thumbnail: postData.postThumbnail,
         postType: postData.postType,
         courseId: postData.courseId,
         userId: userId,
-        username: username})
+        username: username
+      })
     })
 
     const responseMsg = await response.json()
@@ -201,14 +206,14 @@ const Contribute: React.FC = () => {
     console.log(responseMsg.failure)
 
 
-    if(activeTab == 'Links') {
+    if (activeTab == 'Links') {
       console.log("The selected course is: ", selectedCourse);
       console.log("The Link title is: \n", postData.postTitle);
       console.log("The Link description is: \n", postData.postDescription);
       console.log("The Link url is: \n", postData.postUrl);
     }
 
-    if(activeTab == 'Videos') {
+    if (activeTab == 'Videos') {
       console.log("The selected course is: ", selectedCourse);
       console.log("The Video Posts title is: \n", postData.postTitle);
       console.log("The Video Posts description is: \n", postData.postDescription);
@@ -216,7 +221,7 @@ const Contribute: React.FC = () => {
       console.log("The Videos thumbnail url is: \n", selectedVideo?.thumbnail);
     }
 
-    if(activeTab == 'Music') {
+    if (activeTab == 'Music') {
       console.log("The selected course is: ", selectedCourse);
       console.log("The Music Posts title is: \n", postData.postTitle);
       console.log("The Music Posts description is: \n", postData.postDescription);
@@ -230,6 +235,7 @@ const Contribute: React.FC = () => {
       desc: '',
       url: '',
     });
+
   };
 
   const fetchCourses = async () => {
@@ -260,30 +266,45 @@ const Contribute: React.FC = () => {
     } catch (error) {
       console.error('Failed to fetch videos:', error);
     }
+
+    // makes the button usable again after 2 seconds
+    setTimeout(() => setSubmitted(false), 2000);
+
+    setSelectedVideo(null); // uncheck the selected item
   };
 
+
+
+
   return (
-    <div>
+    <div className="">
       {/* Contribution Title */}
-      <div className="flex flex-row justify-center items-center flex-wrap gap-5">
+      <div className="flex flex-row justify-center items-start flex-wrap gap-3 sm:gap-5 mt-[30px] pt-5 pb-10">
         <div className="flex flex-col-row items-center">
-          <div>
-            <UsersThree className="text-neon-violet" size={85} />
+          <div className="">
+            <UsersThree
+              color="#BD11FF"
+              className="drop-shadow-[0_0_10px_rgba(189,17,255,1)] -mt-2 w-14 h-14 sm:w-16 sm:h-16"
+            />
           </div>
         </div>
 
-        <h1 className="font-dongle text-5xl font-extrabold text-neon-violet">Contribution</h1>
+        <h1 className="font-dongle font-medium text-6xl sm:text-7xl text-neon-violet drop-shadow-[0_0_10px_rgba(189,17,255,1)]">Contribution</h1>
       </div>
 
       {/* Container For All Form Elements */}
-      <div className="flex flex-col items-center gap-10">
+      <div className="flex flex-col items-center gap-5 pb-10">
+
         <div className="flex-1 w-5/6 mx-auto h-full">
-          <p className="text-neon-pink mb-2">Class:</p>
+          <h4 className="font-nunito text-[#D163D7] text-sm sm:text-base mb-[10px] ">
+            Select one of the existing classes to post a resource to
+          </h4>
+          <p className="font-nunito text-disabled-purple mb-2 text-sm sm:text-base">Class:</p>
 
           {/* Course Selection */}
-          <div className="border-2 border-neon-violet rounded-lg">
+          <div className="border-2 border-neon-violet rounded-lg h-9 sm:h-11">
             <select
-              className="bg-nav-purple rounded-md font-semibold mr-3 flex-1 w-full h-10 text-white p-2"
+              className="bg-nav-purple rounded-md mr-3 flex-1 w-full h-8 sm:h-10 font-nunito text-base sm:text-lg text-white pl-2 sm:p-2"
               aria-label="Select a course"
               onChange={handleOnChange}
             >
@@ -301,19 +322,19 @@ const Contribute: React.FC = () => {
           <div className="pt-2 pb-2">
             <button
               onClick={showVideos}
-              className={`m-[10px] ml-0 p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Videos' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}
+              className={`m-[10px] ml-0 p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Videos' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border-[2px] rounded-[10px] inline`}
             >
               Videos
             </button>
             <button
               onClick={showLinks}
-              className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Links' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}
+              className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Links' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border-[2px] rounded-[10px] inline`}
             >
               Links
             </button>
             <button
               onClick={showMusic}
-              className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Music' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border border-[2px] rounded-[10px] inline`}
+              className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Music' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border-[2px] rounded-[10px] inline`}
             >
               Music
             </button>
@@ -321,9 +342,10 @@ const Contribute: React.FC = () => {
         </div>
 
         {/* Post Form */}
-        <div className="bg-component-purple rounded-lg flex-1 w-5/6 mx-auto h-full text-white pt-5 pb-5 -mt-5">
-          <form onSubmit={handleSubmit} className="pb-4 pl-5">
-            <p className="pb-2">
+        <form onSubmit={handleSubmit} className="flex flex-col h-full gap-5 w-5/6 mx-auto text-white">
+          {/* Video/Music Top Container */}
+          <div className="bg-component-purple rounded-lg pt-9 pb-5 px-10 -mt-5">
+            <p className="pb-4 text-xl sm:text-2xl font-semibold">
               {activeTab === 'Videos' && 'Enter Video Details'}
               {activeTab === 'Links' && 'Enter Post Details'}
               {activeTab === 'Music' && 'Enter Music Details'}
@@ -338,7 +360,8 @@ const Contribute: React.FC = () => {
                   value={formData.url}
                   onChange={handleFormChange}
                   placeholder="Enter URL"
-                  className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-5/6 mx-auto h-full border-2 border-form-pink-border rounded-md p-2 mb-2"
+                  className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-full mx-auto h-full border-2 border-form-pink-border rounded-md p-2"
+                  required
                 />
               </div>
             )}
@@ -349,7 +372,8 @@ const Contribute: React.FC = () => {
               value={formData.title}
               onChange={handleFormChange}
               placeholder="Title"
-              className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-5/6 mx-auto h-full border-2 border-form-pink-border rounded-md p-2 mb-4"
+              className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-full h-9 sm:h-11 border-2 border-form-pink-border rounded-md p-2 mx-auto mb-4"
+              required
             />
 
             <textarea
@@ -357,51 +381,77 @@ const Contribute: React.FC = () => {
               value={formData.desc}
               onChange={handleFormChange}
               placeholder="Description"
-              className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-5/6 mx-auto h-full border-2 border-form-pink-border rounded-md p-2 text-justify mb-4"
+              className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-full mx-auto h-24 border-2 border-form-pink-border rounded-md p-2 text-justify mb-4"
+              required
             />
-
-            <div className="flex justify-start">
-              <button
-                type="submit"
-                className="p-[5px] pl-[15px] pr-[15px] text-white border-white hover:scale-110 transition-transform duration-200 border border-[3px] rounded-[10px] inline"
-              >
-                Submit
-              </button>
-            </div>
-          </form>
-        </div>
-
-        {/* Search Container - Hidden for Links tab */}
-        {activeTab !== 'Links' && (
-          <div className="bg-component-purple rounded-lg flex-1 w-5/6 mx-auto h-full text-white p-4">
-            <h2 className="text-white text-[30px]">
-              {' '}
-              {activeTab === 'Videos' ? 'Search Videos' : 'Search Music'}
-            </h2>
-            <div className="ml-[10px] mr-[10px] grow">
-              <div className="flex max-w-[500px]">
-                <input
-                  title="YouTube Search Bar"
-                  type="text"
-                  placeholder={activeTab === 'Videos' ? 'YouTube Search' : 'Music Search'}
-                  className="p-[5px] w-[400px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40 outline-none"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                />
+            {activeTab === 'Links' && (
+              <div className="flex justify-center sm:justify-end">
                 <button
-                  className="p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]"
-                  onClick={() => searchYouTubeVideos(searchInput)}
-                  title="Search YouTube videos"
+                  type="submit"
+                  className=" p-[5px] pl-[15px] pr-[15px] text-white border-white hover:scale-110 transition-transform duration-200 border-[3px] rounded-[10px] inline"
                 >
-                  <MagnifyingGlass size={24} className="align-middle group-hover:scale-110 transition-transform duration-200" color="white" />
+                  {submitted ? 'Submitted' : 'Submit Post'}
                 </button>
               </div>
-            </div>
-            <Items items={items} onSelectItem={setSelectedVideo} />
+            )}
           </div>
-        )}
+        </form>
       </div>
-    </div>
+
+      {/* Video/Music Bottom Container - Hidden for Links tab */}
+      {activeTab !== 'Links' && (
+        // flex-1 w-5/6 mx-auto h-full text-white 
+        <div className="bg-component-purple rounded-lg py-9 px-10">
+          <h2 className="text-white text-xl sm:text-2xl pb-4 font-semibold">
+            {activeTab === 'Videos' ? 'Search Videos' : 'Search Music'}
+          </h2>
+          <div className="grow">
+            <div className="flex h-8 sm:h-10">
+              <input
+                type="text"
+                placeholder="Search"
+                className="p-[5px] w-full bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40 outline-none"
+              />
+              <button className="px-[5px] sm:p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]">
+                <MagnifyingGlass size={24} className="align-middle" color="white" />
+              </button>
+            </div>
+          </div>
+          <h4 className="mt-6 sm:mt-10 text-sm sm:text-base text-[#EFDEF0]">
+            {activeTab === 'Videos' ? 'Select a video:' : 'Select a song'}
+          </h4>
+
+          {/* Search Container - Hidden for Links tab */}
+          {activeTab !== 'Links' && (
+            <div className="bg-component-purple rounded-lg flex-1 w-5/6 mx-auto h-full text-white p-4">
+              <h2 className="text-white text-[30px]">
+                {' '}
+                {activeTab === 'Videos' ? 'Search Videos' : 'Search Music'}
+              </h2>
+              <div className="ml-[10px] mr-[10px] grow">
+                <div className="flex max-w-[500px]">
+                  <input
+                    title="YouTube Search Bar"
+                    type="text"
+                    placeholder={activeTab === 'Videos' ? 'YouTube Search' : 'Music Search'}
+                    className="p-[5px] w-[400px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40 outline-none"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                  />
+                  <button
+                    className="p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]"
+                    onClick={() => searchYouTubeVideos(searchInput)}
+                    title="Search YouTube videos"
+                  >
+                    <MagnifyingGlass size={24} className="align-middle group-hover:scale-110 transition-transform duration-200" color="white" />
+                  </button>
+                </div>
+              </div>
+              <Items items={items} onSelectItem={setSelectedVideo} />
+            </div>
+          )}
+        </div>
+      )}</div>
   );
 };
 

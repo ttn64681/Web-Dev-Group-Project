@@ -119,21 +119,21 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
   }, [owned])
 
   return (
-    <div>
-      <button className="hover:scale-110 transition-transform duration-200" title="Video thumbnail">
+    <div className="p-2 w-full max-w-[220px]">
+      <button className="block w-full hover:scale-110 transition-transform duration-200" title="Video thumbnail">
         <Image
           title="Video thumbnail"
           src={thumbnail ? thumbnail : "https://picsum.photos/id/5/264/154"}
           alt={'Video thumbnail'}
-          width={264}
-          height={154}
+          width={220}
+          height={128}
           className="rounded-[10px]"
           onClick={forumMode ? () => {} : redirectToForum} //If on forum mode, button is unclickable
         />
       </button>
       {
         forumMode ? 
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center mt-2">
             <div className="flex p-[10px] justify-between w-[100px]">
               <LoveBtn likes={likes} likedStatus={isLiked} postId={postId}/>
                 {

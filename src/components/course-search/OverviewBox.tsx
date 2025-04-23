@@ -25,18 +25,15 @@ const OverviewBox: React.FC<OverviewBoxProps> = ({
   }
 
   return (
-    <div className="bg-[#33203A] p-[20px] rounded-[20px]">
-      {/*TITLE */}
-      <div className="flex m-[20px]">
-        <h3 className="text-[1.2em] text-[#F88AFF] mr-[20px]">Title:</h3>
-        <h4 className="text-[#E2D0E6]">{isCourseSelected && courseInfo ? courseInfo.title : "Example title"}</h4>
+    <div className="bg-[#33203A] p-[15px] rounded-[12px]">
+      <div className="flex m-[20px] items-center">
+        <h3 className="text-[1.2em] text-[#F88AFF] mr-[20px] font-bold">Title:</h3>
+        <h4 className="font-inter text-[#E2D0E6]">{isCourseSelected && courseInfo ? courseInfo.title : "Example title"}</h4>
       </div>
-
-      {/* TOPICS */}
-      <div className="flex m-[20px]">
-        <h3 className="text-[1.2em] text-[#F88AFF] mr-[20px]">Topics:</h3>
-        <div className="flex flex-wrap">
-          {
+      <div className="flex flex-col sm:flex-row flex-wrap md:items-center m-[20px] ">
+        <h3 className="text-[1.2em] text-[#F88AFF] mr-[20px] mb-1 sm:mb-0 font-bold">Topic:</h3>
+        <div className="flex flex-col sm:flex-row flex-wrap gap-2">
+        {
             topicArray.map((topic: string) => {
               return <TopicMinibox key={topic} topicText={topic} />
             }) 
@@ -46,13 +43,13 @@ const OverviewBox: React.FC<OverviewBoxProps> = ({
 
       {/* DESCRIPTION */}
       <div className="m-[20px]">
-        <h3 className="text-[1.2em] text-[#F88AFF] mr-[20px]"> Description:</h3>
-        <h4 className="text-[#E2D0E6]"> {isCourseSelected && courseInfo ? courseInfo.description : "Example description"} </h4>
+        <h3 className="text-[1.2em] text-[#F88AFF] mr-[20px] font-bold"> Description:</h3>
+        <h4 className="font-inter text-[#E2D0E6]">{isCourseSelected && courseInfo ? courseInfo.description : "Example description"}</h4>
       </div>
 
       {/* SUCCESS PLAN */}
       <div className="m-[20px]">
-        <h3 className="text-[1.2em] text-[#F88AFF] mr-[20px]"> Plan for Success:</h3>
+        <h3 className="text-[1.2em] text-[#F88AFF] mr-[20px] font-bold"> Plan for Success:</h3>
         {
           isCourseSelected && courseInfo ?
             <div className="flex flex-col">
@@ -66,7 +63,7 @@ const OverviewBox: React.FC<OverviewBoxProps> = ({
             </div>
             :
             <div className="flex flex-col">
-              <h4 className="text-[#E2D0E6]">Success plan point 1</h4>
+              <h4 className="font-inter text-[#E2D0E6]">Success plan point 1</h4>
             </div>
         }
       </div>

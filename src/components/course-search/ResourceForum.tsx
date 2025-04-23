@@ -113,7 +113,7 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
   }, []);
 
   return (
-    <div className="bg-form-bg-purple p-6 rounded-lg font-inter">
+    <div className="bg-form-bg-purple p-10 rounded-lg font-inter">
       {/* Back Button */}
       <button
         onClick={() => router.back()}
@@ -124,8 +124,9 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
       </button>
 
       {/* Video Section */}
-      <div className="flex gap-6 mb-2">
-        <div className="flex flex-col">
+      <div className="flex flex-col md:flex-row gap-3 md:gap-6 mb-2">
+        <h3 className="md:hidden font-nunito text-neon-pink text-2xl">Video Title</h3>
+        <div className="flex flex-col w-full max-w-[220px]">
           <VideoPostUnit 
             forumMode={true} 
             postId={postInfo._id || ''}
@@ -137,14 +138,14 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
           />
         </div>
         <div className="flex-1">
-          <h3 className="text-neon-pink text-xl mb-2">{postInfo.title}</h3>
-          <h3 className="text-white">{postInfo.description}</h3>
+          <h3 className="hidden md:block font-nunito text-neon-pink text-2xl mb-2">{postInfo.title}</h3>
+          <h3 className="font-inter text-white text-base font-light">{postInfo.description}</h3>
         </div>
       </div>
 
       {/* Comment Input */}
       <div>
-        <h3 className="text-neon-pink text-xl mb-2">Leave a Comment!</h3>
+        <h3 className="text-neon-pink text-xl mb-2 pt-4">Leave a Comment!</h3>
         <div className="flex flex-col items-end">
           <textarea
             placeholder="Place your comment here."

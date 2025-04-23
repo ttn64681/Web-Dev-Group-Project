@@ -143,37 +143,39 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
   //COMPONENT MATERIALS ============================================
 
   return (
-    <div className="flex h-[calc(100vh-4rem)]">
+    <div className="flex min-h-screen">
       {/*SIDEBAR*/}
-      <div className="h-full sticky top-0">
+      <div className="h-screen sticky top-0">
         <Sidebar />
       </div>
 
-      <div className="w-3/5 ml-auto mr-auto h-full pb-10">
+      <div className="w-full md:w-3/5 mr-[30px] md:mx-auto h-full pb-10">
         {/*TITLE*/}
-        {activeTab == 'Overview' ? (
-          <div className="flex justify-center items-center mt-[50px] mb-[30px]">
-            <MagnifyingGlass
-              size={64}
-              color="#6CFEFE"
-              className="ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]"
-            />
-            <h2 className="text-[3em] text-[#6CFEFE] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]">
-              Course Search
-            </h2>
-          </div>
-        ) : (
-          <div className="flex justify-center items-center mt-[50px] mb-[30px]">
-            <FileText
-              size={64}
-              color="#F09A35"
-              className="ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]"
-            />
-            <h2 className="text-[3em] text-[#F09A35] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]">
-              Resources
-            </h2>
-          </div>
-        )}
+        {activeTab == "Overview" ? 
+          (
+            <div className="flex gap-2 md:gap-0 justify-center items-center mt-[50px] mb-[30px]">
+              <MagnifyingGlass
+                size={64}
+                color="#6CFEFE"
+                className="w-12 h-12 md:w-16 md:h-16 md:mx-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]"
+              />
+              <h2 className="font-dongle text-6xl md:text-7xl text-[#6CFEFE] md:mx-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]">
+                Course Search
+              </h2>
+            </div>
+          ):(
+            <div className="flex justify-center items-start mt-[50px] mb-[30px]">
+              <FileText
+                size={64}
+                color="#F09A35"
+                className="w-14 h-14 md:w-16 md:h-16 ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]"
+              />
+              <h2 className="font-dongle text-6xl md:text-7xl text-[#F09A35] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]">
+                Resources
+              </h2>
+            </div>
+          )
+        }
 
         {isPostSelected ? (
           /* RESOURCE FORUM - Shows if user has selected a post*/
@@ -181,7 +183,7 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
         ) : (
           /* SEARCH AREA - Shows if user has not selected a post and on search mode*/
           <div>
-            <h4 className="text-[#D163D7] m-[10px]">
+            <h4 className="font-nunito text-[#D163D7] text-sm sm:text-base m-[10px]">
               Enter the 4 letter prefix, 4 digit number, and course name.
             </h4>
             <div className="mt-[10px] mb-[10px]">
@@ -192,13 +194,13 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
             <div className="">
               <button
                 onClick={showOverview}
-                className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab == 'Overview' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border-[2px] rounded-[10px] inline`}
+                className={`m-[10px] p-[5px] px-[15px] ${activeTab === 'Overview' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border-[2px] rounded-[12px] inline`}
               >
                 Overview
               </button>
               <button
                 onClick={showResources}
-                className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab == 'Resources' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} ${isCourseSelected ? "opacity-100" : "opacity-25"} hover:scale-110 transition-transform duration-200 border-[2px] rounded-[10px] inline`}
+                className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Resources' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border-[2px] rounded-[12px] inline`}
               >
                 Resources
               </button>
