@@ -110,6 +110,7 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
   useEffect(() => {
     const result = checkHasLikedBefore(postInfo.likes);
     setLiked(result);
+    extractCourseId();
   }, []);
 
   return (

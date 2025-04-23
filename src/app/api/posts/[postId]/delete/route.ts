@@ -11,8 +11,7 @@ import { auth } from '../../../../../../auth';
 export async function DELETE(request: NextRequest, { params }: { params: { postId: string } }) {
     try {
       // Get the authenticated user's session
-      const session = await auth();
-      const userId = session?.user?.id;
+      const { userId } = await request.json();
       
       if (!userId) {
         return NextResponse.json({ 

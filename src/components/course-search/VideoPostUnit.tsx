@@ -65,14 +65,15 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
   //Handles deletion of post and redirection when deleted
   const trashClick = async () => {
 
-    /*
     //Deletes post information
     const deleteResponse = await fetch(`/api/posts/${postId}/delete`, {
       method: 'DELETE',
+      body: JSON.stringify({
+        userId: session?.user?.id
+      })
     });
 
     await deleteResponse.json();
-    */
 
     //Redirects back as trash btn should only be accessible on the forum side
     router.push(`/course-search/${courseId}/resources`);

@@ -339,7 +339,7 @@ export async function addComment(postId: string, commentData: Comment) {
   console.log(commentData.comment);
 
   try {
-    
+
     // Update the post by adding the new comment
     const post = await Post.findByIdAndUpdate(
       postId,
@@ -465,7 +465,7 @@ export async function fetchAllCourses() {
  * @param userId - The ID of the user attempting to delete the post
  * @returns Object containing success status and either a success message or an error message
  */
-/*export async function deletePost(postId: string, userId: string) {
+export async function deletePost(postId: string, userId: string) {
 
   try {
     await connectMongoDB();
@@ -512,7 +512,7 @@ export async function fetchAllCourses() {
       error: 'Failed to delete post'
     };
   }
-}*/
+}
 
 export async function fetchCoursePost(postId: string) {
   try {
