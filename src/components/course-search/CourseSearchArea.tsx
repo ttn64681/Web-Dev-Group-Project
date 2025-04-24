@@ -12,13 +12,13 @@ const CourseSearchArea: React.FC<CourseSearchAreaProps> = ({
   submitFunc,
   editFunc
 }: CourseSearchAreaProps) => {
-  
+
   // Add a form submission handler
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent default form submission
     // Create a proper button click event
     const buttonEvent = {
-      preventDefault: () => {},
+      preventDefault: () => { },
       currentTarget: document.querySelector('button[type="submit"]') as HTMLButtonElement
     } as React.MouseEvent<HTMLButtonElement>;
     submitFunc(buttonEvent);
@@ -26,9 +26,9 @@ const CourseSearchArea: React.FC<CourseSearchAreaProps> = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="flex w-[100%]">
-        <div className="ml-[10px] mr-[10px]">
-          <h3 className="text-[#765178]">Prefix</h3>
+      <div className="flex flex-wrap sm:flex-row sm:gap-0 w-[100%]">
+        <div className="mx-[10px]">
+          <h3 className="font-nunito text-[#765178]">Prefix</h3>
           <input
             type="text"
             name="prefix"
@@ -40,8 +40,8 @@ const CourseSearchArea: React.FC<CourseSearchAreaProps> = ({
             required
           />
         </div>
-        <div className="ml-[10px] mr-[10px]">
-          <h3 className="text-[#765178]">Number</h3>
+        <div className="mx-[10px]">
+          <h3 className="font-nunito text-[#765178]">Number</h3>
           <input
             type="text"
             name="courseNum"
@@ -53,9 +53,9 @@ const CourseSearchArea: React.FC<CourseSearchAreaProps> = ({
             required
           />
         </div>
-        <div className="ml-[10px] mr-[10px] grow">
-          <h3 className="text-[#765178]">Course Name</h3>
-          <div className="flex max-w-[500px]">
+        <div className="mx-[10px] grow">
+          <h3 className="font-nunito text-[#765178]">Course Name</h3>
+          <div className="flex max-w-[650px]">
             <input
               type="text"
               name="courseName"
@@ -64,9 +64,9 @@ const CourseSearchArea: React.FC<CourseSearchAreaProps> = ({
               onChange={editFunc}
               required
             />
-            <button 
-              type="submit" 
-              className="p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]"
+            <button
+              type="submit"
+              className="h-8 sm:h-10 px-[5px] sm:p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]"
               aria-label="Search course"
             >
               <MagnifyingGlass size={24} className="align-middle" color="white" />

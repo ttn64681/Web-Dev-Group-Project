@@ -11,7 +11,6 @@ export default function ContributePage() {
 
   return (
     <div className="mb-15">
-      <h1>Contribute</h1>
       <Contribute />
     </div>
   );

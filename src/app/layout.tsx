@@ -37,10 +37,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   };
 
   return (
-    <html lang="en">
-      <body
-        className={`${inter.className} ${dongle.className} ${nunito.className} bg-purple-dark-transition min-h-[calc(100vh-8rem)]`}
-      >
+    <html lang="en" className={`${nunito.variable} ${inter.variable} ${dongle.variable}`}>
+      <body className={`${inter.variable} font-inter bg-purple-dark-transition min-h-[calc(100vh-8rem)]`}>
         <SessionProvider>
         <Navbar isAuthenticated={isAuthenticated} username={username} onLogout={handleLogout} />
         {children}

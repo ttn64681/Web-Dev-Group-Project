@@ -101,8 +101,8 @@ const ResourcesBox: React.FC<ResourcesBoxProps> = ({
   return (
     <div>
       {/* AI LINKS DISPLAY*/}
-      <div className="p-[30px]">
-        <h3 className="text-[#F88AFF]">AI Top-5 Recommended</h3>
+      <div className="pt-[20px] pb-[30px] px-[40px]">
+        <h3 className="text-[#F88AFF] font-bold text-[1.2em]">AI Top-5 Recommended</h3>
         {
           isCourseSelected ? 
             <div>
@@ -127,8 +127,8 @@ const ResourcesBox: React.FC<ResourcesBoxProps> = ({
       </div>
 
       {/* VIDEOS DISPLAY */}
-      <div className="bg-[#33203A] p-[30px] rounded-[20px]">
-        <h3 className="text-white pl-[40px] pb-[20px] font-bold fon">Student Top Recommended:</h3>
+      <div className="bg-[#33203A] p-[15px] rounded-[12px]">
+        <h3 className="text-white p-[20px] font-bold text-[1.2em]">Student Top Recommended:</h3>
         {
          isCourseSelected ? 
           <div className="flex justify-between pl-[40px] pr-[40px] flex-wrap">
@@ -149,6 +149,7 @@ const ResourcesBox: React.FC<ResourcesBoxProps> = ({
                     likes={post.likes?.length || 0} 
                     username={post.user} 
                     isLiked={hasLikedBefore}
+                    url={post.url}
                   />
                 );
               })
@@ -156,9 +157,9 @@ const ResourcesBox: React.FC<ResourcesBoxProps> = ({
           </div>
          :
             <div className="flex justify-between pl-[40px] pr-[40px] flex-wrap">
-              <VideoPostUnit forumMode={false} postId="1" courseId="1" thumbnail="https://picsum.photos/id/5/264/154" likes={1} username="person1" isLiked={true}/>
-              <VideoPostUnit forumMode={false} postId="2" courseId="2" thumbnail="https://picsum.photos/id/10/264/154" likes={2} username="person2" isLiked={true}/>
-              <VideoPostUnit forumMode={false} postId="3" courseId="3" thumbnail="https://picsum.photos/id/15/264/154" likes={3} username="person3" isLiked={false}/>
+              <VideoPostUnit forumMode={false} postId="1" courseId="1" thumbnail="https://picsum.photos/id/5/264/154" likes={1} username="person1" isLiked={true} url={''}/>
+              <VideoPostUnit forumMode={false} postId="2" courseId="2" thumbnail="https://picsum.photos/id/10/264/154" likes={2} username="person2" isLiked={true} url={''}/>
+              <VideoPostUnit forumMode={false} postId="3" courseId="3" thumbnail="https://picsum.photos/id/15/264/154" likes={3} username="person3" isLiked={false} url={''}/>
             </div>
         }
       </div>
