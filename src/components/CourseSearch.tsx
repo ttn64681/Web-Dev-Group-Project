@@ -170,7 +170,7 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
                 color="#F09A35"
                 className="w-14 h-14 md:w-16 md:h-16 ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]"
               />
-              <h2 className="font-dongle text-6xl md:text-7xl text-[#F09A35] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]">
+              <h2 className="font-dongle text-6xl md:text-7xl text-[#F09A35] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)] ">
                 Resources
               </h2>
             </div>
@@ -200,7 +200,7 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
               </button>
               <button
                 onClick={showResources}
-                className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Resources' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border-[2px] rounded-[12px] inline`}
+                className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Resources' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border-[2px] rounded-[12px] inline ${isCourseSelected ? "opacity-100" : "opacity-25" }`}
               >
                 Resources
               </button>

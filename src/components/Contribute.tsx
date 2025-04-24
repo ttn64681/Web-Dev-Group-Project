@@ -144,6 +144,11 @@ const Contribute: React.FC = () => {
       return;
     }
 
+    if (selectedCourse === "" || selectedCourse === "default") {
+      alert('Please enter a course');
+      return;
+    }
+
     //Construct thumbnail
     let thumbnail = null;
     if (formData.url.length >= 24 && formData.url.substring(0, 24) == 'https://www.youtube.com') {
@@ -254,6 +259,9 @@ const Contribute: React.FC = () => {
       url: '',
     });
 
+    //Alert user 
+    alert('Post was successfully created!');
+
   };
 
   const fetchCourses = async () => {
@@ -331,7 +339,7 @@ const Contribute: React.FC = () => {
                   {course.title}
                 </option>
               ))}
-              <option>Select course</option>
+              <option value="default">Select course</option>
             </select>
             {/*<input type="text" placeholder="Title" className="bg-nav-purple outline-none text-white flex-1 w-5/6 mx-auto h-10" />*/}
           </div>

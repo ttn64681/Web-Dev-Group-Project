@@ -176,8 +176,8 @@ information in JSON format, with only the keys: "title", "description", "topics"
     let courseJSON;
     try {
       // Clean response text by removing markdown code block markers (if any) and any extra whitespace
-      const cleanedText = text.replace(/```json[\s\S]*?```/g, '').trim();
-      //const cleanedText = text.replace(/```json\n?|\n?```/g, '').trim();
+      //const cleanedText = text.replace(/```json[\s\S]*?```/g, '').trim();
+      const cleanedText = text.replace(/```json\n?|\n?```/g, '').trim();
       
       // Parse JSON response
       try {

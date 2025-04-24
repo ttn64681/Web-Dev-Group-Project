@@ -134,18 +134,16 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
       <div className="flex flex-col md:flex-row gap-3 md:gap-6 mb-2">
         <h3 className="md:hidden font-nunito text-neon-pink text-2xl">Video Title</h3>
         <div className="flex flex-col w-full max-w-[220px]">
-          <a href={postInfo.url} target="_blank">
-            <VideoPostUnit 
-              forumMode={true} 
-              postId={postInfo._id || ''}
-              courseId={courseId}
-              thumbnail={postInfo.thumbnail}
-              likes={postInfo.likes?.length || 0}
-              username={postInfo.user}
-              isLiked={liked} // This should be determined by checking if current user's ID is in postInfo.likes
-              url={postInfo.url}
-            />
-          </a>
+          <VideoPostUnit 
+            forumMode={true} 
+            postId={postInfo._id || ''}
+            courseId={courseId}
+            thumbnail={postInfo.thumbnail}
+            likes={postInfo.likes?.length || 0}
+            username={postInfo.user}
+            isLiked={liked} // This should be determined by checking if current user's ID is in postInfo.likes
+            url={postInfo.url}
+          />
         </div>
         <div className="flex-1">
           <h3 className="hidden md:block font-nunito text-neon-pink text-2xl mb-2">{postInfo.title}</h3>

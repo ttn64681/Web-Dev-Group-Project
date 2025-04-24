@@ -11,12 +11,11 @@ const CommentBox: React.FC<CommentBoxProps> = ({
   commentText
 }: CommentBoxProps) => {
 
-  const[usernameString, setUsernameString] = useState('')
+  const[usernameString, setUsernameString] = useState('You')
 
   useEffect(() => {
     const getUsername = async() => {
       try {
-        console.log(username)
         const response = await fetch(`/api/users/${username}`);
         if (!response.ok) throw new Error('Failed to fetch user');
         const userData = await response.json();
@@ -29,7 +28,7 @@ const CommentBox: React.FC<CommentBoxProps> = ({
 
     getUsername();
 
-  });
+  },[username, usernameString]);
 
 
   return (
