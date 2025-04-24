@@ -572,7 +572,7 @@ export async function fetchCoursesByPrefix(prefix: string) {
     const courses = await Course.find({
       prefix: prefix,
     });
-
+    console.log(courses);
     return { 
       success: true, 
       courses 

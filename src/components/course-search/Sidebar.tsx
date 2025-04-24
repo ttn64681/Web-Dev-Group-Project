@@ -29,10 +29,11 @@ const Sidebar: React.FC = () => {
     if (prefixSearchData.length == 4) {
 
       //Gets data for a specific prefix
-      const response = await fetch(`api/courses/${prefixSearchData}`, {
+      const response = await fetch(`/api/courses/?prefix=${prefixSearchData}`, {
         method: 'GET'
       })
 
+      console.log(response);
       //Updates accordingly
       const courseData = await response.json();
       setCourses(courseData.courses);
@@ -40,7 +41,7 @@ const Sidebar: React.FC = () => {
     } else if (prefixSearchData.length == 0) {
 
       //Gets data
-      const response = await fetch(`api/courses`, {
+      const response = await fetch(`/api/courses`, {
         method: 'GET'
       })
 
@@ -61,7 +62,7 @@ const Sidebar: React.FC = () => {
     const fetchInitialCourses = async () => {
 
       //Gets all courses
-      const response = await fetch(`api/courses`, {
+      const response = await fetch(`/api/courses`, {
         method: 'GET'
       })
   
