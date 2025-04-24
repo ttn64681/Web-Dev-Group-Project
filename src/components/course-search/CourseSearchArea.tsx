@@ -65,7 +65,7 @@ const CourseSearchArea: React.FC<CourseSearchAreaProps> = ({
             />
             <button
               type="submit"
-              className="h-10 px-[5px] bg-[#33203A] border-[2px] border-l-0 border-[#6CFEFE] rounded-r-[10px]"
+              className="h-10 px-[8px] bg-[#33203A] border-[2px] border-l-0 border-[#6CFEFE] rounded-r-[10px]"
               aria-label="Search course"
             >
               <MagnifyingGlass size={24} className="align-middle" color="white" />

@@ -107,11 +107,13 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               Register
             </Link>
           </p>
+          {/* Message for errors or notifications */}
+          {message && (
+            <p className="text-white text-center text-sm md:text-base">
+              {message}
+            </p>
+          )}
         </div>
-      </div>
-      <div className="text-white pb-10">
-        {/* Message provided incase of error or other problem while on Login page */}
-        {message}
       </div>
     </div>
   );

@@ -71,22 +71,22 @@ const Sidebar: React.FC = () => {
   }, []);
 
   return (
-    <div className={`flex h-full transition-transform duration-300 ease-in-out`}>
+    <div className={`flex h-full transition-transform duration-300 ease-in-out -z-10`}>
       {/*Sidebar Contents*/}
-      <div className={`bg-[#28162F] pl-[25px] pr-[25px] h-full ${openStatus ? 'block' : 'hidden'}`}>
-        <div className="flex pt-[20px]">
-          <h3 className="font-nunito text-[#B590C4] text-[20px] mr-[20px]">Existing Classes: </h3>
-          <div className="flex max-w-[500px]">
+      <div className={`bg-[#28162F] pl-[25px] pr-[25px] h-full min-w-[390px] max-w-[500px] ${openStatus ? 'block' : 'hidden'}`}>
+        <div className="flex flex-row pt-[20px] align-items">
+          <h3 className="font-nunito text-[#B590C4] text-[18px] mr-[20px]">Existing Classes: </h3>
+          <div className="flex">
             <input
               type="text"
               name="courseName"
               placeholder="Course Prefix"
-              className="p-[5px] w-[200px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40"
+              className="h-10 p-[5px] min-w-[150px] max-w-full bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40"
               onChange={updateSearchData}
               required
             />
             <button
-              className="p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]"
+              className="h-10 p-[5px] px-[8px] bg-[#33203A] border-[2px] border-l-0 border-[#6CFEFE] rounded-r-[10px]"
               aria-label="Search course"
               onClick={submitInfo}
             >
@@ -100,7 +100,7 @@ const Sidebar: React.FC = () => {
             <h3
               id={course.courseId}
               key={course._id}
-              className="text-[#B590C4] pt-[10px] pb-[10px] pl-[5px] pr-[5px] opacity-100 hover:text-white hover:bg-opacity-[3%] hover:bg-white rounded-[10px]"
+              className="text-[#B590C4] transition-all duration-100 hover:cursor-pointer pt-[10px] pb-[10px] pl-[5px] pr-[5px] opacity-100 hover:text-white hover:bg-opacity-[3%] hover:bg-white rounded-[10px]"
               onClick={courseRedirect}
             >
               {course.title}
@@ -113,10 +113,10 @@ const Sidebar: React.FC = () => {
       <div>
         <button
           onClick={toggleOpen}
-          className={`bg-[#28162F] mt-[10px] pt-[40px] pb-[40px] pl-[10px] pr-[10px] rounded-r-[5px] border border-[#F88AFF]`}
+          className={`bg-[#28162F] mt-[10px] pt-[40px] pb-[40px] pl-[10px] pr-[10px] rounded-r-[5px] border border-[#F88AFF] transition-transform duration-200 hover:text-white hover:bg-[#33203A] hover:border-white/90`}
         >
           {openStatus ? (
-            <ArrowLeft size={16} color="#F88AFF" />
+            <ArrowLeft size={16} className="hover:text-white" color="#F88AFF" />
           ) : (
             <ArrowRight size={16} color="#F88AFF" />
           )}

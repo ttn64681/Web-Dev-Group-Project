@@ -73,8 +73,8 @@ const LoveBtn: React.FC<LoveBtnProps> = ({ likes, likedStatus, postId }: LoveBtn
         <button onClick={handleClick} title={liked ? 'Unlike' : 'Like'}>
           <Heart
             size={24}
-            color="#B3B3B3"
-            className="mr-[3px] hover:scale-125 transition-transform duration-200"
+            color={liked ? '#f42c38' : '#B3B3B3'}
+            className="mr-[3px] hover:scale-125 transition-all duration-200"
             weight={`${liked ? 'fill' : 'bold'}`}
           />
         </button>

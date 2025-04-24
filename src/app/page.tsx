@@ -18,7 +18,7 @@ export default function Home() {
             alt="CourseHub Logo"
             width={365}
             height={104.5}
-            className="w-[55%] min-w-[200px] drop-shadow-[0_0_10px_rgba(204,120,237,0.4)]"
+            className="w-[55%] min-w-[200px] drop-shadow-[0_0_10px_rgba(204,120,237,0.4)] hover:scale-105 hover:drop-shadow-[0_0_15px_rgba(248,138,255,0.8)] transition-all duration-300"
           />
           <div className="flex flex-col justify-center items-center">
             <h1 className="font-nunito font-bold text-[2.5rem] text-neon-pink">Welcome to</h1>

@@ -37,44 +37,47 @@ const Items: React.FC<ItemsProps> = ({ items, onSelectItem }) => {
     }
   };
 
+  // redirect to the item's url
+  const handleItemClick = (item: ItemType) => {
+    window.open(item.url, '_blank');
+  };
+
   return (
-    <div className="flex flex-col gap-4 mt-4">
+    <div className="flex flex-col gap-4 mt-4 -ml-4">
       {/* Maps out the items*/}
       {items.map((item) => (
-        <div key={item.date} className="flex items-start gap-4 p-4 bg-[#33203A] rounded-lg">
-          {/* Added checkbox input */}
-          <label className="flex items-center gap-2">
+        <div key={item.date} className="flex items-center p-4 bg-[#33203A] rounded-lg hover:bg-white/5 transition-all duration-200">
+          {/* Checkbox container */}
+          <div className="flex items-center justify-center w-12 mr-2">
             <input
               type="checkbox"
               checked={selectedItem === item}
               onChange={() => handleCheckboxChange(item)}
-              className="mt-1 scale-150"
+              className="scale-150"
               title={`Select ${item.title}`}
             />
-          </label>
+          </div>
 
-          {/* Updated layout with centered checkbox and larger image */}
-          <div className="flex items-center justify-center gap-10">
+          {/* Content container with responsive layout */}
+          <div className="flex flex-col md:flex-row gap-4 flex-1 w-full">
+            <button className="flex-shrink-0" onClick={() => handleItemClick(item)}>
+              <img
+                src={item.thumbnail || `https://picsum.photos/seed/${item.id}/350/200`}
+                alt={item.title}
+                className="w-full md:w-[350px] max-h-[200px] min-h-[80px] min-w-[200px] object-cover rounded-lg"
+                onError={(e) => {
+                  // Fallback to placeholder if thumbnail fails to load
+                  (e.target as HTMLImageElement).src =
+                    `https://picsum.photos/seed/${item.id}/350/200`;
+                }}
+              />
+            </button>
             <div className="flex-1">
-              <div className="flex gap-4">
-                <img
-                  src={item.thumbnail || `https://picsum.photos/seed/${item.id}/350/200`}
-                  alt={item.title}
-                  className="min-w-[350px] max-w-[350px] min-h-[200px] max-h-[200px]  object-cover rounded-lg"
-                  onError={(e) => {
-                    // Fallback to placeholder if thumbnail fails to load
-                    (e.target as HTMLImageElement).src =
-                      `https://picsum.photos/seed/${item.id}/350/200`;
-                  }}
-                />
-                <div>
-                  <h3 className="text-white font-bold">{item.title}</h3>
-                  <p className="text-grayish-purple">{item.desc}</p>
-                  <p className="text-grayish-purple text-sm mt-2">URL: {item.url}</p>
-                  <p className="text-grayish-purple text-sm mt-2"> Date Posted: {item.date}</p>
-                  <p className="text-grayish-purple text-sm mt-2"> Channel: {item.channel} </p>
-                </div>
-              </div>
+              <h3 className="text-white font-bold">{item.title}</h3>
+              <p className="text-grayish-purple">{item.desc}</p>
+              <p className="text-grayish-purple text-sm mt-2">URL: {item.url}</p>
+              <p className="text-grayish-purple text-sm mt-2">Date Posted: {item.date}</p>
+              <p className="text-grayish-purple text-sm mt-2">Channel: {item.channel}</p>
             </div>
           </div>
         </div>

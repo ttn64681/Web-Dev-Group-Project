@@ -116,7 +116,7 @@ const Navbar: React.FC<NavbarProps> = ({
       </button>
 
       {/* Desktop NavLinks - hidden on mobile (md: shown) */}
-      <div className="hidden md:flex gap-10 absolute left-1/2 transform -translate-x-1/2">
+      <div className="hidden lg:flex gap-10 absolute left-1/2 transform -translate-x-1/2">
         <NavLink href="/">Home</NavLink>
         <NavLink href="/course-search" matchSubpaths>
           Search
@@ -127,7 +127,7 @@ const Navbar: React.FC<NavbarProps> = ({
       {/* Mobile Hamburger Button - shown on mobile, hidden on desktop (md:hidden) */}
       <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}
-        className="md:hidden text-white hover:text-neon-pink transition-colors duration-200"
+        className="lg:hidden text-white hover:text-neon-pink transition-colors duration-200"
       >
         {/* Toggle between hamburger and close icon */}
         {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
@@ -135,7 +135,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Menu Overlay - appears when menu is open */}
       {isMenuOpen && (
-        <div className="md:hidden fixed inset-0 bg-nav-purple z-50 flex flex-col items-center justify-center">
+        <div className="lg:hidden fixed inset-0 bg-nav-purple z-50 flex flex-col items-center justify-center">
           {/* Close button in top-right corner */}
           <div className="absolute top-4 right-4">
             <button
@@ -157,20 +157,20 @@ const Navbar: React.FC<NavbarProps> = ({
       )}
 
       {/* Login/Logout Button - hidden on mobile (md: shown) */}
-        <div className="hidden md:block">
-          {isLoggedin ? (
-            <div className="flex flex-row gap-4">
-              <p className="text-white font-semibold translate-y-1">Welcome, {User}!</p>
-              <button
-                className="bg-neon-cyan rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
-            </div>
-          ) : (
-            <button className="bg-neon-cyan font-semibold rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300">
-              <Link href="/login">Login</Link>
+      <div className="hidden lg:block">
+        {isLoggedin ? (
+          <div className="flex flex-row gap-4">
+            <p className="text-white font-semibold translate-y-1">Welcome, {User}!</p>
+            <button
+              className="bg-neon-cyan rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </div>
+        ) : (
+          <button className="bg-neon-cyan font-semibold rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300">
+            <Link href="/login">Login</Link>
           </button>
         )}
       </div>

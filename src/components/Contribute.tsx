@@ -374,7 +374,7 @@ const Contribute: React.FC = () => {
           <div className="bg-component-purple rounded-lg pt-9 pb-5 px-10 -mt-5">
             <p className="pb-4 text-xl sm:text-2xl font-semibold">
               {activeTab === 'Videos' && 'Enter Video Details'}
-              {activeTab === 'Links' && 'Enter Post Details'}
+              {activeTab === 'Links' && 'Enter Link Details'}
               {activeTab === 'Music' && 'Enter Music Details'}
             </p>
 
@@ -414,7 +414,7 @@ const Contribute: React.FC = () => {
             <div className="flex justify-center sm:justify-end">
               <button
                 type="submit"
-                className=" p-[5px] pl-[15px] pr-[15px] text-white border-white hover:scale-110 transition-transform duration-200 border-[3px] rounded-[10px] inline"
+                className=" p-[5px] pl-[15px] pr-[15px] text-white border-white hover:bg-white hover:text-black hover:scale-110 transition-all duration-200 border-[3px] rounded-[10px] inline"
               >
                 {submitted ? 'Submitted' : 'Submit Post'}
               </button>
@@ -425,8 +425,8 @@ const Contribute: React.FC = () => {
 
       {/* Search Container - Hidden for Links tab */}
       {activeTab !== 'Links' && (
-        <div className="bg-component-purple rounded-lg flex-1 w-5/6 mx-auto h-full text-white p-4">
-          <h2 className="text-white text-[30px]">
+        <div className="bg-component-purple rounded-lg flex-1 w-5/6 mx-auto h-full text-white p-4 mb-10">
+          <h2 className="text-white pb-3 ml-6 font-inter font-semibold text-[30px]">
             {' '}
             {activeTab === 'Videos' ? 'Search Videos' : 'Search Music'}
           </h2>
@@ -436,12 +436,12 @@ const Contribute: React.FC = () => {
                 title="YouTube Search Bar"
                 type="text"
                 placeholder={activeTab === 'Videos' ? 'YouTube Search' : 'Music Search'}
-                className="p-[5px] w-[400px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40 outline-none"
+                className="p-[5px] ml-4 w-[400px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40 outline-none"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
               />
               <button
-                className="p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]"
+                className="p-[7px] bg-[#33203A] border-[2px] border-l-0 border-[#6CFEFE] rounded-r-[10px]"
                 onClick={() => searchYouTubeVideos(searchInput)}
                 title="Search YouTube videos"
               >

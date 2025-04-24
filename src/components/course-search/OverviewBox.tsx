@@ -64,8 +64,12 @@ const OverviewBox: React.FC<OverviewBoxProps> = ({
             }
           </div>
         ) : (
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-2 py-2">
             <h4 className="font-inter text-[#E2D0E6] break-words">Success plan point 1</h4>
+            <h4 className="font-inter text-[#E2D0E6] break-words">Success plan point 2</h4>
+            <h4 className="font-inter text-[#E2D0E6] break-words">Success plan point 3</h4>
+            <h4 className="font-inter text-[#E2D0E6] break-words">Success plan point 4</h4>
+            <h4 className="font-inter text-[#E2D0E6] break-words">Success plan point 5</h4>
           </div>
         )}
       </div>

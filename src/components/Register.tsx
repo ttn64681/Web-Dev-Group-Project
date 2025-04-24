@@ -1,5 +1,5 @@
 'use client';
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -8,6 +8,8 @@ interface RegisterProps {
 }
 
 const Register: React.FC<RegisterProps> = ({ onRegister }) => {
+  const [message, setMessage] = useState('');
+
   // TODO: Add form state
   // TODO: Add error handling
   // TODO: Add loading state
@@ -26,6 +28,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
       onRegister(username, password);
     } catch (error) {
       console.error(error);
+      setMessage('Error during registration');
     }
   }
 
@@ -80,6 +83,12 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
               Login
             </Link>
           </p>
+          {/* Message for errors or notifications */}
+          {message && (
+            <p className="text-white text-center text-sm md:text-base">
+              {message}
+            </p>
+          )}
         </div>
       </div>
     </div>
