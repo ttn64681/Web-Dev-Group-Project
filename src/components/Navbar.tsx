@@ -151,15 +151,17 @@ const Navbar: React.FC<NavbarProps> = ({
       
       {/* Login/Logout Button - hidden on mobile (md: shown) */}
       <div className="flex flex-row gap-4">
-          <p className="text-white font-semibold translate-y-1">Welcome, {User}!</p>
           <div className="hidden md:block">
           {isLoggedin ? (
-            <button
-              className="bg-neon-cyan rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
+            <div className="flex flex-row gap-4">
+              <p className="text-white font-semibold translate-y-1">Welcome, {User}!</p>
+              <button
+                className="bg-neon-cyan rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </div>
           ) : (
             <button className="bg-neon-cyan font-semibold rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300">
               <Link href="/login">Login</Link>

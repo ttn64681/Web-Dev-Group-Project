@@ -21,6 +21,12 @@ const LoveBtn: React.FC<LoveBtnProps> = ({likes, likedStatus, postId}: LoveBtnPr
   }, [likedStatus]);
 
   const handleClick = async () => {
+    const user = session?.user?.id;
+    if (!user) {
+      alert('Please login to add a comment.');
+      return;
+    }
+    
     //Changes liked status
     setLiked((liked) => !liked);
 

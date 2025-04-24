@@ -16,7 +16,7 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
 }: ResourceBoxProps) => {
   //Comment state
   const [commentText, setCommentText] = useState('');
-  const [comments, setComments] = useState<Comment[]>(postInfo.comments);
+  const [comments, setComments] = useState<Comment[]>(postInfo.comments || []);
   const [userId, setUserId] = useState<String>('');
   const [liked, setLiked] = useState<boolean>(false);
   const [courseId, setCourseId] = useState<string>('');
@@ -32,6 +32,11 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
   const addComment = async() => {
 
     const userId = session?.user?.id;
+
+    if (!userId) {
+      alert('Please login to add a comment.');
+      return;
+    }
 
     if (commentText.length === 0 || !postInfo._id) return;
 
