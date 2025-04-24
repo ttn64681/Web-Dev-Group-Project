@@ -7,40 +7,43 @@ import { useRouter } from 'next/navigation';
 import User from "../../../src/app/models/userSchema";
 import connectMongoDB from '../../../config/mongodb';
 import { useSession } from 'next-auth/react';
+import { Globe } from '@phosphor-icons/react';
 
 type VideoPostUnitProps = {
-  forumMode: boolean, 
+  forumMode: boolean,
   postId: string,
   courseId?: string,
   thumbnail?: string,
   likes: number,
   username: string,
-  isLiked: boolean
+  isLiked: boolean,
+  url: string
 }
 
 const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
   forumMode,
   postId,
   courseId,
-  thumbnail, 
-  likes, 
+  thumbnail,
+  likes,
   username,
-  isLiked
+  isLiked,
+  url,
 }
   : VideoPostUnitProps
 ) => {
 
   const [user, setUser] = useState('');
-    useEffect(() => {
-      setUser('');
-      loadUser();
-    }, []);
+  useEffect(() => {
+    setUser('');
+    loadUser();
+  }, []);
 
   //Establishes router
   const router = useRouter();
 
   //Establishes session data
-  const {data: session, status} = useSession();
+  const { data: session, status } = useSession();
 
   //Establishes owner state
   const [owned, setOwned] = useState<boolean>(false);
@@ -49,7 +52,7 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
     try {
       const response = await fetch(`/api/users/${username}`);
       if (!response.ok) throw new Error('Failed to fetch user');
-  
+
       const userData = await response.json();
       setUser(userData.username); // Adjust based on what data you return
     } catch (error) {
@@ -108,7 +111,7 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
   }
 
   useEffect(() => {
-    const configureOwned = async() => {
+    const configureOwned = async () => {
       const isOwned = await isUserPostOwner();
       setOwned(isOwned);
       console.log(owned);
@@ -119,41 +122,46 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
   }, [owned])
 
   return (
-    <div className="p-2 w-full max-w-[220px]">
-      <button className="block w-full hover:scale-110 transition-transform duration-200" title="Video thumbnail">
-        <Image
-          title="Video thumbnail"
-          src={thumbnail ? thumbnail : "https://picsum.photos/id/5/264/154"}
-          alt={'Video thumbnail'}
-          width={220}
-          height={128}
-          className="rounded-[10px]"
-          onClick={forumMode ? () => {} : redirectToForum} //If on forum mode, button is unclickable
-        />
-      </button>
-      {
-        forumMode ? 
-          <div className="flex justify-between items-center mt-2">
-            <div className="flex p-[10px] justify-between w-[100px]">
-              <LoveBtn likes={likes} likedStatus={isLiked} postId={postId}/>
+    <div className="flex items-start">
+      <div className="p-2 w-full max-w-[220px]">
+        <button className="block w-full hover:scale-110 transition-transform duration-200" title="Video thumbnail">
+          <Image
+            title="Video thumbnail"
+            src={thumbnail ? thumbnail : "https://picsum.photos/id/5/264/154"}
+            alt={'Video thumbnail'}
+            width={220}
+            height={128}
+            className="rounded-[10px]"
+            onClick={forumMode ? () => { } : redirectToForum} //If on forum mode, button is unclickable
+          />
+        </button>
+        {
+          forumMode ?
+            <div className="flex justify-between items-center mt-2">
+              <div className="flex p-[10px] justify-between w-[100px]">
+                <LoveBtn likes={likes} likedStatus={isLiked} postId={postId} />
                 {
-                  owned && <TrashBtn onclickFunc={trashClick}/> //Renders only if user is the post owner
+                  owned && <TrashBtn onclickFunc={trashClick} /> //Renders only if user is the post owner
                 }
+              </div>
+              <div className="p-[10px] pr-[20px]">
+                <h4 className="text-white">{username}</h4>
+              </div>
             </div>
-            <div className="p-[10px] pr-[20px]">
-              <h4 className="text-white">{username}</h4>
+            :
+            <div className="flex justify-between">
+              <div className="flex p-[10px] justify-between w-[100px]">
+                <LoveBtn likes={likes} likedStatus={isLiked} postId={postId} />
+              </div>
+              <div className="p-[10px] pr-[20px]">
+                <h4 className="text-white">{user ? user : "Loading..."}</h4>
+              </div>
             </div>
-          </div>
-        : 
-          <div className="flex justify-between">
-            <div className="flex p-[10px] justify-between w-[100px]">
-              <LoveBtn likes={likes} likedStatus={isLiked} postId={postId}/>
-            </div>
-            <div className="p-[10px] pr-[20px]">
-              <h4 className="text-white">{user ? user : "Loading..."}</h4>
-            </div>
-          </div>
-      }
+        }
+      </div>
+      {/*<div className="flex p-30">
+        <a href={url} className="text-white mt-[80px]"> <Globe/> </a>
+      </div>*/}
     </div>
   );
 };
