@@ -17,6 +17,7 @@ type VideoPostUnitProps = {
   likes: number,
   username: string,
   isLiked: boolean,
+  url: string
 }
 
 const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
@@ -27,7 +28,7 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
   likes,
   username,
   isLiked,
-  url,
+  url
 }
   : VideoPostUnitProps
 ) => {
@@ -60,6 +61,11 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
   const redirectToForum = () => {
     router.push(`/course-search/${courseId}/resources/${postId}`);
   };
+
+  //Open url page
+  const redirectToUrl = () => {
+    window.open(url);
+  }
 
   //Handles deletion of post and redirection when deleted
   const trashClick = async () => {
@@ -119,12 +125,12 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
         <button className="block w-full hover:scale-110 transition-transform duration-200" title="Video thumbnail">
           <Image
             title="Video thumbnail"
-            src={thumbnail ? thumbnail : "https://picsum.photos/id/5/264/154"}
+            src={thumbnail ? thumbnail : '/logo/LinkItemLogo.png' /*"https://picsum.photos/id/5/264/154"*/}
             alt={'Video thumbnail'}
             width={220}
             height={128}
-            className="rounded-[10px]"
-            onClick={forumMode ? () => { } : redirectToForum} //If on forum mode, button is unclickable
+            className="rounded-[10px] max-h-[128px]"
+            onClick={forumMode ? redirectToUrl : redirectToForum} //If on forum mode, button is unclickable
           />
         </button>
         {

@@ -143,6 +143,7 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
               likes={postInfo.likes?.length || 0}
               username={postInfo.user}
               isLiked={liked} // This should be determined by checking if current user's ID is in postInfo.likes
+              url={postInfo.url}
             />
           </a>
         </div>
