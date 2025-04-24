@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { addCourse, fetchCourse, searchAndAddCourse, fetchAllCourses } from '@/dbInterface/dbOperations';
+import {
+  addCourse,
+  fetchCourse,
+  searchAndAddCourse,
+  fetchAllCourses,
+} from '@/dbInterface/dbOperations';
 
 // GET /api/courses - Get all courses (used for course searches)
 // GET /api/courses?prefix=CSCI&number=1301 - Get specific course

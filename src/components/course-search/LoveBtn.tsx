@@ -4,17 +4,16 @@ import { Heart } from '@phosphor-icons/react';
 import { useSession } from 'next-auth/react';
 
 type LoveBtnProps = {
-  likes: number,
-  likedStatus: boolean,
-  postId: string
-}
+  likes: number;
+  likedStatus: boolean;
+  postId: string;
+};
 
-const LoveBtn: React.FC<LoveBtnProps> = ({likes, likedStatus, postId}: LoveBtnProps) => {
-
+const LoveBtn: React.FC<LoveBtnProps> = ({ likes, likedStatus, postId }: LoveBtnProps) => {
   const [liked, setLiked] = useState<boolean>(likedStatus);
   const [likeNum, setLikeNum] = useState(likes);
 
-  const {data: session, status} = useSession();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     setLiked(likedStatus);
@@ -26,7 +25,7 @@ const LoveBtn: React.FC<LoveBtnProps> = ({likes, likedStatus, postId}: LoveBtnPr
       alert('Please login to add a comment.');
       return;
     }
-    
+
     //Changes liked status
     setLiked((liked) => !liked);
 
@@ -38,40 +37,40 @@ const LoveBtn: React.FC<LoveBtnProps> = ({likes, likedStatus, postId}: LoveBtnPr
     //Updates like numbers by +1
     if (!liked) {
       //LOCAL CHANGE
-      setLikeNum(likeNum => likeNum + 1);
+      setLikeNum((likeNum) => likeNum + 1);
 
       //GLOBAL CHANGE
       const response = await fetch(`/api/posts/${postId}/like`, {
         method: 'PUT',
         body: JSON.stringify({
-          userId: session?.user?.id
-        })
-      })
-      await response.json()
-      
-    } else { // Updates like numbers by -1 unless likeNum === 0
+          userId: session?.user?.id,
+        }),
+      });
+      await response.json();
+    } else {
+      // Updates like numbers by -1 unless likeNum === 0
       if (likeNum > 0) {
         //LOCAL CHANGE
-        setLikeNum(likeNum => likeNum - 1);
+        setLikeNum((likeNum) => likeNum - 1);
 
         //GLOBAL CHANGE
         const response = await fetch(`/api/posts/${postId}/unlike`, {
-          method: 'DELETE'
-        })
+          method: 'DELETE',
+        });
         await response.json();
       }
     }
   };
 
   useEffect(() => {
-    console.log('Love btn postRender-liked: ', likedStatus)
+    console.log('Love btn postRender-liked: ', likedStatus);
     setLiked(likedStatus);
-  },[])
+  }, []);
 
   return (
     <div>
       <div className="flex content-center">
-        <button onClick={handleClick} title={liked ? "Unlike" : "Like"}>
+        <button onClick={handleClick} title={liked ? 'Unlike' : 'Like'}>
           <Heart
             size={24}
             color="#B3B3B3"

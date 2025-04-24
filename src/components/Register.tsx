@@ -20,8 +20,8 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
 
     try {
       const formData = new FormData(event.currentTarget);
-      const username = formData.get("username") as string;
-      const password = formData.get("password") as string;
+      const username = formData.get('username') as string;
+      const password = formData.get('password') as string;
 
       onRegister(username, password);
     } catch (error) {
@@ -50,7 +50,8 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
             </h1>
           </div>
           {/* input fields and register button */}
-          <form className="grid grid-cols-1 grid-rows-3 content-center justify-center gap-5 w-[80%]"
+          <form
+            className="grid grid-cols-1 grid-rows-3 content-center justify-center gap-5 w-[80%]"
             onSubmit={handleSubmit}
           >
             <input

@@ -95,7 +95,9 @@ export default function Home() {
 
       <Link href="/" className="group">
         <div className="flex justify-center items-center mt-20 group">
-         <p className="text-center text-footer-purple group-hover:scale-102 hover:text-neon-pink/80 transition-all duration-300 mb-6">©CourseHub | Web Programming | 2025</p>
+          <p className="text-center text-footer-purple group-hover:scale-102 hover:text-neon-pink/80 transition-all duration-300 mb-6">
+            ©CourseHub | Web Programming | 2025
+          </p>
         </div>
       </Link>
     </div>

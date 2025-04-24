@@ -2,12 +2,10 @@
 import React, { useState, useEffect } from 'react';
 
 type TopicMiniboxProps = {
-  topicText: string
-}
+  topicText: string;
+};
 
-const TopicMinibox: React.FC<TopicMiniboxProps> = ({
-  topicText
-}: TopicMiniboxProps) => {
+const TopicMinibox: React.FC<TopicMiniboxProps> = ({ topicText }: TopicMiniboxProps) => {
   return (
     <div>
       <div className="my-1">

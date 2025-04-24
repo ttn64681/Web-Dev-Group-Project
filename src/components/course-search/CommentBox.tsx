@@ -2,19 +2,15 @@
 import React, { useState, useEffect } from 'react';
 
 type CommentBoxProps = {
-  username: string,
-  commentText: string
-}
+  username: string;
+  commentText: string;
+};
 
-const CommentBox: React.FC<CommentBoxProps> = ({
-  username,
-  commentText
-}: CommentBoxProps) => {
-
-  const[usernameString, setUsernameString] = useState('You')
+const CommentBox: React.FC<CommentBoxProps> = ({ username, commentText }: CommentBoxProps) => {
+  const [usernameString, setUsernameString] = useState('You');
 
   useEffect(() => {
-    const getUsername = async() => {
+    const getUsername = async () => {
       try {
         const response = await fetch(`/api/users/${username}`);
         if (!response.ok) throw new Error('Failed to fetch user');
@@ -22,14 +18,12 @@ const CommentBox: React.FC<CommentBoxProps> = ({
 
         setUsernameString(userData.username); // Adjust based on what data you return
       } catch (error) {
-        console.error("Error loading user:", error);
+        console.error('Error loading user:', error);
       }
-    }
+    };
 
     getUsername();
-
-  },[username, usernameString]);
-
+  }, [username, usernameString]);
 
   return (
     <div className="bg-comment-bg-purple p-4 rounded-lg">

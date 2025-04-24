@@ -1,5 +1,5 @@
 'use client';
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import CourseSearch from '@/components/CourseSearch';
 import connectMongoDB from '../../../../config/mongodb';
 import { Course } from '@/dbInterface/dbOperations';
@@ -20,35 +20,34 @@ export default function CourseSearchPage() {
       try {
         setIsLoading(true);
         setError(null);
-        
+
         // Get the courseId from the URL
         const currURL = new URL(window.location.href);
         const currURLpath = currURL.pathname;
         const courseId = currURLpath.substring(currURLpath.lastIndexOf('/') + 1);
 
-        console.log("Fetching course with ID:", courseId);
-      
+        console.log('Fetching course with ID:', courseId);
+
         // Fetch the course using the courseId
-        const response = await fetch(`/api/courses?courseId=${encodeURIComponent(courseId)}`,
-      {
-        method: 'GET',
-      });
-        
+        const response = await fetch(`/api/courses?courseId=${encodeURIComponent(courseId)}`, {
+          method: 'GET',
+        });
+
         if (!response.ok) {
           throw new Error(`Failed to fetch course: ${response.status}`);
         }
-        
+
         const data = await response.json();
-        
+
         if (!data.success) {
-          throw new Error(data.error || "Failed to fetch course information");
+          throw new Error(data.error || 'Failed to fetch course information');
         }
-        
-        console.log("Course data received:", data.course);
+
+        console.log('Course data received:', data.course);
         setCurrCourse(data.course);
       } catch (err) {
-        console.error("Error fetching course:", err);
-        setError(err instanceof Error ? err.message : "An unknown error occurred");
+        console.error('Error fetching course:', err);
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
       } finally {
         setIsLoading(false);
       }
@@ -57,7 +56,7 @@ export default function CourseSearchPage() {
     fetchCourseInfo();
   }, []);
 
-  //Processes the component 
+  //Processes the component
   return (
     <div>
       {isLoading ? (
@@ -69,10 +68,10 @@ export default function CourseSearchPage() {
           <div className="text-[#F88AFF] text-xl">Error: {error}</div>
         </div>
       ) : (
-        <CourseSearch 
-          activeTab="Overview" 
-          isCourseSelected={!!currCourse} 
-          isPostSelected={false} 
+        <CourseSearch
+          activeTab="Overview"
+          isCourseSelected={!!currCourse}
+          isPostSelected={false}
           courseInfo={currCourse}
         />
       )}

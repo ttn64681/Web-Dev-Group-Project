@@ -22,14 +22,14 @@ export default function RegisterPage() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to register user");
+        throw new Error('Failed to register user');
       }
 
       router.push('/login?reason=account_created_successfully');
     } catch (error) {
-      console.error("There was an error registering: ", error);
+      console.error('There was an error registering: ', error);
     }
-  }
+  };
 
   const handleRegister = (username: string, password: string) => {
     // TODO: Implement login logic

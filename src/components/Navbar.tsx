@@ -18,7 +18,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({
   isAuthenticated,
   username,
-  onLogout
+  onLogout,
   // onLogin will be in Login component
 }) => {
   // TODO: Add mobile menu
@@ -32,9 +32,8 @@ const Navbar: React.FC<NavbarProps> = ({
   const [isLoggedin, setIsLoggedIn] = useState(!!session?.user);
   const [User, setUser] = useState('');
 
-
-  useEffect(() => { 
-    if (status === "authenticated" && session?.user) {
+  useEffect(() => {
+    if (status === 'authenticated' && session?.user) {
       isAuthenticated = true;
       setIsLoggedIn(true);
       setUser(session.user.username || '');
@@ -50,8 +49,7 @@ const Navbar: React.FC<NavbarProps> = ({
     setIsLoggedIn(false);
   };
 
-  async function update() {
-  }
+  async function update() {}
 
   /**
    * NavLink Component
@@ -66,10 +64,18 @@ const Navbar: React.FC<NavbarProps> = ({
    * - Active state styling when on current page
    * - Smooth transitions for all animations
    */
-  const NavLink = ({ href, children, matchSubpaths = false }: { href: string; children: React.ReactNode; matchSubpaths?: boolean }) => {
+  const NavLink = ({
+    href,
+    children,
+    matchSubpaths = false,
+  }: {
+    href: string;
+    children: React.ReactNode;
+    matchSubpaths?: boolean;
+  }) => {
     // this allows a path and its subpaths to also be underlined
     const isActive = matchSubpaths ? pathname.startsWith(href) : pathname === href;
-    
+
     return (
       // The 'group' class allows us to style child elements when parent is hovered
       <div className="relative group">
@@ -93,7 +99,7 @@ const Navbar: React.FC<NavbarProps> = ({
         {/* Permanent underline for active page */}
         {isActive && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-neon-pink" />}
       </div>
-    )
+    );
   };
 
   return (
@@ -112,7 +118,9 @@ const Navbar: React.FC<NavbarProps> = ({
       {/* Desktop NavLinks - hidden on mobile (md: shown) */}
       <div className="hidden md:flex gap-10 absolute left-1/2 transform -translate-x-1/2">
         <NavLink href="/">Home</NavLink>
-        <NavLink href="/course-search" matchSubpaths>Search</NavLink>
+        <NavLink href="/course-search" matchSubpaths>
+          Search
+        </NavLink>
         <NavLink href="/contribute">Contribute</NavLink>
       </div>
 
@@ -148,10 +156,8 @@ const Navbar: React.FC<NavbarProps> = ({
         </div>
       )}
 
-      
       {/* Login/Logout Button - hidden on mobile (md: shown) */}
-      <div className="flex flex-row gap-4">
-          <div className="hidden md:block">
+        <div className="hidden md:block">
           {isLoggedin ? (
             <div className="flex flex-row gap-4">
               <p className="text-white font-semibold translate-y-1">Welcome, {User}!</p>
@@ -165,9 +171,8 @@ const Navbar: React.FC<NavbarProps> = ({
           ) : (
             <button className="bg-neon-cyan font-semibold rounded-full px-3 py-1 text-black hover:scale-105 transition-all duration-300">
               <Link href="/login">Login</Link>
-            </button>
-          )}
-        </div>
+          </button>
+        )}
       </div>
     </nav>
   );

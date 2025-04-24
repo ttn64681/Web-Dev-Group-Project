@@ -2,16 +2,18 @@
 import React, { useState, useEffect } from 'react';
 
 type LinkUnitProps = {
-  number: number
-  link: string,
-  description: string
-}
+  number: number;
+  link: string;
+  description: string;
+};
 
-const LinkUnit: React.FC<LinkUnitProps> = ({number, link, description}: LinkUnitProps) => {
+const LinkUnit: React.FC<LinkUnitProps> = ({ number, link, description }: LinkUnitProps) => {
   return (
     <div>
       <div>
-        <h3 className="text-[#E2D0E6] font-inter p-[2px]"> {number} {link}</h3>
+        <h3 className="text-[#E2D0E6] font-inter py-[12px]">
+          {number} - {link}
+        </h3>
         <h4 className="text-[#E2D0E6] font-inter p-[2px]">{description}</h4>
       </div>
     </div>

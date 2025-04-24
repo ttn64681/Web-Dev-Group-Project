@@ -5,15 +5,13 @@ import CommentBox from './CommentBox';
 import { Comment, Post } from '@/dbInterface/dbOperations';
 import { ArrowLeft } from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react';
 
 type ResourceBoxProps = {
-  postInfo: Post
-}
+  postInfo: Post;
+};
 
-const ResourceForum: React.FC<ResourceBoxProps> = ({
-  postInfo
-}: ResourceBoxProps) => {
+const ResourceForum: React.FC<ResourceBoxProps> = ({ postInfo }: ResourceBoxProps) => {
   //Comment state
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState<Comment[]>(postInfo.comments || []);
@@ -26,11 +24,10 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
   const router = useRouter();
 
   //Sets up session
-  const {data: session, status} = useSession();
+  const { data: session, status } = useSession();
 
   //Handles adding comment into forum
-  const addComment = async() => {
-
+  const addComment = async () => {
     const userId = session?.user?.id;
 
     if (!userId) {
@@ -47,7 +44,7 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
       // you can add date but i want to throw up rn
       // bruh its okay we wont add it rn
     };
-    
+
     setComments([...comments, newComment]);
     setCommentText('');
 
@@ -56,9 +53,9 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
       const response = await fetch(`/api/posts/${postInfo._id}/comment`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newComment)
+        body: JSON.stringify(newComment),
       });
 
       if (!response.ok) {
@@ -69,59 +66,55 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
       setComments(comments);
       console.error('Error adding comment:', error);
     }
-  }
+  };
 
   //Handles change of comment text
   const commentTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentText(e.target.value);
-  }
+  };
 
   /*
     Checks if a user has liked before
   */
   const checkHasLikedBefore = (likeArray: string[]) => {
+    //User ID check
+    const userId = session?.user?.id;
 
-      //User ID check
-      const userId = session?.user?.id
-  
-      //If user is not authenticated, it is false for them and they cannot like.
-      if (!userId) {
-        return false;
-      }
-
-      //likeArray should be an array of ObjectId[]
-      for (let i = 0; i < likeArray.length; i++) {
-        const stringifiedId = likeArray[i].toString();
-
-        if (userId == stringifiedId) {
-          return true
-        }
-      }
-      
+    //If user is not authenticated, it is false for them and they cannot like.
+    if (!userId) {
       return false;
+    }
 
-  }
+    //likeArray should be an array of ObjectId[]
+    for (let i = 0; i < likeArray.length; i++) {
+      const stringifiedId = likeArray[i].toString();
+
+      if (userId == stringifiedId) {
+        return true;
+      }
+    }
+
+    return false;
+  };
 
   const extractCourseId = () => {
-      // Get the courseId from the URL
-      const currURL = new URL(window.location.href);
-      const currURLpath = currURL.pathname;
-      // Extract the courseId from the path (e.g., /course-search/CSCI-1301/resources)
-      const pathParts = currURLpath.split('/');
-      const extractedCourseId = pathParts[pathParts.indexOf('course-search') + 1];
+    // Get the courseId from the URL
+    const currURL = new URL(window.location.href);
+    const currURLpath = currURL.pathname;
+    // Extract the courseId from the path (e.g., /course-search/CSCI-1301/resources)
+    const pathParts = currURLpath.split('/');
+    const extractedCourseId = pathParts[pathParts.indexOf('course-search') + 1];
 
-      setCourseId(extractedCourseId);
-  }
+    setCourseId(extractedCourseId);
+  };
 
   useEffect(() => {
-
     //Gets like status
     const result = checkHasLikedBefore(postInfo.likes);
     setLiked(result);
 
     //Extracts courseId
     extractCourseId();
-
   }, []);
 
   return (
@@ -139,8 +132,8 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
       <div className="flex flex-col md:flex-row gap-3 md:gap-6 mb-2">
         <h3 className="md:hidden font-nunito text-neon-pink text-2xl">Video Title</h3>
         <div className="flex flex-col w-full max-w-[220px]">
-          <VideoPostUnit 
-            forumMode={true} 
+          <VideoPostUnit
+            forumMode={true}
             postId={postInfo._id || ''}
             courseId={courseId}
             thumbnail={postInfo.thumbnail}
@@ -151,7 +144,9 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
           />
         </div>
         <div className="flex-1">
-          <h3 className="hidden md:block font-nunito text-neon-pink text-2xl mb-2">{postInfo.title}</h3>
+          <h3 className="hidden md:block font-nunito text-neon-pink text-2xl mb-2">
+            {postInfo.title}
+          </h3>
           <h3 className="font-inter text-white text-base font-light">{postInfo.description}</h3>
         </div>
       </div>
@@ -168,8 +163,8 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
             value={commentText}
             onChange={commentTextChange}
           ></textarea>
-          <button 
-            className="text-md text-sidebar-white-purple hover:text-neon-pink transition-colors duration-200" 
+          <button
+            className="text-md text-sidebar-white-purple hover:text-neon-pink transition-colors duration-200"
             onClick={addComment}
           >
             Submit
@@ -181,15 +176,10 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
       <div>
         <h1 className="text-neon-pink text-xl mb-4">Comments</h1>
         <div className="space-y-4">
-          {comments.map( (comment, index) => {
-
+          {comments.map((comment, index) => {
             return (
-              <CommentBox 
-                key={index} 
-                username={comment.user._id} 
-                commentText={comment.comment} 
-              />
-            )
+              <CommentBox key={index} username={comment.user._id} commentText={comment.comment} />
+            );
           })}
         </div>
       </div>

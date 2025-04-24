@@ -33,10 +33,12 @@ const CourseSchema: Schema = new Schema(
     description: { type: String },
     prerequisites: [{ type: String }],
     plan: [{ type: String }],
-    resourceUrls: [{
-      url: { type: String, required: true },
-      description: { type: String, required: true }
-    }],
+    resourceUrls: [
+      {
+        url: { type: String, required: true },
+        description: { type: String, required: true },
+      },
+    ],
     posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }], // Reference to array of post object ids
   },
   { timestamps: true }

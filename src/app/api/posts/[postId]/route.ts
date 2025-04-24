@@ -10,21 +10,27 @@ export async function GET(request: NextRequest, { params }: { params: { postId: 
     const result = await fetchCoursePost(params.postId);
 
     if (!result.success) {
-      return NextResponse.json({ 
-        success: false, 
-        error: result.error || 'Failed to fetch post' 
-      }, { status: 404 });
+      return NextResponse.json(
+        {
+          success: false,
+          error: result.error || 'Failed to fetch post',
+        },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json({
       success: true,
-      post: result.post
+      post: result.post,
     });
   } catch (error) {
     console.error('Error fetching post:', error);
-    return NextResponse.json({ 
-      success: false, 
-      error: 'Failed to fetch post' 
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Failed to fetch post',
+      },
+      { status: 500 }
+    );
   }
-} 
+}

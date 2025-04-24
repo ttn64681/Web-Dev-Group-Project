@@ -17,41 +17,41 @@ export default function CourseSearchPage() {
   // ADDED LOADING STATES
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   //URL PROCESSING
   useEffect(() => {
     const fetchCourseInfo = async () => {
       try {
         setIsLoading(true);
         setError(null);
-        
+
         // Get the courseId from the URL
         const currURL = new URL(window.location.href);
         const currURLpath = currURL.pathname;
         // Extract the courseId from the path (e.g., /course-search/CSCI-1301/resources)
         const pathParts = currURLpath.split('/');
         const courseId = pathParts[pathParts.indexOf('course-search') + 1];
-        
-        console.log("Fetching course with ID:", courseId);
-        
+
+        console.log('Fetching course with ID:', courseId);
+
         // Fetch the course using the courseId
         const response = await fetch(`/api/courses?courseId=${encodeURIComponent(courseId)}`);
-        
+
         if (!response.ok) {
           throw new Error(`Failed to fetch course: ${response.status}`);
         }
-        
+
         const data = await response.json();
-        
+
         if (!data.success) {
-          throw new Error(data.error || "Failed to fetch course information");
+          throw new Error(data.error || 'Failed to fetch course information');
         }
-        
-        console.log("Course data received:", data.course);
+
+        console.log('Course data received:', data.course);
         setCurrCourse(data.course);
       } catch (err) {
-        console.error("Error fetching course:", err);
-        setError(err instanceof Error ? err.message : "An unknown error occurred");
+        console.error('Error fetching course:', err);
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
       } finally {
         setIsLoading(false);
       }
@@ -71,10 +71,10 @@ export default function CourseSearchPage() {
           <div className="text-[#F88AFF] text-xl">Error: {error}</div>
         </div>
       ) : (
-        <CourseSearch 
-          activeTab="Resources" 
-          isCourseSelected={!!currCourse} 
-          isPostSelected={false} 
+        <CourseSearch
+          activeTab="Resources"
+          isCourseSelected={!!currCourse}
+          isPostSelected={false}
           courseInfo={currCourse}
         />
       )}

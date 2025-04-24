@@ -13,7 +13,7 @@ interface ItemProps {
   onSelectItem: () => void;
 }
 
-export default function Item({ item, isSelected, onSelectItem}: ItemProps) {
+export default function Item({ item, isSelected, onSelectItem }: ItemProps) {
   return (
     <div className="py-4 flex flex-row gap-4 bg-[#33203A] rounded-lg">
       {/* Moved checkbox input from Items to here */}
@@ -28,8 +28,8 @@ export default function Item({ item, isSelected, onSelectItem}: ItemProps) {
         {/* Image */}
         <div className="py-2 pr-2 w-full sm:w-[35%]">
           <img
-            src={`https://picsum.photos/seed/${item.id}/350/200`} 
-            alt={item.title} 
+            src={`https://picsum.photos/seed/${item.id}/350/200`}
+            alt={item.title}
             className="rounded-md object-contain w-full h-auto"
           ></img>
         </div>

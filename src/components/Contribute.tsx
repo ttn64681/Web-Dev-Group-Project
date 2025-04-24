@@ -29,7 +29,7 @@ type ItemType = {
 type CourseType = {
   title: string;
   courseId: string;
-}
+};
 
 // const linkItems: ItemType[] = [
 //   {
@@ -79,7 +79,7 @@ const Contribute: React.FC = () => {
     url: '',
   });
 
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
   // Initialize with videos when component mounts
@@ -117,8 +117,6 @@ const Contribute: React.FC = () => {
 
   const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCourse(e.target.value);
-
-
   };
 
   // Handle form submission with validation
@@ -144,7 +142,7 @@ const Contribute: React.FC = () => {
       return;
     }
 
-    if (selectedCourse === "" || selectedCourse === "default") {
+    if (selectedCourse === '' || selectedCourse === 'default') {
       alert('Please enter a course');
       return;
     }
@@ -154,16 +152,20 @@ const Contribute: React.FC = () => {
     if (formData.url.length >= 24 && formData.url.substring(0, 24) == 'https://www.youtube.com') {
       const url = new URL(formData.url);
       const urlParams = new URLSearchParams(url.search);
-      const videoId = urlParams.get("v");
+      const videoId = urlParams.get('v');
       thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
     } else {
-      thumbnail = "/logo/LinkItemLogo.png"
+      thumbnail = '/logo/LinkItemLogo.png';
     }
 
     //Determine type
     let selectedType = 'youtube';
-    if (activeTab == 'Links') { selectedType = 'link' };
-    if (activeTab == 'Music') { selectedType = 'music' };
+    if (activeTab == 'Links') {
+      selectedType = 'link';
+    }
+    if (activeTab == 'Music') {
+      selectedType = 'music';
+    }
     //setSubmitted(true);
 
     var postData = {
@@ -172,7 +174,7 @@ const Contribute: React.FC = () => {
       postUrl: selectedVideo?.url,
       postThumbnail: selectedVideo?.thumbnail,
       postType: selectedType,
-      courseId: selectedCourse
+      courseId: selectedCourse,
       /*
       selectedVideo: selectedVideo
         ? {
@@ -190,7 +192,7 @@ const Contribute: React.FC = () => {
         postUrl: formData.url,
         postThumbnail: selectedVideo?.thumbnail,
         postType: selectedType,
-        courseId: selectedCourse
+        courseId: selectedCourse,
         /*
         selectedVideo: selectedVideo
           ? {
@@ -201,7 +203,7 @@ const Contribute: React.FC = () => {
           : null,
         */
       };
-  }
+    }
 
     const userId = session?.user?.id;
     const username = session?.user?.username;
@@ -209,7 +211,7 @@ const Contribute: React.FC = () => {
     const response = await fetch('/api/posts', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application-json'
+        'Content-Type': 'application-json',
       },
       body: JSON.stringify({
         title: postData.postTitle,
@@ -219,37 +221,36 @@ const Contribute: React.FC = () => {
         postType: postData.postType,
         courseId: postData.courseId,
         userId: userId,
-        username: username
-      })
-    })
+        username: username,
+      }),
+    });
 
-    const responseMsg = await response.json()
+    const responseMsg = await response.json();
 
-    console.log(responseMsg.success)
-    console.log(responseMsg.failure)
-
+    console.log(responseMsg.success);
+    console.log(responseMsg.failure);
 
     if (activeTab == 'Links') {
-      console.log("The selected course is: ", selectedCourse);
-      console.log("The Link title is: \n", postData.postTitle);
-      console.log("The Link description is: \n", postData.postDescription);
-      console.log("The Link url is: \n", postData.postUrl);
+      console.log('The selected course is: ', selectedCourse);
+      console.log('The Link title is: \n', postData.postTitle);
+      console.log('The Link description is: \n', postData.postDescription);
+      console.log('The Link url is: \n', postData.postUrl);
     }
 
     if (activeTab == 'Videos') {
-      console.log("The selected course is: ", selectedCourse);
-      console.log("The Video Posts title is: \n", postData.postTitle);
-      console.log("The Video Posts description is: \n", postData.postDescription);
-      console.log("The Videos url is: \n", selectedVideo?.url);
-      console.log("The Videos thumbnail url is: \n", selectedVideo?.thumbnail);
+      console.log('The selected course is: ', selectedCourse);
+      console.log('The Video Posts title is: \n', postData.postTitle);
+      console.log('The Video Posts description is: \n', postData.postDescription);
+      console.log('The Videos url is: \n', selectedVideo?.url);
+      console.log('The Videos thumbnail url is: \n', selectedVideo?.thumbnail);
     }
 
     if (activeTab == 'Music') {
-      console.log("The selected course is: ", selectedCourse);
-      console.log("The Music Posts title is: \n", postData.postTitle);
-      console.log("The Music Posts description is: \n", postData.postDescription);
-      console.log("The Music url is: \n", selectedVideo?.url);
-      console.log("The Music thumbnail url is: \n", selectedVideo?.thumbnail);
+      console.log('The selected course is: ', selectedCourse);
+      console.log('The Music Posts title is: \n', postData.postTitle);
+      console.log('The Music Posts description is: \n', postData.postDescription);
+      console.log('The Music url is: \n', selectedVideo?.url);
+      console.log('The Music thumbnail url is: \n', selectedVideo?.thumbnail);
     }
 
     // Reset form and selection
@@ -259,9 +260,8 @@ const Contribute: React.FC = () => {
       url: '',
     });
 
-    //Alert user 
+    //Alert user
     alert('Post was successfully created!');
-
   };
 
   const fetchCourses = async () => {
@@ -272,12 +272,12 @@ const Contribute: React.FC = () => {
       if (data.success) {
         setCourses(data.courses);
       } else {
-        console.log("There was an error retrieving courses");
+        console.log('There was an error retrieving courses');
       }
     } catch (error) {
       console.error('Failed to fetch videos:', error);
     }
-  }
+  };
 
   const searchYouTubeVideos = async (query: string) => {
     try {
@@ -299,9 +299,6 @@ const Contribute: React.FC = () => {
     setSelectedVideo(null); // uncheck the selected item
   };
 
-
-
-
   return (
     <div className="">
       {/* Contribution Title */}
@@ -315,12 +312,13 @@ const Contribute: React.FC = () => {
           </div>
         </div>
 
-        <h1 className="font-dongle font-medium text-6xl sm:text-7xl text-neon-violet drop-shadow-[0_0_10px_rgba(189,17,255,1)]">Contribution</h1>
+        <h1 className="font-dongle font-medium text-6xl sm:text-7xl text-neon-violet drop-shadow-[0_0_10px_rgba(189,17,255,1)]">
+          Contribution
+        </h1>
       </div>
 
       {/* Container For All Form Elements */}
       <div className="flex flex-col items-center gap-5 pb-10">
-
         <div className="flex-1 w-5/6 mx-auto h-full">
           <h4 className="font-nunito text-[#D163D7] text-sm sm:text-base mb-[10px] ">
             Select one of the existing classes to post a resource to
@@ -368,7 +366,10 @@ const Contribute: React.FC = () => {
         </div>
 
         {/* Post Form */}
-        <form onSubmit={handleSubmit} className="flex flex-col h-full gap-5 w-5/6 mx-auto text-white">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col h-full gap-5 w-5/6 mx-auto text-white"
+        >
           {/* Video/Music Top Container */}
           <div className="bg-component-purple rounded-lg pt-9 pb-5 px-10 -mt-5">
             <p className="pb-4 text-xl sm:text-2xl font-semibold">
@@ -410,48 +411,52 @@ const Contribute: React.FC = () => {
               className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-full mx-auto h-24 border-2 border-form-pink-border rounded-md p-2 text-justify mb-4"
               required
             />
-              <div className="flex justify-center sm:justify-end">
-                <button
-                  type="submit"
-                  className=" p-[5px] pl-[15px] pr-[15px] text-white border-white hover:scale-110 transition-transform duration-200 border-[3px] rounded-[10px] inline"
-                >
-                  {submitted ? 'Submitted' : 'Submit Post'}
-                </button>
-              </div>
+            <div className="flex justify-center sm:justify-end">
+              <button
+                type="submit"
+                className=" p-[5px] pl-[15px] pr-[15px] text-white border-white hover:scale-110 transition-transform duration-200 border-[3px] rounded-[10px] inline"
+              >
+                {submitted ? 'Submitted' : 'Submit Post'}
+              </button>
+            </div>
           </div>
         </form>
       </div>
 
-          {/* Search Container - Hidden for Links tab */}
-          {activeTab !== 'Links' && (
-            <div className="bg-component-purple rounded-lg flex-1 w-5/6 mx-auto h-full text-white p-4">
-              <h2 className="text-white text-[30px]">
-                {' '}
-                {activeTab === 'Videos' ? 'Search Videos' : 'Search Music'}
-              </h2>
-              <div className="ml-[10px] mr-[10px] grow">
-                <div className="flex max-w-[500px]">
-                  <input
-                    title="YouTube Search Bar"
-                    type="text"
-                    placeholder={activeTab === 'Videos' ? 'YouTube Search' : 'Music Search'}
-                    className="p-[5px] w-[400px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40 outline-none"
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                  />
-                  <button
-                    className="p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]"
-                    onClick={() => searchYouTubeVideos(searchInput)}
-                    title="Search YouTube videos"
-                  >
-                    <MagnifyingGlass size={24} className="align-middle group-hover:scale-110 transition-transform duration-200" color="white" />
-                  </button>
-                </div>
-              </div>
-              <Items items={items} onSelectItem={setSelectedVideo} />
+      {/* Search Container - Hidden for Links tab */}
+      {activeTab !== 'Links' && (
+        <div className="bg-component-purple rounded-lg flex-1 w-5/6 mx-auto h-full text-white p-4">
+          <h2 className="text-white text-[30px]">
+            {' '}
+            {activeTab === 'Videos' ? 'Search Videos' : 'Search Music'}
+          </h2>
+          <div className="ml-[10px] mr-[10px] grow">
+            <div className="flex max-w-[500px]">
+              <input
+                title="YouTube Search Bar"
+                type="text"
+                placeholder={activeTab === 'Videos' ? 'YouTube Search' : 'Music Search'}
+                className="p-[5px] w-[400px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40 outline-none"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+              />
+              <button
+                className="p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]"
+                onClick={() => searchYouTubeVideos(searchInput)}
+                title="Search YouTube videos"
+              >
+                <MagnifyingGlass
+                  size={24}
+                  className="align-middle group-hover:scale-110 transition-transform duration-200"
+                  color="white"
+                />
+              </button>
             </div>
-          )}
+          </div>
+          <Items items={items} onSelectItem={setSelectedVideo} />
         </div>
+      )}
+    </div>
   );
 };
 

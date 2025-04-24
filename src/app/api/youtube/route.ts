@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
     }
 
     const data = await response.json();
-    console.log("Data: ", data);
+    console.log('Data: ', data);
 
     const videos = data.items.map((item: any) => ({
       title: item.snippet.title,

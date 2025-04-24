@@ -38,21 +38,20 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       // Pull user inputs from the login page, send them to the login function
       // inside of the actions folder
       const formData = new FormData(event.currentTarget);
-      console.log("form data: ", formData);
+      console.log('form data: ', formData);
       const response = await doCredentialLogin(formData);
       router.push('/');
 
       if (response?.error) {
         console.error(response.error);
-        setMessage('Incorrect username or password entered')
+        setMessage('Incorrect username or password entered');
         //setError(response.error.message || "An error occured");
       } else {
-        
       }
     } catch (e: any) {
       console.error(e);
-      setMessage('Incorrect username or password')
-      console.log("There was an error logging in");
+      setMessage('Incorrect username or password');
+      console.log('There was an error logging in');
       //setError("Check your Credentials");
     }
   }
@@ -78,8 +77,10 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             </h1>
           </div>
           {/* input fields and login button */}
-          <form className="flex flex-col justify-center items-center gap-6 w-[85%] "
-          onSubmit={handleSubmit}>
+          <form
+            className="grid grid-cols-1 grid-rows-3 content-center justify-center gap-5 w-[80%]"
+            onSubmit={handleSubmit}
+          >
             <input
               className="h-11 md:h-12 w-[90%] rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white text-base md:text-lg"
               type="text"

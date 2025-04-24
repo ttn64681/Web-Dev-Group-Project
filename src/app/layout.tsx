@@ -17,12 +17,9 @@ const dongle = Dongle({
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-
   const session = getSession();
-  useEffect(() => {
-      
-    }, [session]);
-    
+  useEffect(() => {}, [session]);
+
   // TODO: Add authentication state management
   const isAuthenticated = false;
   const username = undefined;
@@ -38,10 +35,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en" className={`${nunito.variable} ${inter.variable} ${dongle.variable}`}>
-      <body className={`${inter.variable} font-inter bg-purple-dark-transition min-h-[calc(100vh-8rem)]`}>
+      <body
+        className={`${inter.variable} font-inter bg-purple-dark-transition min-h-[calc(100vh-8rem)]`}
+      >
         <SessionProvider>
-        <Navbar isAuthenticated={isAuthenticated} username={username} onLogout={handleLogout} />
-        {children}
+          <Navbar isAuthenticated={isAuthenticated} username={username} onLogout={handleLogout} />
+          {children}
         </SessionProvider>
       </body>
     </html>

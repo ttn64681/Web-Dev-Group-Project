@@ -20,11 +20,11 @@ type CourseSearchProps = {
 };
 
 const CourseSearch: React.FC<CourseSearchProps> = ({
-  activeTab,  
+  activeTab,
   isCourseSelected,
   isPostSelected,
   courseInfo,
-  postInfo
+  postInfo,
 }: CourseSearchProps) => {
   // TODO: Add state management for:
   // - Course search inputs
@@ -64,25 +64,32 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
       router.push('/course-search');
     }
   };
-  
+
   const showResources = () => {
     if (courseInfo) {
       router.push(`/course-search/${courseInfo.courseId}/resources`);
     }
   };
 
-
-  //Course submission 
+  //Course submission
   async function submitInfo(e: React.MouseEvent<HTMLButtonElement>) {
     //Prevents default behavior
     e.preventDefault();
 
     //Checks if valid information is filled out
-    if (courseSearchData.prefix.length === 4 && courseSearchData.courseNum.length === 4 && courseSearchData.courseName.length > 0) {
+    if (
+      courseSearchData.prefix.length === 4 &&
+      courseSearchData.courseNum.length === 4 &&
+      courseSearchData.courseName.length > 0
+    ) {
       try {
         //Retrieves course JSON information from prefix, courseNum, and courseName provided
-        const courseData = await getSearchInfo(courseSearchData.prefix, courseSearchData.courseNum, courseSearchData.courseName);
-        
+        const courseData = await getSearchInfo(
+          courseSearchData.prefix,
+          courseSearchData.courseNum,
+          courseSearchData.courseName
+        );
+
         if (courseData) {
           // Update the courseInfo state with the fetched data
           setcourseJSON({
@@ -91,41 +98,42 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
             description: courseData.description || '-',
             successPlan: Array.isArray(courseData.plan) ? courseData.plan.join(', ') : '-',
           });
-          
+
           //Retrieves course id (CS1301) and pushes to the course page
           router.push(`/course-search/${courseData.courseId}`);
         }
       } catch (error) {
-        console.error("Error submitting course search:", error);
-
+        console.error('Error submitting course search:', error);
       }
     } else {
-      console.log("Invalid input data:", courseSearchData);
-
+      console.log('Invalid input data:', courseSearchData);
     }
   }
 
   async function getSearchInfo(prefix: string, courseNum: string, title: string) {
     try {
       //Fetches information
-      const response = await fetch(`/api/courses?prefix=${encodeURIComponent(prefix)}&number=${encodeURIComponent(courseNum)}&title=${encodeURIComponent(title)}`, {
-        method: 'GET'
-      });
+      const response = await fetch(
+        `/api/courses?prefix=${encodeURIComponent(prefix)}&number=${encodeURIComponent(courseNum)}&title=${encodeURIComponent(title)}`,
+        {
+          method: 'GET',
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`API request failed with status ${response.status}`);
       }
 
       const data = await response.json();
-      console.log("Course search response:", data);
-      
+      console.log('Course search response:', data);
+
       if (!data.success) {
-        throw new Error(data.error || "Failed to fetch course information");
+        throw new Error(data.error || 'Failed to fetch course information');
       }
-      
+
       return data.course;
     } catch (error) {
-      console.error("Error fetching course:", error);
+      console.error('Error fetching course:', error);
       // Return a default course object or throw the error
       throw error;
     }
@@ -134,11 +142,11 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
   //Updates search info when input is placed into the form
   const updateSearchInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setCourseSearchData(prev => ({
+    setCourseSearchData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-  }
+  };
 
   //COMPONENT MATERIALS ============================================
 
@@ -151,35 +159,33 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
 
       <div className="w-full md:w-3/5 mr-[30px] md:mx-auto h-full pb-10">
         {/*TITLE*/}
-        {activeTab == "Overview" ? 
-          (
-            <div className="flex gap-2 md:gap-0 justify-center items-center mt-[50px] mb-[30px]">
-              <MagnifyingGlass
-                size={64}
-                color="#6CFEFE"
-                className="w-12 h-12 md:w-16 md:h-16 md:mx-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]"
-              />
-              <h2 className="font-dongle text-6xl md:text-7xl text-[#6CFEFE] md:mx-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]">
-                Course Search
-              </h2>
-            </div>
-          ):(
-            <div className="flex justify-center items-start mt-[50px] mb-[30px]">
-              <FileText
-                size={64}
-                color="#F09A35"
-                className="w-14 h-14 md:w-16 md:h-16 ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]"
-              />
-              <h2 className="font-dongle text-6xl md:text-7xl text-[#F09A35] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)] ">
-                Resources
-              </h2>
-            </div>
-          )
-        }
+        {activeTab == 'Overview' ? (
+          <div className="flex gap-2 md:gap-0 justify-center items-center mt-[50px] mb-[30px]">
+            <MagnifyingGlass
+              size={64}
+              color="#6CFEFE"
+              className="w-12 h-12 md:w-16 md:h-16 md:mx-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]"
+            />
+            <h2 className="font-dongle text-6xl md:text-7xl text-[#6CFEFE] md:mx-[10px] drop-shadow-[0_0_10px_rgba(108,254,254,1)]">
+              Course Search
+            </h2>
+          </div>
+        ) : (
+          <div className="flex justify-center items-start mt-[50px] mb-[30px]">
+            <FileText
+              size={64}
+              color="#F09A35"
+              className="w-14 h-14 md:w-16 md:h-16 ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)]"
+            />
+            <h2 className="font-dongle text-6xl md:text-7xl text-[#F09A35] ml-[10px] mr-[10px] drop-shadow-[0_0_10px_rgba(240,154,53,1)] ">
+              Resources
+            </h2>
+          </div>
+        )}
 
         {isPostSelected ? (
           /* RESOURCE FORUM - Shows if user has selected a post*/
-          postInfo && <ResourceForum postInfo={postInfo}/>
+          postInfo && <ResourceForum postInfo={postInfo} />
         ) : (
           /* SEARCH AREA - Shows if user has not selected a post and on search mode*/
           <div>
@@ -187,7 +193,7 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
               Enter the 4 letter prefix, 4 digit number, and course name.
             </h4>
             <div className="mt-[10px] mb-[10px]">
-              <CourseSearchArea submitFunc={submitInfo} editFunc={updateSearchInfo}/>
+              <CourseSearchArea submitFunc={submitInfo} editFunc={updateSearchInfo} />
             </div>
 
             {/* TABS*/}
@@ -200,7 +206,7 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
               </button>
               <button
                 onClick={showResources}
-                className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Resources' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border-[2px] rounded-[12px] inline ${isCourseSelected ? "opacity-100" : "opacity-25" }`}
+                className={`m-[10px] p-[5px] pl-[15px] pr-[15px] ${activeTab === 'Resources' ? 'bg-[#301936] text-[#F88AFF] border-[#F88AFF]' : 'text-white border-white'} hover:scale-110 transition-transform duration-200 border-[2px] rounded-[12px] inline ${isCourseSelected ? 'opacity-100' : 'opacity-25'}`}
               >
                 Resources
               </button>
@@ -208,7 +214,11 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
 
             {/* OVERVIEW OR RESOURCES BOX*/}
             <div className="mt-[10px]">
-              {activeTab == 'Overview' ? <OverviewBox isCourseSelected={isCourseSelected} courseInfo={courseInfo} /> : <ResourcesBox isCourseSelected={isCourseSelected} courseInfo={courseInfo}/>}
+              {activeTab == 'Overview' ? (
+                <OverviewBox isCourseSelected={isCourseSelected} courseInfo={courseInfo} />
+              ) : (
+                <ResourcesBox isCourseSelected={isCourseSelected} courseInfo={courseInfo} />
+              )}
             </div>
           </div>
         )}

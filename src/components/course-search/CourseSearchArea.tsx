@@ -6,20 +6,19 @@ import { MagnifyingGlass } from '@phosphor-icons/react';
 type CourseSearchAreaProps = {
   submitFunc: (e: React.MouseEvent<HTMLButtonElement>) => void;
   editFunc: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+};
 
 const CourseSearchArea: React.FC<CourseSearchAreaProps> = ({
   submitFunc,
-  editFunc
+  editFunc,
 }: CourseSearchAreaProps) => {
-
   // Add a form submission handler
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent default form submission
     // Create a proper button click event
     const buttonEvent = {
-      preventDefault: () => { },
-      currentTarget: document.querySelector('button[type="submit"]') as HTMLButtonElement
+      preventDefault: () => {},
+      currentTarget: document.querySelector('button[type="submit"]') as HTMLButtonElement,
     } as React.MouseEvent<HTMLButtonElement>;
     submitFunc(buttonEvent);
   };
@@ -27,7 +26,7 @@ const CourseSearchArea: React.FC<CourseSearchAreaProps> = ({
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex flex-wrap sm:flex-row sm:gap-0 w-[100%]">
-        <div className="mx-[10px]">
+        <div className="mx-[10px] mb-2 sm:mb-0">
           <h3 className="font-nunito text-[#765178]">Prefix</h3>
           <input
             type="text"
@@ -40,7 +39,7 @@ const CourseSearchArea: React.FC<CourseSearchAreaProps> = ({
             required
           />
         </div>
-        <div className="mx-[10px]">
+        <div className="mx-[10px] mb-2 sm:mb-0">
           <h3 className="font-nunito text-[#765178]">Number</h3>
           <input
             type="text"
@@ -55,18 +54,18 @@ const CourseSearchArea: React.FC<CourseSearchAreaProps> = ({
         </div>
         <div className="mx-[10px] grow">
           <h3 className="font-nunito text-[#765178]">Course Name</h3>
-          <div className="flex max-w-[650px]">
+          <div className="flex w-full">
             <input
               type="text"
               name="courseName"
               placeholder="Course Name"
-              className="p-[5px] w-[400px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40"
+              className="grow p-[5px] min-w-[200px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40"
               onChange={editFunc}
               required
             />
             <button
               type="submit"
-              className="h-8 sm:h-10 px-[5px] sm:p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]"
+              className="h-10 px-[5px] bg-[#33203A] border-[2px] border-l-0 border-[#6CFEFE] rounded-r-[10px]"
               aria-label="Search course"
             >
               <MagnifyingGlass size={24} className="align-middle" color="white" />
