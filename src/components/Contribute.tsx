@@ -159,10 +159,9 @@ const Contribute: React.FC = () => {
     let selectedType = 'youtube';
     if (activeTab == 'Links') { selectedType = 'link' };
     if (activeTab == 'Music') { selectedType = 'music' };
-    setSubmitted(true);
+    //setSubmitted(true);
 
-    // Create post data object
-    const postData = {
+    var postData = {
       postTitle: formData.title,
       postDescription: formData.desc,
       postUrl: selectedVideo?.url,
@@ -179,6 +178,25 @@ const Contribute: React.FC = () => {
         : null,
       */
     };
+    if (selectedType == 'link') {
+      postData = {
+        postTitle: formData.title,
+        postDescription: formData.desc,
+        postUrl: formData.url,
+        postThumbnail: selectedVideo?.thumbnail,
+        postType: selectedType,
+        courseId: selectedCourse
+        /*
+        selectedVideo: selectedVideo
+          ? {
+            title: selectedVideo.title,
+            description: selectedVideo.desc,
+            url: selectedVideo.url,
+          }
+          : null,
+        */
+      };
+  }
 
     const userId = session?.user?.id;
     const username = session?.user?.username;
@@ -384,7 +402,6 @@ const Contribute: React.FC = () => {
               className="bg-form-pink bg-opacity-10 outline-none text-white flex-1 w-full mx-auto h-24 border-2 border-form-pink-border rounded-md p-2 text-justify mb-4"
               required
             />
-            {activeTab === 'Links' && (
               <div className="flex justify-center sm:justify-end">
                 <button
                   type="submit"
@@ -393,33 +410,9 @@ const Contribute: React.FC = () => {
                   {submitted ? 'Submitted' : 'Submit Post'}
                 </button>
               </div>
-            )}
           </div>
         </form>
       </div>
-
-      {/* Video/Music Bottom Container - Hidden for Links tab */}
-      {activeTab !== 'Links' && (
-        // flex-1 w-5/6 mx-auto h-full text-white 
-        <div className="bg-component-purple rounded-lg py-9 px-10">
-          <h2 className="text-white text-xl sm:text-2xl pb-4 font-semibold">
-            {activeTab === 'Videos' ? 'Search Videos' : 'Search Music'}
-          </h2>
-          <div className="grow">
-            <div className="flex h-8 sm:h-10">
-              <input
-                type="text"
-                placeholder="Search"
-                className="p-[5px] w-full bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-l-[10px] text-white placeholder-opacity-40 outline-none"
-              />
-              <button className="px-[5px] sm:p-[5px] bg-[#33203A] border-[2px] border-[#6CFEFE] rounded-r-[10px]">
-                <MagnifyingGlass size={24} className="align-middle" color="white" />
-              </button>
-            </div>
-          </div>
-          <h4 className="mt-6 sm:mt-10 text-sm sm:text-base text-[#EFDEF0]">
-            {activeTab === 'Videos' ? 'Select a video:' : 'Select a song'}
-          </h4>
 
           {/* Search Container - Hidden for Links tab */}
           {activeTab !== 'Links' && (
@@ -451,7 +444,6 @@ const Contribute: React.FC = () => {
             </div>
           )}
         </div>
-      )}</div>
   );
 };
 
