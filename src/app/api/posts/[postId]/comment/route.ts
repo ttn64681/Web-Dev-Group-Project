@@ -20,6 +20,7 @@ export async function POST(request: NextRequest, { params }: { params: { postId:
     console.log("USER ID: ", userId);
     
     if (!userId) {
+      console.log("bad")
       return NextResponse.json({
         success: false,
         error: 'Unauthorized'
@@ -27,6 +28,7 @@ export async function POST(request: NextRequest, { params }: { params: { postId:
     }
 
     if (!comment) {
+      console.log("bad")
       return NextResponse.json({
         success: false,
         error: 'Comment text is required'
@@ -36,12 +38,13 @@ export async function POST(request: NextRequest, { params }: { params: { postId:
     const result = await addComment(params.postId, { user: userId, comment });
 
     if (!result.success) {
+      console.log("bad")
       return NextResponse.json({
         success: false,
         error: result.error || 'Failed to add comment'
       }, { status: 400 });
     }
-
+    console.log("good")
     return NextResponse.json({
       success: true,
       message: 'Comment added successfully',

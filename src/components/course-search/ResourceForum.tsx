@@ -16,10 +16,11 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
 }: ResourceBoxProps) => {
   //Comment state
   const [commentText, setCommentText] = useState('');
-  const [comments, setComments] = useState<Comment[]>(postInfo.comments || []);
+  const [comments, setComments] = useState<Comment[]>(postInfo.comments);
   const [userId, setUserId] = useState<String>('');
   const [liked, setLiked] = useState<boolean>(false);
   const [courseId, setCourseId] = useState<string>('');
+  const [posterName, setPosterName] = useState<string>('');
 
   //Sets up the router
   const router = useRouter();
@@ -108,9 +109,14 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
   }
 
   useEffect(() => {
+
+    //Gets like status
     const result = checkHasLikedBefore(postInfo.likes);
     setLiked(result);
+
+    //Extracts courseId
     extractCourseId();
+
   }, []);
 
   return (
@@ -127,15 +133,17 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
       {/* Video Section */}
       <div className="flex gap-6 mb-2">
         <div className="flex flex-col">
-          <VideoPostUnit 
-            forumMode={true} 
-            postId={postInfo._id || ''}
-            courseId={courseId}
-            thumbnail={postInfo.thumbnail}
-            likes={postInfo.likes?.length || 0}
-            username={postInfo.user}
-            isLiked={liked} // This should be determined by checking if current user's ID is in postInfo.likes
-          />
+          <a href={postInfo.url} target="_blank">
+            <VideoPostUnit 
+              forumMode={true} 
+              postId={postInfo._id || ''}
+              courseId={courseId}
+              thumbnail={postInfo.thumbnail}
+              likes={postInfo.likes?.length || 0}
+              username={postInfo.user}
+              isLiked={liked} // This should be determined by checking if current user's ID is in postInfo.likes
+            />
+          </a>
         </div>
         <div className="flex-1">
           <h3 className="text-neon-pink text-xl mb-2">{postInfo.title}</h3>
@@ -168,13 +176,16 @@ const ResourceForum: React.FC<ResourceBoxProps> = ({
       <div>
         <h1 className="text-neon-pink text-xl mb-4">Comments</h1>
         <div className="space-y-4">
-          {comments.map((comment, index) => (
-            <CommentBox 
-              key={index} 
-              username={comment.user._id} 
-              commentText={comment.comment} 
-            />
-          ))}
+          {comments.map( (comment, index) => {
+
+            return (
+              <CommentBox 
+                key={index} 
+                username={comment.user._id} 
+                commentText={comment.comment} 
+              />
+            )
+          })}
         </div>
       </div>
     </div>

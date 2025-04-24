@@ -15,7 +15,7 @@ type VideoPostUnitProps = {
   thumbnail?: string,
   likes: number,
   username: string,
-  isLiked: boolean
+  isLiked: boolean,
 }
 
 const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
@@ -31,10 +31,6 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
 ) => {
 
   const [user, setUser] = useState('');
-    useEffect(() => {
-      setUser('');
-      loadUser();
-    }, []);
 
   //Establishes router
   const router = useRouter();
@@ -47,10 +43,11 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
 
   async function loadUser() {
     try {
+      console.log(username)
       const response = await fetch(`/api/users/${username}`);
       if (!response.ok) throw new Error('Failed to fetch user');
-  
       const userData = await response.json();
+
       setUser(userData.username); // Adjust based on what data you return
     } catch (error) {
       console.error("Error loading user:", error);
@@ -85,13 +82,9 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
     //Gets user id from session
     const userId = session?.user?.id;
 
-    console.log("Reaches here")
-
     if (!userId) {
       return false;
     }
-
-    console.log("How about here")
 
     //Get post object
     const response = await fetch(`/api/posts/${postId}`, {
@@ -112,10 +105,9 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
     const configureOwned = async() => {
       const isOwned = await isUserPostOwner();
       setOwned(isOwned);
-      console.log(owned);
+      setUser('');
+      loadUser();
     }
-    console.log(courseId);
-    console.log(`/course-search/${courseId}/resources`);
     configureOwned();
   }, [owned])
 
@@ -142,7 +134,7 @@ const VideoPostUnit: React.FC<VideoPostUnitProps> = ({
                 }
             </div>
             <div className="p-[10px] pr-[20px]">
-              <h4 className="text-white">{username}</h4>
+              <h4 className="text-white">{user}</h4>
             </div>
           </div>
         : 
