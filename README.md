@@ -13,9 +13,19 @@
 - Miroboard Captain: Andrew Ingraham
 - GitHub Captain: Jamie Chen
 
+### Links:
+
+- Video Demo: https://www.loom.com/share/04e8e8049bb446f3b017975b1e82d01e?sid=6928a038-d539-422c-9f3f-5fc7bf634940
+- Miro Board: https://miro.com/app/board/uXjVIcSoszk=/?share_link_id=536096687861
+- GitHub: https://github.com/ttn64681/Web-Dev-Group-Project
+
 ## Project Overview
 
-This project aims to design and build a full-stack web application using React, Next.js, Node.js, and MongoDB. The application will implement authentication and authorization, providing a unique service to UGA students.
+CourseHub is a web application designed to help UGA students in their academic pursuits by providing a centralized platform (a hub, if you will) for discovering course information and sharing valuable study resources. It aims to streamline the process of finding relevant materials and foster an easier, more collaborative learning environment within the UGA student community.
+
+### Disclaimer
+
+CourseHub is not an official UGA app. All images are purely for personal purposes.
 
 ## Technology Stack
 
@@ -30,9 +40,8 @@ This project aims to design and build a full-stack web application using React, 
 
 ## APIs Used
 
-- YouTube Data API (Tentative)
-- OpenAI (Gemini)
-- ...
+- YouTube Data API
+- Google Generative Language (Gemini)
 
 ## Project Timeline (Roughly)
 
@@ -47,7 +56,7 @@ This project aims to design and build a full-stack web application using React, 
 ### Prerequisites
 
 - Node.js and npm installed
-- MongoDB installed and running
+- MongoDB connection string and access permissions
 - API keys registered
 
 ### Installation
@@ -59,29 +68,19 @@ This project aims to design and build a full-stack web application using React, 
     ```
 2.  Install dependencies:
     ```bash
-    npm install
+    npm i
     ```
 3.  Set up environment variables (MongoDB connection string, API Keys). Create a `.env.local` file in the root directory and add your environment variables.
     ```
-    MONGODB_URI=your_mongodb_connection_string
-    YOUTUBE_API_KEY=your_api_key
-    GEMINI_API_KEY=your_api_key
+    AUTH_SECRET=
+    NEXTAUTH_SECRET=
+    NEXTAUTH_URL=
+    NEXT_PUBLIC_MONGODB_URI=
+    MONGODB_URI=
+    GEMINI_API_KEY=
+    YOUTUBE_API_KEY=
     ```
 4.  Run the development server:
     ```bash
     npm run dev
     ```
-
-## Future Improvements
-
-- ...
-- ...
-- ...
-
-## Contributing
-
-[Describe how others can contribute to the project?]
-
-## License
-
-[Do we need to add licensing information?]
