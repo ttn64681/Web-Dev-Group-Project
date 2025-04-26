@@ -22,18 +22,20 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const response = await fetch(
+    // Single API call to get search results
+    const searchResponse = await fetch(
       `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${encodeURIComponent(query)}&type=video&key=${YOUTUBE_API_KEY}`
     );
 
-    if (!response.ok) {
+    if (!searchResponse.ok) {
       throw new Error('Failed to fetch videos from YouTube API');
     }
 
-    const data = await response.json();
-    console.log('Data: ', data);
-
-    const videos = data.items.map((item: any) => ({
+    const searchData = await searchResponse.json();
+    console.log('Search Data received:');
+    console.dir(searchData, { depth: null });
+    
+    const videos = searchData.items.map((item: any) => ({
       title: item.snippet.title,
       description: item.snippet.description,
       url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
@@ -41,7 +43,8 @@ export async function GET(req: NextRequest) {
       thumbnail: item.snippet.thumbnails.high?.url || item.snippet.thumbnails.default.url,
       postType: 'youtube' as const,
       date: item.snippet.publishedAt,
-      channel: item.snippet.channelTitle,
+      channel: item.snippet.channelTitle
+      // Note: duration and views are removed since they require the second API call
     }));
 
     return NextResponse.json({ success: true, videos }, { status: 200 });

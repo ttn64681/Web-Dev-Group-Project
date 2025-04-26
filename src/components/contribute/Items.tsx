@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import Item from './Item';
+// import Item from './Item';
 
 // Items component maps the items out
 
@@ -13,6 +13,8 @@ type ItemType = {
   thumbnail?: string; // Add thumbnail URL
   date: string;
   channel: string;
+  duration: string;
+  views: number;
 };
 
 // onSelectItem prop for handling selection
@@ -43,10 +45,10 @@ const Items: React.FC<ItemsProps> = ({ items, onSelectItem }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 mt-4 -ml-4">
-      {/* Maps out the items*/}
+    <div className="flex flex-col gap-4 mt-4 -ml-4 mt-8">
+      {/* Maps out the items by date*/}
       {items.map((item) => (
-        <div key={item.date} className="flex items-center p-4 bg-[#33203A] rounded-lg hover:bg-white/5 transition-all duration-200">
+        <div key={item.date} className="flex items-center p-4 pl-2 bg-[#33203A] rounded-lg hover:bg-white/5 transition-all duration-200 ml-4">
           {/* Checkbox container */}
           <div className="flex items-center justify-center w-12 mr-2">
             <input
@@ -78,6 +80,8 @@ const Items: React.FC<ItemsProps> = ({ items, onSelectItem }) => {
               <p className="text-grayish-purple text-sm mt-2">URL: {item.url}</p>
               <p className="text-grayish-purple text-sm mt-2">Date Posted: {item.date}</p>
               <p className="text-grayish-purple text-sm mt-2">Channel: {item.channel}</p>
+              <p className="text-grayish-purple text-sm mt-2">Duration: {item.duration}</p>
+              <p className="text-grayish-purple text-sm mt-2">Views: {item.views}</p>
             </div>
           </div>
         </div>

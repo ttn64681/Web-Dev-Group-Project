@@ -58,9 +58,9 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
   return (
     // entire page
-    <div className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center bg-gradient-to-b from-[#0E0613] to-[#411F4B] overflow-hidden px-4 sm:px-6 md:px-8">
+    <div className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center bg-gradient-to-b from-[#0E0613] to-[#411F4B] sm:px-6 md:px-8">
       {/* creating card effect on login box (basically borders)*/}
-      <div className="border border-neon-pink rounded-2xl py-8 w-[310px] sm:w-[350px] md:w-[400px] bg-login-bg-purple/[24%] overflow-hidden shadow-[0_3px_35px_rgba(248,138,255,0.3)]">
+      <div className="border border-neon-pink rounded-2xl py-8 w-[310px] sm:w-[350px] md:w-[400px] bg-login-bg-purple/[24%] shadow-[0_3px_35px_rgba(248,138,255,0.3)]">
         {/* login container */}
         <div className="flex flex-col justify-center items-center w-full h-auto gap-6">
           {/* gap between logo and Login title */}
@@ -78,23 +78,23 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           </div>
           {/* input fields and login button */}
           <form
-            className="grid grid-cols-1 grid-rows-3 content-center justify-center gap-5 w-[80%]"
+            className="flex flex-col items-center w-[80%] gap-7 my-1"
             onSubmit={handleSubmit}
           >
             <input
-              className="h-11 md:h-12 w-[90%] rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white text-base md:text-lg"
+              className="h-11 md:h-12 w-[95%] rounded-2xl border border-white bg-neon-pink/[10%] p-4 text-white text-base md:text-lg"
               type="text"
               placeholder="Username"
               name="username"
             />
             <input
-              className="h-11 md:h-12 w-[90%] rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white text-base md:text-lg"
+              className="h-11 md:h-12 w-[95%] rounded-2xl border border-white bg-neon-pink/[10%] p-4 text-white text-base md:text-lg"
               type="password"
               placeholder="Password"
               name="password"
             />
             <button
-              className="h-11 md:h-12 w-[90%] bg-gray-200 rounded-full m-1 text-lg md:text-xl font-bold text-[rgb(40,22,47)]"
+              className="h-11 md:h-12 w-[95%] bg-gray-200 rounded-full font-bold text-lg md:text-xl text-[rgb(40,22,47)]"
               type="submit"
             >
               Login

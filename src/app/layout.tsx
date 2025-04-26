@@ -1,14 +1,9 @@
-'use client';
-
 import { Inter, Dongle, Nunito } from 'next/font/google';
 import './globals.css';
-import Navbar from '@/components/Navbar';
-import { SessionProvider } from 'next-auth/react';
-import { doLogout } from './actions';
-import { useEffect } from 'react';
-import { getSession } from 'next-auth/react';
+import ClientLayout from '../components/ClientLayout';
+import { Metadata } from 'next';
 
-const nunito = Nunito({ subsets: ['latin'], variable: '--font-nunito' }); // conventional variable names
+const nunito = Nunito({ subsets: ['latin'], variable: '--font-nunito' });
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const dongle = Dongle({
   subsets: ['latin'],
@@ -16,32 +11,25 @@ const dongle = Dongle({
   weight: ['300', '400', '700'],
 });
 
+export const metadata: Metadata = {
+  title: 'CourseHub',
+  description: 'Your one-stop platform for course information and reviews',
+  icons: {
+    icon: '/logo/logo-star-189wh.png',
+    shortcut: '/logo/logo-star-189wh.png',
+    apple: '/logo/logo-star-189wh.png',
+    other: {
+      rel: 'apple-touch-icon',
+      url: '/logo/logo-star-189wh.png',
+    },
+  },
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const session = getSession();
-  useEffect(() => {}, [session]);
-
-  // TODO: Add authentication state management
-  const isAuthenticated = false;
-  const username = undefined;
-
-  const handleLogin = (username: string) => {
-    // TODO: Implement login logic
-    // THIS HAPPENS INSIDE THE LOGIN COMPONENT
-  };
-
-  const handleLogout = () => {
-    doLogout();
-  };
-
   return (
     <html lang="en" className={`${nunito.variable} ${inter.variable} ${dongle.variable}`}>
-      <body
-        className={`${inter.variable} font-inter bg-purple-dark-transition min-h-[calc(100vh-8rem)]`}
-      >
-        <SessionProvider>
-          <Navbar isAuthenticated={isAuthenticated} username={username} onLogout={handleLogout} />
-          {children}
-        </SessionProvider>
+      <body className={`${inter.variable} font-inter bg-purple-dark-transition min-h-[calc(100vh-8rem)]`}>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );

@@ -54,23 +54,23 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
           </div>
           {/* input fields and register button */}
           <form
-            className="grid grid-cols-1 grid-rows-3 content-center justify-center gap-5 w-[80%]"
+            className="flex flex-col items-center w-[80%] gap-7 my-1"
             onSubmit={handleSubmit}
           >
             <input
-              className="h-11 md:h-12 w-[90%] rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white text-base md:text-lg"
+              className="h-11 md:h-12 w-[95%] rounded-2xl border border-white bg-neon-pink/[10%] p-4 text-white text-base md:text-lg"
               type="text"
               placeholder="Username"
               name="username"
             />
             <input
-              className="h-11 md:h-12 w-[90%] rounded-2xl m-1 border border-white bg-neon-pink/[10%] p-4 text-white text-base md:text-lg"
+              className="h-11 md:h-12 w-[95%] rounded-2xl border border-white bg-neon-pink/[10%] p-4 text-white text-base md:text-lg"
               type="password"
               placeholder="Password"
               name="password"
             />
             <button
-              className="h-11 md:h-12 w-[90%] bg-gray-200 rounded-full m-1 text-lg md:text-xl font-bold text-[rgb(40,22,47)]"
+              className="h-11 md:h-12 w-[95%] bg-gray-200 rounded-full font-bold text-lg md:text-xl text-[rgb(40,22,47)]"
               type="submit"
             >
               Register

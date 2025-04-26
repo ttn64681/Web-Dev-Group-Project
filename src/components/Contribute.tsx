@@ -24,6 +24,8 @@ type ItemType = {
   date: string;
   channel: string;
   thumbnail?: string;
+  duration: number;
+  views: number;
 };
 
 type CourseType = {
@@ -253,6 +255,8 @@ const Contribute: React.FC = () => {
       console.log('The Music thumbnail url is: \n', selectedVideo?.thumbnail);
     }
 
+    setSubmitted(true);
+
     // Reset form and selection
     setFormData({
       title: '',
@@ -288,9 +292,11 @@ const Contribute: React.FC = () => {
         setItems(data.videos);
       } else {
         console.error(data.error);
+        alert('Internal Server Error 505:\nFailed to fetch videos');
       }
     } catch (error) {
       console.error('Failed to fetch videos:', error);
+      alert('Internal Server Error 505:\nFailed to fetch videos');
     }
 
     // makes the button usable again after 2 seconds
@@ -414,7 +420,8 @@ const Contribute: React.FC = () => {
             <div className="flex justify-center sm:justify-end">
               <button
                 type="submit"
-                className=" p-[5px] pl-[15px] pr-[15px] text-white border-white hover:bg-white hover:text-black hover:scale-110 transition-all duration-200 border-[3px] rounded-[10px] inline"
+                className=" p-[5px] pl-[15px] pr-[15px] text-white border-white hover:bg-white hover:text-black hover:scale-105 hover:font-bold transition-all duration-200 border-[3px] rounded-[10px] inline"
+                onMouseEnter={() => setSubmitted(false)}
               >
                 {submitted ? 'Submitted' : 'Submit Post'}
               </button>
