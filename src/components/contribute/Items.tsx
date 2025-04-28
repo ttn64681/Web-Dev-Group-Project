@@ -15,6 +15,7 @@ type ItemType = {
   channel: string;
   duration: string;
   views: number;
+  likes: number;
 };
 
 // onSelectItem prop for handling selection
@@ -82,6 +83,7 @@ const Items: React.FC<ItemsProps> = ({ items, onSelectItem }) => {
               <p className="text-grayish-purple text-sm mt-2">Channel: {item.channel}</p>
               <p className="text-grayish-purple text-sm mt-2">Duration: {item.duration}</p>
               <p className="text-grayish-purple text-sm mt-2">Views: {item.views}</p>
+              <p className="text-grayish-purple text-sm mt-2">Likes: {item.likes}</p>
             </div>
           </div>
         </div>

@@ -26,6 +26,7 @@ type ItemType = {
   thumbnail?: string;
   duration: number;
   views: number;
+  likes: number;
 };
 
 type CourseType = {

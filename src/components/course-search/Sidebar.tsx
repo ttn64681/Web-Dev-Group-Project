@@ -26,9 +26,10 @@ const Sidebar: React.FC = () => {
 
   //Submits info when a sufficient prefix is found
   const submitInfo = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (prefixSearchData.length == 4) {
+    const cleanedPrefix = prefixSearchData.toUpperCase().trim().replace(' ', '');
+    if (cleanedPrefix.length == 4) {
       //Gets data for a specific prefix
-      const response = await fetch(`/api/courses/?prefix=${prefixSearchData}`, {
+      const response = await fetch(`/api/courses/?prefix=${cleanedPrefix}`, {
         method: 'GET',
       });
 
@@ -36,15 +37,9 @@ const Sidebar: React.FC = () => {
       //Updates accordingly
       const courseData = await response.json();
       setCourses(courseData.courses);
-    } else if (prefixSearchData.length == 0) {
-      //Gets data
-      const response = await fetch(`/api/courses`, {
-        method: 'GET',
-      });
-
-      //Updates accordingly
-      const courseData = await response.json();
-      setCourses(courseData.courses);
+    } else if (cleanedPrefix.length == 0) {
+      alert('Please enter a valid prefix');
+      return;
     }
   };
 

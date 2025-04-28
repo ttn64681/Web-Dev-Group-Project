@@ -22,7 +22,7 @@ export default function Home() {
           />
           <div className="flex flex-col justify-center items-center">
             <h1 className="font-nunito font-bold text-[2.5rem] text-neon-pink">Welcome to</h1>
-            <h1 className="font-dongle text-[6rem] leading-[0.5] text-neon-pink [text-shadow:0_0_10px_rgba(255,105,180,0.5)] hover:[text-shadow:0_0_10px_rgba(255,105,180,0.8)] hover:scale-105 transition-all duration-300">
+            <h1 className="font-dongle text-[6rem] leading-[0.5] text-neon-pink [text-shadow:0_0_10px_rgba(255,105,180,0.5)] hover:[text-shadow:0_0_10px_rgba(255,105,180)] hover:scale-105 transition-all duration-300">
               CourseHub!
             </h1>
           </div>
