@@ -58,11 +58,7 @@ const Navbar: React.FC<NavbarProps> = ({
    * Props:
    * - href: The URL the link points to
    * - children: The text/content of the link
-   *
-   * Features:
-   * - Animated underline that appears on hover
-   * - Active state styling when on current page
-   * - Smooth transitions for all animations
+   * - matchSubpaths: Whether to match subpaths of the current path
    */
   const NavLink = ({
     href,
