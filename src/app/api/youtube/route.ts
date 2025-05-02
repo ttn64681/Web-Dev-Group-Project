@@ -39,11 +39,11 @@ export async function GET(req: NextRequest) {
 
     const videoIds: any = searchData.items.map((item: any) => {
       return item.id.videoId;
-    })
+    });
 
     const detailsResponse = await fetch(
       `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoIds.join(',')}&key=${YOUTUBE_API_KEY}`
-    )
+    );
 
     if (!detailsResponse.ok) {
       throw new Error('Failed to fetch video details from YouTube API');
@@ -51,7 +51,6 @@ export async function GET(req: NextRequest) {
 
     const detailsData = await detailsResponse.json();
 
-    
     const videos = detailsData.items.map((item: any) => ({
       title: item.snippet.title,
       description: item.snippet.description,

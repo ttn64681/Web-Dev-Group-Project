@@ -68,7 +68,9 @@ const Sidebar: React.FC = () => {
   return (
     <div className={`flex h-full transition-transform duration-300 ease-in-out -z-10`}>
       {/*Sidebar Contents*/}
-      <div className={`bg-[#28162F] pl-[25px] pr-[25px] h-full min-w-[390px] max-w-[500px] ${openStatus ? 'block' : 'hidden'}`}>
+      <div
+        className={`bg-[#28162F] pl-[25px] pr-[25px] h-full min-w-[390px] max-w-[500px] ${openStatus ? 'block' : 'hidden'}`}
+      >
         <div className="flex flex-row pt-[20px] align-items">
           <h3 className="font-nunito text-[#B590C4] text-[18px] mr-[20px]">Existing Classes: </h3>
           <div className="flex">

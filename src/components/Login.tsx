@@ -77,10 +77,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             </h1>
           </div>
           {/* input fields and login button */}
-          <form
-            className="flex flex-col items-center w-[80%] gap-7 my-1"
-            onSubmit={handleSubmit}
-          >
+          <form className="flex flex-col items-center w-[80%] gap-7 my-1" onSubmit={handleSubmit}>
             <input
               className="h-11 md:h-12 w-[95%] rounded-2xl border border-white bg-neon-pink/[10%] p-4 text-white text-base md:text-lg"
               type="text"
@@ -108,11 +105,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             </Link>
           </p>
           {/* Message for errors or notifications */}
-          {message && (
-            <p className="text-white text-center text-sm md:text-base">
-              {message}
-            </p>
-          )}
+          {message && <p className="text-white text-center text-sm md:text-base">{message}</p>}
         </div>
       </div>
     </div>

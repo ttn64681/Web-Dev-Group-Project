@@ -40,7 +40,9 @@ const OverviewBox: React.FC<OverviewBoxProps> = ({
 
       {/* DESCRIPTION */}
       <div className="m-[20px]">
-        <h3 className="text-[1.2em] text-[#F88AFF] mb-2 sm:mb-0 sm:mr-[20px] font-bold">Description:</h3>
+        <h3 className="text-[1.2em] text-[#F88AFF] mb-2 sm:mb-0 sm:mr-[20px] font-bold">
+          Description:
+        </h3>
         <h4 className="font-inter text-[#E2D0E6] break-words">
           {isCourseSelected && courseInfo ? courseInfo.description : 'Example description'}
         </h4>
@@ -48,20 +50,20 @@ const OverviewBox: React.FC<OverviewBoxProps> = ({
 
       {/* SUCCESS PLAN */}
       <div className="m-[20px]">
-        <h3 className="text-[1.2em] text-[#F88AFF] mb-2 sm:mb-0 sm:mr-[20px] font-bold">Plan for Success:</h3>
+        <h3 className="text-[1.2em] text-[#F88AFF] mb-2 sm:mb-0 sm:mr-[20px] font-bold">
+          Plan for Success:
+        </h3>
         {isCourseSelected && courseInfo ? (
           <div className="flex flex-col">
-            {
-              courseInfo.plan && Array.isArray(courseInfo.plan) ? (
-                courseInfo.plan.map((item: string, index: number) => (
-                  <h4 key={index} className="text-[#E2D0E6] break-words mb-2">
-                    {item}
-                  </h4>
-                ))
-              ) : (
-                <h4 className="text-[#E2D0E6]">No success plan available</h4>
-              )
-            }
+            {courseInfo.plan && Array.isArray(courseInfo.plan) ? (
+              courseInfo.plan.map((item: string, index: number) => (
+                <h4 key={index} className="text-[#E2D0E6] break-words mb-2">
+                  {item}
+                </h4>
+              ))
+            ) : (
+              <h4 className="text-[#E2D0E6]">No success plan available</h4>
+            )}
           </div>
         ) : (
           <div className="flex flex-col gap-2 py-2">

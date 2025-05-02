@@ -49,7 +49,10 @@ const Items: React.FC<ItemsProps> = ({ items, onSelectItem }) => {
     <div className="flex flex-col gap-4 mt-4 -ml-4 mt-8">
       {/* Maps out the items by date*/}
       {items.map((item) => (
-        <div key={item.date} className="flex items-center p-4 pl-2 bg-[#33203A] rounded-lg hover:bg-white/5 transition-all duration-200 ml-4">
+        <div
+          key={item.date}
+          className="flex items-center p-4 pl-2 bg-[#33203A] rounded-lg hover:bg-white/5 transition-all duration-200 ml-4"
+        >
           {/* Checkbox container */}
           <div className="flex items-center justify-center w-12 mr-2">
             <input

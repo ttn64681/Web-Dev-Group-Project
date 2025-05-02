@@ -28,7 +28,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${nunito.variable} ${inter.variable} ${dongle.variable}`}>
-      <body className={`${inter.variable} font-inter bg-purple-dark-transition min-h-[calc(100vh-8rem)]`}>
+      <body
+        className={`${inter.variable} font-inter bg-purple-dark-transition min-h-[calc(100vh-8rem)]`}
+      >
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
