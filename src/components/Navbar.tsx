@@ -135,7 +135,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Menu Overlay - appears when menu is open */}
       {isMenuOpen && (
-        <div className="lg:hidden fixed inset-0 bg-nav-purple z-50 flex flex-col items-center justify-center">
+        <div className="lg:hidden fixed inset-0 bg-nav-purple z-[100] flex flex-col items-center justify-center">
           {/* Close button in top-right corner */}
           <div className="absolute top-4 right-4">
             <button
