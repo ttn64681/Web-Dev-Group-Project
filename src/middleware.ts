@@ -29,5 +29,5 @@ const middleware = async (request: NextRequest) => {
 export const config = {
   matcher: ['/contribute/:path*'],
 };
-
 export default middleware;
+

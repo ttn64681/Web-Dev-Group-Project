@@ -3,7 +3,6 @@ import { UsersThree } from '@phosphor-icons/react';
 import Items from './contribute/Items';
 import React, { useState, useEffect } from 'react';
 import { MagnifyingGlass } from '@phosphor-icons/react';
-import connectMongoDB from '../../config/mongodb';
 import { useSession } from 'next-auth/react';
 
 // The contribute component
@@ -87,7 +86,6 @@ const Contribute: React.FC = () => {
 
   // Initialize with videos when component mounts
   useEffect(() => {
-    connectMongoDB();
     showVideos();
     fetchCourses();
   }, []);
@@ -178,15 +176,6 @@ const Contribute: React.FC = () => {
       postThumbnail: selectedVideo?.thumbnail,
       postType: selectedType,
       courseId: selectedCourse,
-      /*
-      selectedVideo: selectedVideo
-        ? {
-          title: selectedVideo.title,
-          description: selectedVideo.desc,
-          url: selectedVideo.url,
-        }
-        : null,
-      */
     };
     if (selectedType == 'link') {
       postData = {
@@ -196,15 +185,6 @@ const Contribute: React.FC = () => {
         postThumbnail: selectedVideo?.thumbnail,
         postType: selectedType,
         courseId: selectedCourse,
-        /*
-        selectedVideo: selectedVideo
-          ? {
-            title: selectedVideo.title,
-            description: selectedVideo.desc,
-            url: selectedVideo.url,
-          }
-          : null,
-        */
       };
     }
 
@@ -230,8 +210,8 @@ const Contribute: React.FC = () => {
 
     const responseMsg = await response.json();
 
-    console.log(responseMsg.success);
-    console.log(responseMsg.failure);
+    // console.log(responseMsg.success);
+    // console.log(responseMsg.failure);
 
     if (activeTab == 'Links') {
       console.log('The selected course is: ', selectedCourse);
@@ -271,16 +251,18 @@ const Contribute: React.FC = () => {
 
   const fetchCourses = async () => {
     try {
-      const response = await fetch(`/api/courses`);
+      const response = await fetch('/api/courses');
+      if (!response.ok) {
+        throw new Error('Failed to fetch courses');
+      }
       const data = await response.json();
-
       if (data.success) {
         setCourses(data.courses);
       } else {
-        console.log('There was an error retrieving courses');
+        console.error('Error fetching courses:', data.error);
       }
     } catch (error) {
-      console.error('Failed to fetch videos:', error);
+      console.error('Failed to fetch courses:', error);
     }
   };
 
@@ -461,7 +443,7 @@ const Contribute: React.FC = () => {
               </button>
             </div>
           </div>
-          <Items items={items} onSelectItem={setSelectedVideo} />
+          <Items items={items} onSelectItem={(item) => setSelectedVideo(item)} />
         </div>
       )}
     </div>
