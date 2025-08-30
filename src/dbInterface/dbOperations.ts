@@ -69,7 +69,12 @@ export type Comment = {
 
 // ######### DATABASE OPERATIONS #########
 /** These functions handle all interactions with the MongoDB database.
- * Each function includes error handling and returns a standardized response
+ * Each function includes error handling and returns a standardized response:
+ * {
+ *   success: boolean; 
+ *   data?: any;
+ *   error?: string;
+ * }
  **/
 
 /**

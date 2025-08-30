@@ -30,4 +30,3 @@ export const config = {
   matcher: ['/contribute/:path*'],
 };
 export default middleware;
-

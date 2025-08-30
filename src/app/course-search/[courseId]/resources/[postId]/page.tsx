@@ -6,11 +6,6 @@ import { Course } from '@/dbInterface/dbOperations';
 import { Post } from '@/dbInterface/dbOperations';
 
 export default function CourseSearchPage() {
-  // TODO: Add page layout
-  // TODO: Add styling
-  // TODO: Add error boundary
-  // TODO: Add loading states
-
   //Default pages
   const [currCourse, setCurrCourse] = useState<Course | undefined>(undefined);
   const [currPost, setCurrPost] = useState<Post | undefined>(undefined);

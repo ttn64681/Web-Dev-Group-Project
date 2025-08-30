@@ -5,10 +5,6 @@ import connectMongoDB from '../../../../config/mongodb';
 import { Course } from '@/dbInterface/dbOperations';
 
 export default function CourseSearchPage() {
-  // TODO: Add page layout
-  // TODO: Add styling
-  // TODO: Add error boundary
-  // TODO: Add loading states
 
   const [currCourse, setCurrCourse] = useState<Course | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
