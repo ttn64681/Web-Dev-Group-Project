@@ -71,7 +71,7 @@ export type Comment = {
 /** These functions handle all interactions with the MongoDB database.
  * Each function includes error handling and returns a standardized response:
  * {
- *   success: boolean; 
+ *   success: boolean;
  *   data?: any;
  *   error?: string;
  * }
@@ -147,13 +147,12 @@ export async function searchAndAddCourse(prefix: string, number: string, title: 
       console.error('GEMINI_API_KEY (or YOUTUBE_API_KEY) is not defined in environment variables.');
       return {
         success: false,
-        error: 'GEMINI_API_KEY is not set. Set it in Vercel (or set YOUTUBE_API_KEY if using one key for both). Enable "Generative Language API" in your Google Cloud project.',
+        error:
+          'GEMINI_API_KEY is not set. Set it in Vercel (or set YOUTUBE_API_KEY if using one key for both). Enable "Generative Language API" in your Google Cloud project.',
       };
     }
 
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-
     const prompt = `Using ONLY the current course information from the University of Georgia's Bulletin courses website, provide a detailed overview of 
 ${prefix} ${number} (${title}) at the University of Georgia, and return the 
 title from UGA Bulletin (format: "CSCI-1301 Introduction to Computer Science"), 
@@ -164,12 +163,33 @@ feasible plan for success (according to the class and professor) (the plan for s
 and the course's top-5 free study links/urls from google (array of multiple top 5 recommended study resource links according to google that are best for the course and are free and are valid, working urls, along with a description for each of the 5 links) 
 information in JSON format, with only the keys: "title", "description", "topics", "prerequisites", "plan", and "urls" (with the keys "url" and "description" inside the urls array). Use exactly these keys. Do not create any extra keys other than these. Do not use markdown code.`;
 
-    const result = await model.generateContent(prompt);
-    console.log('Gemini result: ', result);
-    const response = await result.response;
-    console.log('Gemini response: ', response);
-    const text = response.text();
-    console.log('Gemini text: ', text);
+    // Try gemini-2.5-flash first; on 429 (quota), fall back to gemini-1.5-flash (separate free-tier quota)
+    const modelIds = ['gemini-2.5-flash', 'gemini-1.5-flash'];
+    let text: string | null = null;
+    let lastError: Error | null = null;
+
+    for (const modelId of modelIds) {
+      try {
+        const model = genAI.getGenerativeModel({ model: modelId });
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        text = response.text();
+        if (text) break;
+      } catch (err) {
+        lastError = err instanceof Error ? err : new Error(String(err));
+        const msg = lastError.message;
+        const is429 =
+          msg.includes('429') ||
+          msg.includes('Too Many Requests') ||
+          msg.includes('quota') ||
+          msg.includes('rate-limit');
+        if (is429 && modelIds.indexOf(modelId) < modelIds.length - 1) {
+          console.warn(`Gemini ${modelId} rate limited, trying fallback model...`);
+          continue;
+        }
+        throw lastError;
+      }
+    }
 
     // Validate that we got a response
     if (!text) {
@@ -258,9 +278,23 @@ information in JSON format, with only the keys: "title", "description", "topics"
     return { success: true, course: newCourse };
   } catch (error) {
     console.error('Error searching course:', error);
+    const message = error instanceof Error ? error.message : 'Failed to search course';
+    // Return a short, user-friendly message for Gemini quota/rate limit (429) instead of the long API error
+    if (
+      message.includes('429') ||
+      message.includes('Too Many Requests') ||
+      message.includes('quota') ||
+      message.includes('rate-limit')
+    ) {
+      return {
+        success: false,
+        error:
+          'Course generation hit the Gemini API rate limit. Please wait a minute and try again, or check your quota at https://ai.google.dev/gemini-api/docs/rate-limits.',
+      };
+    }
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to search course',
+      error: message,
     };
   }
 }
