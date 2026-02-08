@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { likePost } from '@/dbInterface/dbOperations';
 import { auth } from '../../../../../../auth';
 
+export const dynamic = 'force-dynamic';
+
 /** POST /api/posts/[postId]/like - Used to like a post
  * Frontend call example:
  * fetch('/api/posts/PostObjectId/like', {

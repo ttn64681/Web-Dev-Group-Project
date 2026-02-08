@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { addComment } from '@/dbInterface/dbOperations';
 import { auth } from '../../../../../../auth';
-import { useSession } from 'next-auth/react';
+
+export const dynamic = 'force-dynamic';
 
 /** POST /api/posts/[postId]/comment - Used to add a comment to a post
  * Frontend call example:

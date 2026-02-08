@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { deletePost } from '@/dbInterface/dbOperations';
-import { auth } from '../../../../../../auth';
+
+export const dynamic = 'force-dynamic';
 
 /** DELETE /api/posts/[postId]/delete - Used to delete a post
  * Frontend call example:

@@ -6,6 +6,8 @@ import {
   fetchAllCourses,
 } from '@/dbInterface/dbOperations';
 
+export const dynamic = 'force-dynamic';
+
 // GET /api/courses - Get all courses (used for course searches)
 // GET /api/courses?prefix=CSCI&number=1301 - Get specific course
 export async function GET(request: NextRequest) {

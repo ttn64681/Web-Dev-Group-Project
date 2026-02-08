@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchCoursePost } from '@/dbInterface/dbOperations';
 
+export const dynamic = 'force-dynamic';
+
 /** GET /api/posts/[postId] - Get a specific post by ID
  * Frontend call example:
  * fetch('/api/posts/PostObjectId')

@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectMongoDB from '../../../../../config/mongodb';
 import User from '@/app/models/userSchema';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
 

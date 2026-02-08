@@ -1,6 +1,8 @@
 // app/api/youtube/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const query = searchParams.get('query');
@@ -29,29 +31,36 @@ export async function GET(req: NextRequest) {
       `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${encodeURIComponent(query)}&type=video&key=${YOUTUBE_API_KEY}`
     );
 
+    const searchData = await searchResponse.json();
+
     if (!searchResponse.ok) {
-      throw new Error('Failed to fetch videos from YouTube API');
+      const apiError = searchData?.error?.message || searchData?.error?.errors?.[0]?.reason || searchResponse.statusText;
+      return NextResponse.json(
+        { success: false, error: apiError || 'YouTube API request failed' },
+        { status: 500 }
+      );
     }
 
-    const searchData = await searchResponse.json();
-    console.log('Search Data received:');
-    console.dir(searchData, { depth: null });
-
-    const videoIds: any = searchData.items.map((item: any) => {
-      return item.id.videoId;
-    });
+    const videoIds: any = searchData.items?.map((item: any) => item.id?.videoId).filter(Boolean) ?? [];
+    if (videoIds.length === 0) {
+      return NextResponse.json({ success: true, videos: [] }, { status: 200 });
+    }
 
     const detailsResponse = await fetch(
       `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoIds.join(',')}&key=${YOUTUBE_API_KEY}`
     );
 
-    if (!detailsResponse.ok) {
-      throw new Error('Failed to fetch video details from YouTube API');
-    }
-
     const detailsData = await detailsResponse.json();
 
-    const videos = detailsData.items.map((item: any) => ({
+    if (!detailsResponse.ok) {
+      const apiError = detailsData?.error?.message || detailsData?.error?.errors?.[0]?.reason || detailsResponse.statusText;
+      return NextResponse.json(
+        { success: false, error: apiError || 'YouTube API details request failed' },
+        { status: 500 }
+      );
+    }
+
+    const videos = (detailsData.items ?? []).map((item: any) => ({
       title: item.snippet.title,
       description: item.snippet.description,
       url: `https://www.youtube.com/watch?v=${item.id}`,
@@ -67,9 +76,10 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ success: true, videos }, { status: 200 });
   } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to search YouTube videos';
     console.error('YouTube API error:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to search YouTube videos' },
+      { success: false, error: message },
       { status: 500 }
     );
   }

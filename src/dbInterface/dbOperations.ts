@@ -141,12 +141,13 @@ export async function searchAndAddCourse(prefix: string, number: string, title: 
     }
 
     // If course not found, use Gemini API to get course information
-    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+    // Allow one key for both: use GEMINI_API_KEY, or fall back to YOUTUBE_API_KEY if you use the same GCP key for both APIs
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.YOUTUBE_API_KEY;
     if (!GEMINI_API_KEY) {
-      console.error('GEMINI_API_KEY is not defined in environment variables.');
+      console.error('GEMINI_API_KEY (or YOUTUBE_API_KEY) is not defined in environment variables.');
       return {
         success: false,
-        error: 'GEMINI_API_KEY is not defined. Please set it in your environment variables.',
+        error: 'GEMINI_API_KEY is not set. Set it in Vercel (or set YOUTUBE_API_KEY if using one key for both). Enable "Generative Language API" in your Google Cloud project.',
       };
     }
 

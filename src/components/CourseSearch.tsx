@@ -120,11 +120,12 @@ const CourseSearch: React.FC<CourseSearchProps> = ({
         }
       );
 
-      if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
-      }
+      const data = await response.json().catch(() => ({}));
 
-      const data = await response.json();
+      if (!response.ok) {
+        const message = data?.error || `API request failed with status ${response.status}`;
+        throw new Error(message);
+      }
       console.log('Course search response:', data);
 
       if (!data.success) {

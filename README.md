@@ -84,3 +84,18 @@ CourseHub is not an official UGA app. All images are purely for personal purpose
     ```bash
     npm run dev
     ```
+
+## Deployment (Vercel)
+
+For the app to work on Vercel (or similar), set these **Environment Variables** in your project settings:
+
+| Variable | Required for | Notes |
+|----------|---------------|--------|
+| `MONGODB_URI` | Login, courses, posts | Atlas connection string (cluster must allow Vercel IPs or use 0.0.0.0/0). |
+| `AUTH_SECRET` / `NEXTAUTH_SECRET` | Login / sessions | Same value; used by NextAuth for signing. |
+| `NEXTAUTH_URL` | Auth redirects | Your production URL, e.g. `https://course-hub-uga.vercel.app`. |
+| **`GEMINI_API_KEY`** | **Course generation** | Creating a *new* course uses Google Gemini. If you use **one Google Cloud key** for both: set `YOUTUBE_API_KEY` and either set `GEMINI_API_KEY` to the same value or leave it unset (the app will fall back to `YOUTUBE_API_KEY`). In that GCP project, enable both **YouTube Data API v3** and **Generative Language API**. |
+| **`YOUTUBE_API_KEY`** | **YouTube search** | Contribute → video search uses YouTube Data API. |
+
+- **Course list and existing courses** work with only MongoDB + auth. **New course creation** and **YouTube search** need the API keys above.
+- After adding or changing env vars, redeploy the project so the new values are applied.

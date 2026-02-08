@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { unlikePost } from '@/dbInterface/dbOperations';
 import { auth } from '../../../../../../auth';
 
+export const dynamic = 'force-dynamic';
+
 // the unlike should be a post or put request
 // should it be put or post?
 

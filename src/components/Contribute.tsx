@@ -269,17 +269,18 @@ const Contribute: React.FC = () => {
   const searchYouTubeVideos = async (query: string) => {
     try {
       const response = await fetch(`/api/youtube?query=${encodeURIComponent(query)}`);
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
       if (data.success) {
         setItems(data.videos);
       } else {
-        console.error(data.error);
-        alert('Internal Server Error 505:\nFailed to fetch videos');
+        const msg = data?.error || `Request failed (${response.status})`;
+        console.error(msg);
+        alert(`Video search failed:\n${msg}\n\nIf this says "API key not configured", add YOUTUBE_API_KEY in Vercel → Settings → Environment Variables and redeploy.`);
       }
     } catch (error) {
       console.error('Failed to fetch videos:', error);
-      alert('Internal Server Error 505:\nFailed to fetch videos');
+      alert('Failed to fetch videos. Check the console for details.');
     }
 
     // makes the button usable again after 2 seconds

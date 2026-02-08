@@ -8,6 +8,8 @@ import {
 } from '@/dbInterface/dbOperations';
 import { NextApiRequestCookies } from 'next/dist/server/api-utils';
 
+export const dynamic = 'force-dynamic';
+
 /** GET /api/courses - Get all courses (used for course searches)
  * Frontend call example:
  * fetch('/api/courses', {
@@ -157,11 +159,12 @@ export async function GET(request: NextRequest) {
       courses: result.courses,
     });
   } catch (error) {
+    const message = error instanceof Error ? error.message : 'Internal server error';
     console.error('Error in courses API:', error);
     return NextResponse.json(
       {
         success: false,
-        error: 'Internal server error',
+        error: message,
       },
       { status: 500 }
     );
