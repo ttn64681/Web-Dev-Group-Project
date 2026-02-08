@@ -2,9 +2,18 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { MagnifyingGlass } from '@phosphor-icons/react';
-import { Folders } from '@phosphor-icons/react';
-import { UsersThree } from '@phosphor-icons/react';
+import {
+  MagnifyingGlass,
+  Folders,
+  UsersThree,
+  GithubLogo,
+  YoutubeLogo,
+} from '@phosphor-icons/react';
+
+// Links for splash
+const GITHUB_URL = 'https://github.com/ttn64681/Web-Dev-Group-Project';
+const VIDEO_DEMO_URL =
+  'https://www.loom.com/share/04e8e8049bb446f3b017975b1e82d01e?sid=6928a038-d539-422c-9f3f-5fc7bf634940';
 
 // Home Page
 export default function Home() {
@@ -26,9 +35,39 @@ export default function Home() {
               CourseHub!
             </h1>
           </div>
+          {/* Award badge — distinct style, same neon family */}
+          <div
+            className="flex items-center gap-1.5 px-4 py-1.5 rounded-full border-2 group border-neon-cyan/75 hover:border-neon-cyan bg-neon-cyan/10 [box-shadow:0_0_12px_rgba(108,254,254,0.2)] hover:scale-105 hover:[box-shadow:0_0_16px_rgba(108,254,254,0.45)] transition-all duration-300"
+            aria-label="Award: Best Class Project"
+          >
+            <span className="text-neon-cyan/75 group-hover:text-neon-cyan transition-all duration-300 font-nunito font-bold text-sm uppercase tracking-wide">
+              "Best Class Project"
+            </span>
+          </div>
           <p className="font-nunito text-[1.1rem] text-neon-pink-subtitle max-w-[80%] text-center">
             Your one-stop hub to find and share UGA course resources.
           </p>
+          {/* GitHub & YouTube / video demo links */}
+          <div className="flex items-center gap-6 mt-2 scale-90">
+            <Link
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 rounded-lg text-grayish-purple hover:text-neon-pink border border-transparent hover:border-neon-pink hover:scale-110 [box-shadow:0_0_12px_rgba(248,138,255,0.2)] hover:[box-shadow:0_0_14px_rgba(248,138,255,0.5)] transition-all duration-300"
+              aria-label="Open GitHub repository"
+            >
+              <GithubLogo size={32} weight="bold" />
+            </Link>
+            <Link
+              href={VIDEO_DEMO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 rounded-lg text-grayish-purple hover:text-neon-pink border border-transparent hover:border-neon-pink hover:scale-110 [box-shadow:0_0_12px_rgba(248,138,255,0.2)] hover:[box-shadow:0_0_14px_rgba(248,138,255,0.5)] transition-all duration-300"
+              aria-label="Watch video demo"
+            >
+              <YoutubeLogo size={32} weight="bold" />
+            </Link>
+          </div>
         </div>
       </div>
 
