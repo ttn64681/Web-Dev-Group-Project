@@ -13,15 +13,9 @@ const dongle = Dongle({
 
 export const metadata: Metadata = {
   title: 'CourseHub',
-  description: 'Your one-stop platform for course information and reviews',
+  description: 'Your one-stop platform for finding student-curated course resources.',
   icons: {
-    icon: '/logo/logo-star-189wh.png',
-    shortcut: '/logo/logo-star-189wh.png',
-    apple: '/logo/logo-star-189wh.png',
-    other: {
-      rel: 'apple-touch-icon',
-      url: '/logo/logo-star-189wh.png',
-    },
+    icon: '/favicon.svg',
   },
 };
 
